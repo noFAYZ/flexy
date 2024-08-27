@@ -20,7 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+
+         
+    
+      </head >
       <body
         className={cn(
           "min-h-screen bg-background font-lufga antialiased ",
@@ -28,9 +32,15 @@ export default function RootLayout({
         )}
       >
        <Providers themeProps={{ attribute: "data-theme", defaultTheme: "system" }}>
-    
-                <NavbarNew />
-                {children}</Providers>
+
+             
+             <NavbarNew  />
+     
+                {children}
+              </Providers>
+
+
+   
       </body>
     </html>
   );

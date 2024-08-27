@@ -12,7 +12,8 @@ const nextConfig = {
       images: {
         domains: [
           'images.unsplash.com',
-          'i.pravatar.cc'
+          'i.pravatar.cc',
+          'picsum.photos'
         ],
       }
 };

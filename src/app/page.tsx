@@ -1,27 +1,19 @@
 "use client";
 
-import { Button, Button as Button2 } from "@nextui-org/button";
-import { Avatar } from "@nextui-org/react";
-import {useLogin, usePrivy} from '@privy-io/react-auth';
-import { User } from "lucide-react";
-
+import GigCardGallery from "@/components/gigs/GigCardGallery";
+import Bento from "@/components/homepage/bento";
 
 export default function Home() {
-  const {ready, authenticated, login} = usePrivy();
-  const disableLogin = !ready || (ready && authenticated);
-
- 
   return (
-    <div className="space-x-4 p-4">
+    <>
+      <Bento />
 
-      <Button2 disabled={disableLogin} onClick={()=>{
-        login()
-        }}>Login</Button2>
-
-        <section>
-          Test paragraph for font lufga to check if it works or not.
-         
+      <div className="flex flex-col lg:px-32 md:px-24 shadow pb-10">
+        <section className=" px-10">
+          <GigCardGallery />
+          <GigCardGallery />
         </section>
-    </div>
+      </div>
+    </>
   );
 }
