@@ -25,7 +25,17 @@ export const fontLufga = localFont({
         style: 'italic',
       },
       {
-        path: '../../public/fonts/lufga/LufgaBoldItalic.woff',
+        path: '../../public/fonts/lufga/LufgaSemiBold.woff',
+        weight: '500',
+        style: 'normal',
+      },
+      {
+        path: '../../public/fonts/lufga/LufgaSemiBoldItalic.woff',
+        weight: '500',
+        style: 'italic',
+      },
+      {
+        path: '../../public/fonts/lufga/LufgaBold.woff',
         weight: '700',
         style: 'normal',
       },
