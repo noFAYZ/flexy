@@ -1,8 +1,11 @@
+"use client";
+
 import { Button } from '@nextui-org/button'
 import { Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem } from '@nextui-org/react'
 import { useLogin, usePrivy } from '@privy-io/react-auth'
 import { User, SettingsIcon, HelpCircle, LogOutIcon } from 'lucide-react'
 import React, { useState } from 'react'
+import NextLink from "next/link";
 
 const UserDropdownWidget = () => {
     const [isLoggingIn, setisLoggingIn] = useState(false)
@@ -56,12 +59,14 @@ const UserDropdownWidget = () => {
 								variant="solid"
 								className="dark:bg-white/10 shadow-2xl bg-background rounded-xl p-2  dark:border-gray-700 "
 							>
+							
 								<DropdownItem key="profile" 
 								className="gap-2"
 								startContent={<User size={16} />}
 								>
-				
-								<p className="">Profile</p>
+				 <NextLink href={'/user'} className="text-foreground">
+								<p className="">Profile</p></NextLink>
+
 								</DropdownItem>
 								<DropdownItem key="settings" startContent={<SettingsIcon size={16}/>}>Settings</DropdownItem>
 						

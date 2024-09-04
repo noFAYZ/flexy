@@ -9,7 +9,7 @@ import { ThemeSwitch } from "../../theme-switch";
 export function SortableItem(props: any) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
-  console.log(Number(String(props?.width).slice(0, -1)));
+  
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

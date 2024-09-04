@@ -33,11 +33,13 @@ export default function RootLayout({
       >
        <Providers themeProps={{ attribute: "data-theme", defaultTheme: "system" }}>
 
-             
-             <NavbarNew  />
+       
+          <NavbarNew  />
      
                 {children}
-              </Providers>
+
+           
+        </Providers>
 
 
    

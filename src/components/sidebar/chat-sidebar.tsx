@@ -1,7 +1,9 @@
 "use client";
 
-import { Accordion, AccordionItem, Button, Card, CardBody, Chip, Input, Link, } from '@nextui-org/react'
-import { Bot, ClipboardListIcon, InfoIcon, MessageSquare, ReceiptText } from 'lucide-react'
+import ProfileMenu from '@/app/user/components/ProfileMenu';
+import { Accordion, AccordionItem, Avatar, Button, Card, CardBody, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, } from '@nextui-org/react'
+import { color } from 'framer-motion';
+import { BadgeCheck, BadgeCheckIcon, Bot, CheckCircle2, CheckCircleIcon, ClipboardListIcon, InfoIcon, MapPinIcon, MessageSquare, ReceiptText } from 'lucide-react'
 import React from 'react'
 
 const ChatSidebarNav= () => {
@@ -21,6 +23,26 @@ const ChatSidebarNav= () => {
 
   return (
     <div className="flex w-full flex-col">
+
+
+<div className='flex  px-2 py-2 gap-3'>
+    <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-24 h-24 text-large" />
+    <div className='flex flex-col gap-2 '>
+      <div className='flex flex-col '> 
+        <span className='text-xl font-medium'>Faizan Asad <span><BadgeCheck className='p-0' />
+         </span></span>
+        <span className='text-xs font-medium text-gray-400'>@fayzan</span>
+        <span className='text-sm '> Full Stack Developer/ Blockchain Dev</span>
+        </div>
+      
+
+        <span className='flex gap-1 align-baseline items-center text-sm'> <MapPinIcon size={18}/> Gilgit, Pakistan</span>
+    </div>
+
+    </div>
+
+
+
    <Accordion
       showDivider={false}
       className="p-2 flex flex-col gap-1 w-full "

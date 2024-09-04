@@ -65,9 +65,9 @@ const GigCard = (props:{item:any, index: any}) => {
                 <div className='flex  items-center gap-2 text-sm'> 
 
                   <Tooltip showArrow={true} content="Contact Now!">
-                    <Button   size='sm' color='warning' variant='flat' className='text-sm rounded-full'
-                    startContent={ <MessageSquareShareIcon size={18} />}>
-                     Discuss
+                    <Button   size='sm' color='warning' variant='flat' className='text-sm rounded-full px-0'
+                    >
+            <MessageSquareShareIcon size={18} />
                     </Button>                  
                   </Tooltip>
 

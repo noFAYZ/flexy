@@ -17,7 +17,7 @@ export const siteConfig = {
 	navMenuItems: [
 		{
 			label: "Profile",
-			href: "/profile",
+			href: "/user",
 		},
 		{
 			label: "Dashboard",

@@ -78,7 +78,7 @@ export const NavbarNew = () => {
   const [dashboardType, setdashboardType] = useState<string>();
 
   return (
-    <div className="flex flex-col lg:px-24 md:px-16 shadow mb-5 pb-10 z-40 ">
+    <div className="flex flex-col lg:px-24 md:px-6 shadow mb-5 pb-5 md:pb-5 lg:pb-10 z-40 ">
       <div className="sm:hidden z-50 flex justify-between px-6 pt-6">
         <NextUINavbar className="z-50  backdrop-blur-none bg-transparent backdrop-filter-none">
           <NavbarContent className="sm:hidden z-50">
@@ -109,11 +109,11 @@ export const NavbarNew = () => {
       </div>
 
       <NextUINavbar
-        className="flex relative justify-between space-y-4 py-12 backdrop-blur-none bg-transparent backdrop-filter-none"
+        className="flex relative justify-between  py-2 md:py-12 backdrop-blur-none bg-transparent backdrop-filter-none"
         maxWidth="full"
       >
         <div>
-          <NavbarContent className="hidden md:flex items-center justify-between  backdrop-blur-lg border-1 border-white/20 rounded-full shadow px-6 space-x-4 space-y-4 h-16">
+          <NavbarContent className="hidden lg:flex items-center justify-between  backdrop-blur-lg border-1 border-white/20 rounded-full shadow px-6 space-x-4 space-y-4 h-16">
             {/* Center - Logo */}
             <NavbarBrand className="flex-grow-0">
               <NextLink href="/" className="flex justify-center items-center">
@@ -126,7 +126,7 @@ export const NavbarNew = () => {
               </NextLink>
             </NavbarBrand>
           </NavbarContent>
-          <NavbarContent className="flex md:hidden items-center justify-between  backdrop-blur-lg border-1 border-white/20 rounded-full shadow px-6 space-x-4 space-y-4 h-16">
+          <NavbarContent className=" lg:hidden sm:flex items-center justify-between  backdrop-blur-lg border-1 border-white/20 rounded-full shadow px-4 space-x-4 space-y-4 h-16">
             {/* Center - Logo */}
             <NavbarBrand className="flex-grow-0">
               <NextLink href="/" className="flex justify-center items-center">
@@ -230,6 +230,7 @@ export const NavbarNew = () => {
             <></>
           )}
 
+          {pathname == "/dashboard" ? (
           <div className="flex flex-wrap mt-10 px-6 gap-8 justify-between">
             <div className="flex justify-center md:justify-start">
               <div className="flex gap-4 align-middle items-center">
@@ -335,34 +336,13 @@ export const NavbarNew = () => {
                 </Popover>
               </div>
             </div>
-          </div>
+          </div>) : <></>}
+
+
         </>
       ) : (
         <>
-          <div className="flex flex-wrap mt-10 px-6 gap-8 justify-between">
-            <div className="flex flex-wrap gap-4 align-middle items-center">
-              {/* Placeholder buttons */}
-              {[...Array(4)].map((_, index) => (
-                <Button
-                  key={index}
-                  className="h-12 rounded-full"
-                  variant="bordered"
-                >
-                  <Skeleton className="w-24 h-4 rounded-lg" />
-                </Button>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-4">
-              {/* Placeholder for FancySwitch */}
-              <Skeleton className="w-32 h-12 rounded-full" />
-
-              {/* Placeholder for action buttons */}
-              {[...Array(2)].map((_, index) => (
-                <Skeleton key={index} className="w-12 h-12 rounded-full" />
-              ))}
-            </div>
-          </div>
+      
         </>
       )}
     </div>
