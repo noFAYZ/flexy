@@ -27,7 +27,7 @@ export default function RootLayout({
       </head >
       <body
         className={cn(
-          "min-h-screen bg-background font-lufga antialiased ",
+          "min-h-screen bg-background font-mono antialiased ",
           fontLufga.variable
         )}
       >

@@ -13,6 +13,7 @@ import {ReactComponent as DarkFlexyLogo} from '/public/icons/darklogo.svg';
 import  { OrbisConnectResult, OrbisDB } from "@useorbis/db-sdk"
 import { providerToBrowserProvider } from '@/utils/providerUtil';
 import {OrbisEVMAuth} from '@useorbis/db-sdk/auth'
+import Loader from '@/components/Loader2';
 
 
 export interface ProvidersProps {
@@ -120,10 +121,9 @@ const InnerProviders = ({ children, themeProps }: ProvidersProps) => {
 
   if (!ready && !ablyClient && !user) {
     return (
-      <div className="absolute top-0 left-0 w-full h-full bg-gray-900 z-50 flex flex-col justify-center items-center">
+      <div className="absolute top-0 left-0 w-full h-full bg-background z-50 flex flex-col justify-center items-center">
         <DarkFlexyLogo className="w-60 h-60" /> 
-        <div className="loader border-t-2 rounded-full border-gray-700 drop-shadow-sm bg-gray-300 animate-spin
-      aspect-square w-14 flex justify-center items-center text-yellow-700"></div>
+        <Loader />
       </div>
     );
   }

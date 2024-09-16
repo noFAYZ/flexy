@@ -25,6 +25,7 @@ import NextLink from "next/link";
 import {
   Badge,
   Link,
+  Navbar,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -43,6 +44,9 @@ import {
   HandCoinsIcon,
   MessageCircleMoreIcon,
   PickaxeIcon,
+  Search,
+  CircleGauge,
+  MessageCircle,
 } from "lucide-react";
 import BalanceWidget from "./widgets/BalanceWidget";
 import NotificationWidget from "./widgets/NotificationWidget";
@@ -50,6 +54,7 @@ import UserDropdownWidget from "./widgets/UserDropdownWidget";
 import SearchWidget from "./widgets/SearchWidget";
 import { FancySwitch } from "@omit/react-fancy-switch";
 import { useRouter, usePathname } from "next/navigation";
+import MenuBar from "./widgets/middle-menu";
 
 export const NavbarNew = () => {
   const [isLoggingIn, setisLoggingIn] = useState(false);
@@ -71,14 +76,15 @@ export const NavbarNew = () => {
 
   // Map of icons for nav items
   const iconMap = {
+    "Hire Freelancer": CircleGauge,
     Dashboard: LayoutDashboardIcon,
-    "Find Work": PickaxeIcon,
+    "Find Work": Search,
   };
   const dashboardTypes: string[] = ["Buyer", "Seller"];
   const [dashboardType, setdashboardType] = useState<string>();
 
   return (
-    <div className="flex flex-col lg:px-24 md:px-6 shadow mb-5 pb-5 md:pb-5 lg:pb-10 z-40 ">
+    <div className="flex flex-col lg:px-24 md:px-6  mb-5 pb-5 md:pb-5 lg:pb-5 z-40 ">
       <div className="sm:hidden z-50 flex justify-between px-6 pt-6">
         <NextUINavbar className="z-50  backdrop-blur-none bg-transparent backdrop-filter-none">
           <NavbarContent className="sm:hidden z-50">
@@ -113,20 +119,20 @@ export const NavbarNew = () => {
         maxWidth="full"
       >
         <div>
-          <NavbarContent className="hidden lg:flex items-center justify-between  backdrop-blur-lg border-1 border-white/20 rounded-full shadow px-6 space-x-4 space-y-4 h-16">
+          <NavbarContent className="hidden lg:flex items-center justify-between  backdrop-blur-lg border-default border-medium rounded-full shadow px-10 mr-4 space-x-4 space-y-4 h-16 bg-gradient-to-r from-pink-600 to-orange-600">
             {/* Center - Logo */}
             <NavbarBrand className="flex-grow-0">
               <NextLink href="/" className="flex justify-center items-center">
                 {theme == "dark" ? (
-                  <DarkFlexyLogo width={90} height={45} />
-                ) : (
                   <FlexyLogo width={90} height={45} />
+                ) : (
+                  <DarkFlexyLogo width={90} height={45} />
                 )}
                 {/* <FlexyLogo width={110} height={55} /> */}
               </NextLink>
             </NavbarBrand>
           </NavbarContent>
-          <NavbarContent className=" lg:hidden sm:flex items-center justify-between  backdrop-blur-lg border-1 border-white/20 rounded-full shadow px-4 space-x-4 space-y-4 h-16">
+          <NavbarContent className=" lg:hidden sm:flex items-center justify-between  backdrop-blur-lg border-default border-medium rounded-full shadow px-4 space-x-4 space-y-4 h-16">
             {/* Center - Logo */}
             <NavbarBrand className="flex-grow-0">
               <NextLink href="/" className="flex justify-center items-center">
@@ -141,34 +147,51 @@ export const NavbarNew = () => {
           </NavbarContent>
         </div>
 
-        <div>
-          <NavbarContent className=" items-center   bg-background/50 backdrop-blur-2xl border-1 border-white/20 rounded-full shadow px-6 py-2 hidden md:flex h-16">
-            {/* Left side - Menu icons */}
-            {siteConfig.navItems.map((item) => {
-              const IconComponent = iconMap[item?.label] || LayoutDashboardIcon; // Default to Home if icon not found
-              return (
-                <Button
-                  className="px-4 min-w-10 bg-transparent hover:bg-white/10 transition-colors"
-                  radius="full"
-                  variant="light"
-                  key={item.href}
-                  startContent={<IconComponent />}
-                >
-                  <NavbarItem isActive>
-                    <NextLink href={item.href} className="text-foreground">
-                      {item?.label}
-                    </NextLink>
-                  </NavbarItem>
-                </Button>
-              );
-            })}
-          </NavbarContent>
-        </div>
-        {/* Right side - Search, Login/Avatar, ThemeSwitch */}
-        <div>
-          <NavbarContent className="flex items-center gap-4 bg-background/50 backdrop-blur-2xl border-1 border-white/20 rounded-full shadow justify-end">
-            {!authenticated ? <SearchWidget /> : <NotificationWidget />}
 
+        {!authenticated ? 
+        <>
+      <MenuBar siteConfig={siteConfig.navItemsNoLoggedIn} iconMap={iconMap} />
+        </> : 
+        <> 
+          <MenuBar siteConfig={siteConfig.navItems} iconMap={iconMap} />
+        </>}
+
+       
+
+
+        {/* Right side - Search, Login/Avatar, ThemeSwitch */}
+        <div className="flex items-center gap-4">
+              <div className="flex relative group">
+
+                <Popover showArrow placement="bottom">
+                <PopoverTrigger>
+                <NavbarItem className=" flex">
+                        <Badge 
+                            content="52" 
+                            color="danger" 
+                            shape="circle" 
+                            placement="top-right"
+                        >
+                            <div className=" bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full opacity-100 hover:opacity-80  w-14 h-14" />
+                            <div className="absolute inset-0 flex items-center justify-center  p-0">
+
+                            <MessageCircle size={22} className="text-white" />
+                        
+                        </div></Badge>
+                    </NavbarItem>
+                </PopoverTrigger>
+                <PopoverContent className="px-4 py-2 gap-2 flex flex-col">
+                    <p>Hello new message </p>
+                    <p>Hello new message </p>
+                    <p>Hello new message </p>
+                </PopoverContent>
+                </Popover>
+
+              
+              </div>
+          <NavbarContent className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium  rounded-full shadow justify-end">
+            {!authenticated ? <SearchWidget /> : <NotificationWidget />}
+            <ThemeSwitch />
             {!authenticated ? (
               <Button
                 isIconOnly
@@ -235,7 +258,7 @@ export const NavbarNew = () => {
             <div className="flex justify-center md:justify-start">
               <div className="flex gap-4 align-middle items-center">
                 <NextUINavbar
-                  className="h-auto"
+                  className="h-auto items-center"
                   classNames={{
                     wrapper: "px-0",
                   }}
@@ -243,7 +266,7 @@ export const NavbarNew = () => {
                   <div className="flex flex-wrap gap-3">
                     <NavbarItem>
                       <NextLink href="/" className="font-medium">
-                        <div className="flex gap-2 h-12 align-middle items-center rounded-full px-4 border-1 hover:bg-muted/95 hover:text-foreground">
+                        <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
                           {" "}
                           <LayoutDashboardIcon size={18} />
                           Dashboard
@@ -253,7 +276,7 @@ export const NavbarNew = () => {
 
                     <NavbarItem>
                       <NextLink href="/inbox" className="font-medium">
-                        <div className="flex gap-2 h-12 align-middle items-center rounded-full px-4 border-1 hover:bg-muted/95 hover:text-foreground">
+                        <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
                           {" "}
                           <HandCoinsIcon size={18} />
                           Payments
@@ -264,7 +287,7 @@ export const NavbarNew = () => {
                     <Badge content="5200" color="danger">
                       <NavbarItem className="flex gap-2">
                         <NextLink href="/inbox" className="font-medium">
-                          <div className="flex gap-2 h-12 align-middle items-center rounded-full px-4 border-1 hover:bg-muted/95 hover:text-foreground">
+                          <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
                             {" "}
                             <MessageCircleMoreIcon size={18} />
                             Messages
@@ -275,7 +298,7 @@ export const NavbarNew = () => {
 
                     <NavbarItem className="flex gap-2">
                       <NextLink href="/inbox" className="font-medium">
-                        <div className="flex gap-2 h-12 align-middle items-center rounded-full px-4 border-1 hover:bg-muted/95 hover:text-foreground">
+                        <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
                           {" "}
                           <PickaxeIcon size={18} />
                           Find Work
@@ -287,16 +310,16 @@ export const NavbarNew = () => {
               </div>
             </div>
             <div className=" ">
-              <div className=" flex flex-wrap gap-4 h-12 w-full justify-center">
+              <div className=" flex flex-wrap gap-4 h-12 w-full justify-center items-center">
                 <FancySwitch
                   value={"Buyer"}
                   onChange={(value: any) => setdashboardType(value)}
                   options={dashboardTypes}
                   defaultValue={"Buyer"}
-                  className="flex rounded-full bg-muted p-2"
+                  className="flex rounded-full bg-muted p-2 border-medium border-default"
                   highlighterClassName="bg-primary rounded-full"
                   radioClassName={
-                    "relative mx-2 flex focus:outline-none h-9 cursor-pointer items-center justify-center rounded-full px-3.5 text-sm font-medium transition-colors data-[checked]:text-primary-foreground"
+                    "relative mx-2 flex focus:outline-none h-9 cursor-pointer items-center justify-center rounded-full px-3.5 text-sm font-medium transition-colors data-[checked]:text-primary-foreground "
                   }
                   highlighterIncludeMargin={true}
                 />

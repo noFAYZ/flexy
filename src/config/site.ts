@@ -6,13 +6,23 @@ export const siteConfig = {
 	navItems: [
 		{
 			label: "Dashboard",
-			href: "/",
+			href: "/dashboard",
 		},
     {
       label: "Find Work",
-      href: "/inbox",
+      href: "/jobs",
     },
-    
+
+	],	
+	navItemsNoLoggedIn: [
+		{
+			label: "Hire Freelancer",
+			href: "/",
+		},
+		{
+		label: "Find Work",
+		href: "/jobs",
+		},
 	],
 	navMenuItems: [
 		{
