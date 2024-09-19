@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimationControls } from 'framer-motion';
 import { Input, Chip, Button, Card, CardBody } from "@nextui-org/react";
 import { SearchIcon, Code, Paintbrush, PenTool, Megaphone, ChevronRight } from 'lucide-react';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
@@ -116,6 +116,105 @@ const CategoryCard = ({ category }) => {
   );
 };
 
+const InteractiveBorderButton = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const controls = useAnimationControls();
+
+  const handleHoverStart = () => {
+    setIsHovered(true);
+    controls.start({
+      pathLength: [0, 1],
+      opacity: 1,
+      transition: { duration: 0.5, ease: "easeInOut" }
+    });
+  };
+
+  const handleHoverEnd = () => {
+    setIsHovered(false);
+    controls.start({
+      pathLength: [1, 0],
+      opacity: 0,
+      transition: { duration: 0.5, ease: "easeInOut" }
+    });
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.1, delay: 0.1 }}
+      className="text-center z-10"
+    >
+      <motion.button
+        className="relative inline-flex h-12 overflow-visible rounded-full focus:outline-none focus:ring-none"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onHoverStart={handleHoverStart}
+        onHoverEnd={handleHoverEnd}
+      >
+        <motion.span
+          className="absolute inset-[-2px] rounded-full"
+          style={{ 
+            background: 'conic-gradient(from 90deg at 50% 50%, #EC3A78 0%, #6E0303 50%, #DAA11D 100%)',
+            opacity: 0.8
+          }}
+          
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.span
+          className="absolute inset-[-2px] rounded-full"
+          initial={{ opacity: 0 }}
+          animate={controls}
+        >
+          <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <motion.path
+              d="M 50,2 A 48,48 0 1 1 49.99,2"
+              stroke="url(#gradient)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={controls}
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#EC3A78" />
+                <stop offset="50%" stopColor="#6E0303" />
+                <stop offset="100%" stopColor="#DAA11D" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </motion.span>
+        <motion.span
+          className="relative inline-flex h-full items-center justify-center rounded-full bg-black px-6 py-1 text-sm font-medium text-white transition-colors z-10"
+          animate={{
+            backgroundColor:  "rgba(0,0,0,1)",
+          }}
+        >
+          <motion.span
+            initial={{ x: 0 }}
+            animate={{ x: isHovered ? -3 : 0 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+               
+            Get Started
+          </motion.span>
+          <motion.span
+            initial={{ x: 0, opacity: 0.5 }}
+            animate={{ x: isHovered ? 3 : 0, opacity: isHovered ? 1 : 0.5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <ChevronRight className="ml-2" />
+          </motion.span>
+        </motion.span>
+      </motion.button>
+    </motion.div>
+  );
+};
+
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -154,20 +253,7 @@ const HomePage = () => {
         </motion.div>
 
 
-         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center "
-        >
-        {/*   <p className="mb-4 text-lg text-foreground/80">Join thousands of satisfied clients and freelancers</p> */}
-          <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-none  ">
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-4 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-              Get Started <ChevronRight className="ml-2" />
-            </span>
-          </button>
-        </motion.div>
+       <InteractiveBorderButton />
 
         <MarqueeDemo />
       </div>

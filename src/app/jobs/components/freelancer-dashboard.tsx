@@ -27,7 +27,7 @@ export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
           indicator={<ChevronDown size={16} />}
           title={
             <Popover placement="bottom-start" className="">
-              <PopoverTrigger className="px-2 sm:px-4 py-2  rounded-3xl border-medium border-default bg-muted w-full">
+              <PopoverTrigger className="px-2 sm:px-4 py-2  rounded-3xl border-medium border-default bg-muted/70 w-full">
                 <div className="flex flex-col w-full gap-2">
                   <div className="flex justify-between w-full items-center">
                     <User

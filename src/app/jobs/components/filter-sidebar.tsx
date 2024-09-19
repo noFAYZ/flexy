@@ -55,7 +55,7 @@ const FilterSidebar = ({ onFilterChange }) => {
       animate={{ width: isOpen ? "35%" : "60px", height: isOpen ? "100%" : "600px" }}
  
       transition={{ duration: 0.1 }}
-      className="bg-muted overflow-hidden rounded-3xl h-full border-medium border-default  relative"
+      className="bg-muted/70 overflow-hidden rounded-3xl h-full border-medium border-default  relative"
       style={{ maxWidth: "400px" }}
     >
       <div className="p-4">

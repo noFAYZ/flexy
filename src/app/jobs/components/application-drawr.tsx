@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
 
 
 
@@ -172,9 +173,11 @@ const JobDetailsDrawer = ({ isOpen, onClose, job, onApply }) => {
   };
 
   return (
+  
+
     <AnimatePresence>
       {isOpen && (
-        <>
+        <>  
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -189,7 +192,7 @@ const JobDetailsDrawer = ({ isOpen, onClose, job, onApply }) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-          > 
+          > <ScrollArea className=" rounded-md border p-4">
             <div className='flex justify-end'>
                 <Button isIconOnly variant="light" onClick={onClose}>
                   <X size={24} />
@@ -332,11 +335,13 @@ const JobDetailsDrawer = ({ isOpen, onClose, job, onApply }) => {
                     </Card>
               </div>
             
-            </div>
+            </div> </ScrollArea>
           </motion.div>
+         
         </>
       )}
     </AnimatePresence>
+   
   );
 };
 
