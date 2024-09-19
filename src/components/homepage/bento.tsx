@@ -14,10 +14,11 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./items/SortableItem";
+import LineChart from "./items/profile-view";
 
 export default function Bento() {
   const [items, setItems] = useState([
-    { id: 1, width: "32%", height: 500 },
+    { id: 1, width: "32%", height: 500, children: <LineChart></LineChart> },
     { id: 2, width: "32%", height: 500 },
     { id: 3, width: "32%", height: 500 },
     { id: 4, width: "32%", height: 500 },
@@ -42,7 +43,9 @@ export default function Bento() {
               id={item.id}
               width={item.width}
               height={item.height}
-            />
+            >
+              <LineChart />
+             </SortableItem>
           ))}
         </SortableContext>
       </div>
