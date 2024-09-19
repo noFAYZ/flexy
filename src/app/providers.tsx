@@ -121,7 +121,7 @@ const InnerProviders = ({ children, themeProps }: ProvidersProps) => {
 
   if (!ready && !ablyClient && !user) {
     return (
-      <div className="absolute top-0 left-0 w-full h-full bg-background z-50 flex flex-col justify-center items-center">
+      <div className="absolute top-0 left-0 w-full h-full bg-[#020817] z-50 flex flex-col justify-center items-center">
         <DarkFlexyLogo className="w-60 h-60" /> 
         <Loader />
       </div>

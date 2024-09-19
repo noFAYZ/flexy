@@ -47,6 +47,7 @@ import {
   Search,
   CircleGauge,
   MessageCircle,
+  SearchIcon,
 } from "lucide-react";
 import BalanceWidget from "./widgets/BalanceWidget";
 import NotificationWidget from "./widgets/NotificationWidget";
@@ -55,6 +56,7 @@ import SearchWidget from "./widgets/SearchWidget";
 import { FancySwitch } from "@omit/react-fancy-switch";
 import { useRouter, usePathname } from "next/navigation";
 import MenuBar from "./widgets/middle-menu";
+import { MageMessageDotsRound, MageMessageRound } from "./icons/icons";
 
 export const NavbarNew = () => {
   const [isLoggingIn, setisLoggingIn] = useState(false);
@@ -76,7 +78,7 @@ export const NavbarNew = () => {
 
   // Map of icons for nav items
   const iconMap = {
-    "Hire Freelancer": CircleGauge,
+    "Hire Talent": CircleGauge,
     Dashboard: LayoutDashboardIcon,
     "Find Work": Search,
   };
@@ -84,136 +86,98 @@ export const NavbarNew = () => {
   const [dashboardType, setdashboardType] = useState<string>();
 
   return (
-    <div className="flex flex-col lg:px-24 md:px-6  mb-5 pb-5 md:pb-5 lg:pb-5 z-40 ">
-      <div className="sm:hidden z-50 flex justify-between px-6 pt-6">
-        <NextUINavbar className="z-50  backdrop-blur-none bg-transparent backdrop-filter-none">
-          <NavbarContent className="sm:hidden z-50">
-            <NavbarMenuToggle />
-          </NavbarContent>
-
-          <NavbarMenu className="z-50">
-            {siteConfig?.navMenuItems.map((item, index) => (
-              <NavbarMenuItem key={index}>
-                <Link
-                  className="w-full"
-                  color={
-                    index === 2
-                      ? "warning"
-                      : index === siteConfig?.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                  }
-                  href="#"
-                  size="lg"
-                >
-                  {item?.label}
-                </Link>
-              </NavbarMenuItem>
-            ))}
-          </NavbarMenu>
-        </NextUINavbar>
-      </div>
-
+    <div className="flex flex-col lg:px-24 md:px-6 mb-5 pb-5 md:pb-5 lg:pb-5 z-40">
       <NextUINavbar
-        className="flex relative justify-between  py-2 md:py-12 backdrop-blur-none bg-transparent backdrop-filter-none"
+        className="py-2 md:py-12 backdrop-blur-none bg-transparent backdrop-filter-none"
         maxWidth="full"
       >
-        <div>
-          <NavbarContent className="hidden lg:flex items-center justify-between  backdrop-blur-lg border-default border-medium rounded-full shadow px-10 mr-4 space-x-4 space-y-4 h-16 bg-gradient-to-r from-pink-600 to-orange-600">
-            {/* Center - Logo */}
-            <NavbarBrand className="flex-grow-0">
-              <NextLink href="/" className="flex justify-center items-center">
-                {theme == "dark" ? (
-                  <FlexyLogo width={90} height={45} />
-                ) : (
-                  <DarkFlexyLogo width={90} height={45} />
-                )}
-                {/* <FlexyLogo width={110} height={55} /> */}
-              </NextLink>
-            </NavbarBrand>
-          </NavbarContent>
-          <NavbarContent className=" lg:hidden sm:flex items-center justify-between  backdrop-blur-lg border-default border-medium rounded-full shadow px-4 space-x-4 space-y-4 h-16">
-            {/* Center - Logo */}
-            <NavbarBrand className="flex-grow-0">
-              <NextLink href="/" className="flex justify-center items-center">
-                {theme == "dark" ? (
-                  <DarkFlexyLogoIcon width={40} height={45} />
-                ) : (
-                  <FlexyLogoIcon width={40} height={45} />
-                )}
-                {/* <FlexyLogo width={110} height={55} /> */}
-              </NextLink>
-            </NavbarBrand>
-          </NavbarContent>
-        </div>
+        <NavbarContent className="flex justify-between items-center w-full">
+          {/* Left side - Logo */}
+          <div className="w-[20%]">
+            <NavbarContent className="hidden lg:flex items-center justify-between   mr-32 space-x-4 space-y-4 ">
+              <NavbarBrand className="flex-grow-0 ">
+                <NextLink href="/" className="flex justify-center items-center  backdrop-blur-lg  rounded-full shadow-lg px-5 h-14">
+                  {theme == "dark" ? (
+                    <DarkFlexyLogo width={90} height={45} />
+                  ) : (
+                    <FlexyLogo width={90} height={45} />
+                  )}
+                </NextLink>
+              </NavbarBrand>
+            </NavbarContent>
+            <NavbarContent className="lg:hidden sm:flex items-center justify-between  ">
+              <NavbarBrand className="">
+                <NextLink href="/" className="flex justify-center items-center bg-gradient-to-r from-pink-600 to-orange-600 backdrop-blur-lg  rounded-full shadow-lg px-4 h-14">
+                  {theme == "dark" ? (
+                    <DarkFlexyLogoIcon width={40} height={45} />
+                  ) : (
+                    <FlexyLogoIcon width={40} height={45} />
+                  )}
+                </NextLink>
+              </NavbarBrand>
+            </NavbarContent>
+          </div>
 
+          {/* Center - Menu */}
+          <div className="hidden md:flex w-[60%] flex-grow-0 justify-center">
+            {!authenticated ? (
+              <MenuBar siteConfig={siteConfig.navItemsNoLoggedIn} iconMap={iconMap} />
+            ) : (
+              <MenuBar siteConfig={siteConfig.navItems} iconMap={iconMap} />
+            )}
+          </div>
 
-        {!authenticated ? 
-        <>
-      <MenuBar siteConfig={siteConfig.navItemsNoLoggedIn} iconMap={iconMap} />
-        </> : 
-        <> 
-          <MenuBar siteConfig={siteConfig.navItems} iconMap={iconMap} />
-        </>}
-
-       
-
-
-        {/* Right side - Search, Login/Avatar, ThemeSwitch */}
-        <div className="flex items-center gap-4">
-              <div className="flex relative group">
-
-                <Popover showArrow placement="bottom">
-                <PopoverTrigger>
-                <NavbarItem className=" flex">
-                        <Badge 
-                            content="52" 
-                            color="danger" 
-                            shape="circle" 
-                            placement="top-right"
-                        >
-                            <div className=" bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full opacity-100 hover:opacity-80  w-14 h-14" />
-                            <div className="absolute inset-0 flex items-center justify-center  p-0">
-
-                            <MessageCircle size={22} className="text-white" />
-                        
-                        </div></Badge>
-                    </NavbarItem>
+          {/* Right side - Search, Login/Avatar, ThemeSwitch */}
+          <div className=" w-[70%] md:w-[20%]  flex justify-end items-center gap-4">
+            {authenticated && (
+              <Popover showArrow placement="bottom" className="hidden md:flex">
+                <PopoverTrigger className="hidden lg:flex">
+                  <NavbarItem>
+                    <Badge 
+                      content="52" 
+                      color="danger" 
+                      shape="circle" 
+                      placement="top-right"
+                    >
+                      <div className="bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full opacity-100 hover:opacity-80 w-14 h-14 flex items-center justify-center">
+                        <MessageCircleMoreIcon height={22} width={22} className="text-white" />
+                      </div>
+                    </Badge>
+                  </NavbarItem>
                 </PopoverTrigger>
                 <PopoverContent className="px-4 py-2 gap-2 flex flex-col">
-                    <p>Hello new message </p>
-                    <p>Hello new message </p>
-                    <p>Hello new message </p>
+                  <p>Hello new message</p>
+                  <p>Hello new message</p>
+                  <p>Hello new message</p>
                 </PopoverContent>
-                </Popover>
-
-              
-              </div>
-          <NavbarContent className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium  rounded-full shadow justify-end">
-            {!authenticated ? <SearchWidget /> : <NotificationWidget />}
-            <ThemeSwitch />
-            {!authenticated ? (
-              <Button
-                isIconOnly
-                className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-md rounded-full hover:opacity-80 transition-opacity w-14 h-14"
-                variant="flat"
-                disabled={disableLogin}
-                onClick={() => {
-                  setisLoggingIn(true);
-                  login();
-                }}
-                isLoading={isLoggingIn}
-              >
-                <User size={22} />
-              </Button>
-            ) : (
-              <>
-                <BalanceWidget />
-                <UserDropdownWidget />
-              </>
+              </Popover>
             )}
-          </NavbarContent>
-        </div>
+            <div className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium rounded-full shadow">
+              {!authenticated ? <SearchWidget /> : <NotificationWidget />}
+              <ThemeSwitch />
+              {!authenticated ? (
+                <Button
+                  isIconOnly
+                  className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-md rounded-full hover:opacity-80 transition-opacity w-14 h-14"
+                  variant="flat"
+                  disabled={disableLogin}
+                  onClick={() => {
+                    setisLoggingIn(true);
+                    login();
+                  }}
+                  isLoading={isLoggingIn}
+                >
+                  <User size={22} />
+                </Button>
+              ) : (
+                <>
+                  <BalanceWidget />
+                  <UserDropdownWidget />
+                </>
+              )}
+            </div>
+          </div>
+        </NavbarContent>
       </NextUINavbar>
 
       {authenticated ? (
@@ -300,7 +264,7 @@ export const NavbarNew = () => {
                       <NextLink href="/inbox" className="font-medium">
                         <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
                           {" "}
-                          <PickaxeIcon size={18} />
+                          <SearchIcon size={18} />
                           Find Work
                         </div>
                       </NextLink>

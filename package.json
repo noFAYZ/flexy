@@ -34,6 +34,8 @@
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@react-three/drei": "^9.112.0",
+    "@react-three/fiber": "^8.17.7",
     "@tanstack/react-query": "^5.51.24",
     "@transak/transak-sdk": "^3.1.2",
     "@tsparticles/engine": "^3.5.0",
@@ -50,9 +52,13 @@
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-masonry-css": "^1.0.16",
     "react-resizable-panels": "^2.1.1",
+    "simplex-noise": "^4.0.3",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.168.0",
+    "three-globe": "^2.31.1",
     "wagmi": "^2.12.6"
   },
   "devDependencies": {

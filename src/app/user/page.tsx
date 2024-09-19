@@ -80,8 +80,8 @@ const UserPage = () => {
         </div>
       </div>
 
-      <div className="flex w-full flex-wrap flex-col py-5 px-2">
-      <Tabs aria-label="Options" color="primary" variant="underlined" className='flex justify-between'>
+      <div className="flex w-full flex-wrap flex-col p-10">
+      <Tabs aria-label="Options" color="primary" variant="light" className='flex justify-between'>
         <Tab
           key="about"
           title={

@@ -6,6 +6,7 @@ import { useLogin, usePrivy } from '@privy-io/react-auth'
 import { User, SettingsIcon, HelpCircle, LogOutIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import NextLink from "next/link";
+import Link from 'next/link';
 
 const UserDropdownWidget = () => {
     const [isLoggingIn, setisLoggingIn] = useState(false)
@@ -68,7 +69,8 @@ const UserDropdownWidget = () => {
 								<p className="">Profile</p></NextLink>
 
 								</DropdownItem>
-								<DropdownItem key="settings" startContent={<SettingsIcon size={16}/>}>Settings</DropdownItem>
+								
+								<DropdownItem as={Link} href="/user/setting" key="settings" startContent={<SettingsIcon size={16}/>}>Settings</DropdownItem>
 						
 								<DropdownItem key="help_and_feedback"
 								startContent={  <HelpCircle  size={16}/> }>Support</DropdownItem>

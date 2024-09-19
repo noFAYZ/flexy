@@ -17,12 +17,12 @@ import { SortableItem } from "./items/SortableItem";
 
 export default function Bento() {
   const [items, setItems] = useState([
-    { id: 1, width: "45%", height: 400 },
-    { id: 2, width: "25%", height: 400 },
-    { id: 3, width: "15%", height: 400 },
-    { id: 4, width: "15%", height: 400 },
-    { id: 5, width: "15%", height: 400 },
-    { id: 6, width: "55%", height: 400 },
+    { id: 1, width: "32%", height: 500 },
+    { id: 2, width: "32%", height: 500 },
+    { id: 3, width: "32%", height: 500 },
+    { id: 4, width: "32%", height: 500 },
+    { id: 5, width: "32%", height: 500 },
+    { id: 6, width: "32%", height: 500 },
   ]);
 
   return (

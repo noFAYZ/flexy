@@ -16,7 +16,7 @@ export const siteConfig = {
 	],	
 	navItemsNoLoggedIn: [
 		{
-			label: "Hire Freelancer",
+			label: "Hire Talent",
 			href: "/",
 		},
 		{
@@ -47,7 +47,7 @@ export const siteConfig = {
 		},
 		{
 			label: "Settings",
-			href: "/settings",
+			href: "/user/setting",
 		},
 		{
 			label: "Help & Feedback",
