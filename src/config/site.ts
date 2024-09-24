@@ -20,8 +20,8 @@ export const siteConfig = {
 			href: "/",
 		},
 		{
-		label: "Find Work",
-		href: "/jobs",
+		label: "Start Selling",
+		href: "/seller",
 		},
 	],
 	navMenuItems: [

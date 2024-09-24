@@ -45,7 +45,7 @@ const chartConfig = {
 
 export default function LineChart() {
   return (
-    <Card className="w-full h-full rounded-[3rem] bg-muted border-none shadow p-0">
+    <Card className="w-full h-full rounded-[3rem] bg-[#1f1f1f] dark:bg-[#222222]! border-none shadow p-0">
       <CardHeader>
         <CardTitle>Monthly Traffic</CardTitle>
         <CardDescription>Traffic breakdown by device type</CardDescription>

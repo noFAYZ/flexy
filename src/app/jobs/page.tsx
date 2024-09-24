@@ -24,6 +24,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import JobsListHeader from './components/joblist-header';
 
 
 const jobsData = [
@@ -450,11 +451,33 @@ return (
 
 const JobsList = () => {
   const [jobs, setJobs] = useState([]);
+  const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [filteredFreelancers, setFilteredFreelancers] = useState([]);
   const [viewMode, setViewMode] = useState('list');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [activeTab, setActiveTab] = useState("jobs");
+  const [activeFilters, setActiveFilters] = useState({
+    jobs: {
+      searchTerm: '',
+      categoryFilter: 'all',
+      jobType: [],
+      experienceLevel: [],
+      clientRating: 0,
+      budgetRange: [0, 35000],
+      duration: 'any',
+      sortBy: 'relevance',
+      selectedTags: []
+    },
+    freelancers: {
+      searchTerm: '',
+      skills: [],
+      experienceLevel: [],
+      hourlyRate: [0, 150],
+      rating: 0
+    }
+  });
   const { toast } = useToast();
 
   const fetchJobsData = useCallback(async () => {
@@ -475,217 +498,143 @@ const JobsList = () => {
     }
   }, [toast]);
 
-  useEffect(() => {
-    fetchJobsData();
-  }, [fetchJobsData]);
-
-  const handleApply = useCallback((jobId) => {
-    toast({
-      title: "Application Submitted",
-      description: `You've successfully applied for job #${jobId}`,
-      variant: "default",
-    });
+  const fetchFreelancersData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await fetchFreelancers();
+      setFreelancers(data);
+      setFilteredFreelancers(data);
+    } catch (error) {
+      console.error("Error fetching freelancers:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load freelancers. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   }, [toast]);
 
-  const handleTagClick = useCallback((tag) => {
-    setSelectedTags(prevTags => 
-      prevTags.includes(tag)
-        ? prevTags.filter(t => t !== tag)
-        : [...prevTags, tag]
-    );
-  }, []);
-
-  const removeTag = useCallback((tag) => {
-    setSelectedTags(prevTags => prevTags.filter(t => t !== tag));
-  }, []);
-
-  const handleFilterChange = useCallback((filters) => {
-    const result = jobs.filter(job => {
-      // Safely access potentially undefined properties
-      const jobTitle = job?.title?.toLowerCase() ?? '';
-      const jobExcerpt = job?.excerpt?.toLowerCase() ?? '';
-      const jobCategory = job?.category?.toLowerCase() ?? '';
-      const jobType = job?.type ?? '';
-      const jobExperienceLevel = job?.experienceLevel ?? '';
-      const jobClientRating = job?.client?.rating ?? 0;
-      const jobBudget = job?.budget ?? 0;
-      const jobDuration = job?.duration ?? '';
-      const jobTags = job?.tags ?? [];
-  
-      const searchTermMatch = filters.searchTerm
-        ? jobTitle.includes(filters.searchTerm?.toLowerCase()) ||
-          jobExcerpt.includes(filters.searchTerm?.toLowerCase()) ||
-          jobTags.some(tag => tag?.toLowerCase().includes(filters.searchTerm?.toLowerCase()))
-        : true;
-  
-      const categoryMatch = filters.categoryFilter !== 'all'
-        ? jobCategory === filters.categoryFilter?.toLowerCase()
-        : true;
-  
-      const jobTypeMatch = filters.jobType?.length > 0
-        ? filters.jobType.includes(jobType)
-        : true;
-  
-      const experienceLevelMatch = filters.experienceLevel?.length > 0
-        ? filters.experienceLevel.includes(jobExperienceLevel)
-        : true;
-  
-      const clientRatingMatch = jobClientRating >= (filters.clientRating ?? 0);
-  
-      const budgetMatch = jobBudget >= (filters.budgetRange?.[0] ?? 0) &&
-                          jobBudget <= (filters.budgetRange?.[1] ?? Infinity);
-  
-      const durationMatch = filters.duration !== 'any'
-        ? jobDuration === filters.duration
-        : true;
-  
-      const tagsMatch = selectedTags.length > 0
-        ? selectedTags.every(tag => jobTags.includes(tag))
-        : true;
-  
-      return searchTermMatch &&
-             categoryMatch &&
-             jobTypeMatch &&
-             experienceLevelMatch &&
-             clientRatingMatch &&
-             budgetMatch &&
-             durationMatch &&
-             tagsMatch;
-    });
-  
-    // Sorting
-    if (filters.sortBy) {
-      result.sort((a, b) => {
-        switch (filters.sortBy) {
-          case 'newest':
-            return new Date(b.postedDate ?? 0).getTime() - new Date(a.postedDate ?? 0).getTime();
-          case 'oldest':
-            return new Date(a.postedDate ?? 0).getTime() - new Date(b.postedDate ?? 0).getTime();
-          case 'budget-high-to-low':
-            return (b.budget ?? 0) - (a.budget ?? 0);
-          case 'budget-low-to-high':
-            return (a.budget ?? 0) - (b.budget ?? 0);
-          default:
-            return 0;
-        }
-      });
+  useEffect(() => {
+    if (activeTab === 'jobs') {
+      fetchJobsData();
+    } else {
+      fetchFreelancersData();
     }
-  
-    setFilteredJobs(result);
-  }, [jobs, selectedTags]);
+  }, [activeTab, fetchJobsData, fetchFreelancersData]);
+
+  const handleFilterChange = useCallback(({ type, filters }) => {
+    setActiveFilters(prevFilters => ({
+      ...prevFilters,
+      [type]: filters
+    }));
+  }, []);
 
   useEffect(() => {
-    handleFilterChange({ searchTerm, selectedTags });
-  }, [searchTerm, selectedTags, handleFilterChange]);
+    const filters = activeFilters[activeTab];
+    const dataToFilter = activeTab === 'jobs' ? jobs : freelancers;
+
+    const filteredResults = dataToFilter.filter(item => {
+      // Apply filters based on activeTab and filters
+      // This is a simplified example, adjust according to your actual filter logic
+      const searchMatch = item.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+                          item.description.toLowerCase().includes(filters.searchTerm.toLowerCase());
+      
+      // Add more filter conditions here based on your requirements
+      
+      return searchMatch; // && other conditions
+    });
+
+    if (activeTab === 'jobs') {
+      setFilteredJobs(filteredResults);
+    } else {
+      setFilteredFreelancers(filteredResults);
+    }
+  }, [activeTab, activeFilters, jobs, freelancers]);
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4">
-      <Toaster />
-      
-      {/* Left Sidebar - Filters */}
-      <FilterSidebar onFilterChange={handleFilterChange} />
+      <FilterSidebar 
+        onFilterChange={handleFilterChange}
+        activeTab={activeTab}
+        filters={activeFilters[activeTab]}
+      />
 
-      {/* Main Content - Job Listings */}
-      <div className="w-full ">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Available Jobs</h2>
-          <div className="flex items-center space-x-4">
-            <Input
-              placeholder="Search jobs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full "
-              startContent={<Search className="text-gray-400" size={18} />}
-              classNames={{
-                inputWrapper: [
-                  "bg-muted data-[hover=true]:bg-muted/50 group-data-[focus=true]:bg-muted/80",
-                ],
-              }}
-            />
-            <Tabs value={viewMode} onValueChange={setViewMode} className="w-auto rounded-xl border-2 border-foreground/50">
-              <TabsList className="rounded-2xl">
-                <TabsTrigger 
-                  value="list" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl"
-                >
-                  <Activity size={20} />
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="grid" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl"
-                >
-                  <BarChart size={20} />
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        </div>
+      <div className="flex-grow">
+        <JobsListHeader
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          handleFilterChange={handleFilterChange}
+          activeFilters={activeFilters}
+        />
 
-        {/* Selected Tags */}
-        {selectedTags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {selectedTags.map(tag => (
-              <Chip
-                key={tag}
-                onClose={() => removeTag(tag)}
-                variant="flat"
-                className="text-xs"
-              >
-                {tag}
-              </Chip>
-            ))}
-            <Chip
-              variant="flat"
-              color="danger"
-              className="text-xs cursor-pointer"
-              onClick={() => setSelectedTags([])}
-            >
-              Clear All
-            </Chip>
-          </div>
-        )}
-        
         <AnimatePresence>
           {loading ? (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
             </div>
-          ) : filteredJobs.length > 0 ? (
-            <motion.div 
-              className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                visible: { transition: { staggerChildren: 0.1 } }
-              }}
-            >
-              {filteredJobs.map((job) => (
-                <JobCard 
-                  key={job.id} 
-                  job={job} 
-                  onApply={handleApply}
-                  viewMode={viewMode}
-                  onTagClick={handleTagClick}
-                />
-              ))}
-            </motion.div>
+          ) : activeTab === 'jobs' ? (
+            filteredJobs.length > 0 ? (
+              <motion.div 
+                className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.1 } }
+                }}
+              >
+                {filteredJobs.map((job) => (
+                  <JobCard 
+                    key={job.id} 
+                    job={job} 
+                    viewMode={viewMode}
+                    onTagClick={(tag) => {
+                      const updatedTags = [...activeFilters.jobs.selectedTags, tag];
+                      handleFilterChange({
+                        type: 'jobs',
+                        filters: { ...activeFilters.jobs, selectedTags: updatedTags }
+                      });
+                    }}
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <p className="text-center text-muted-foreground mt-8">No jobs found matching your criteria.</p>
+            )
           ) : (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center text-muted-foreground mt-8"
-            >
-              No jobs found matching your criteria.
-            </motion.p>
+            filteredFreelancers.length > 0 ? (
+              <motion.div 
+                className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.1 } }
+                }}
+              >
+                {filteredFreelancers.map((freelancer) => (
+                  <FreelancerCard 
+                    key={freelancer.id} 
+                    freelancer={freelancer} 
+                    viewMode={viewMode}
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <p className="text-center text-muted-foreground mt-8">No freelancers found matching your criteria.</p>
+            )
           )}
         </AnimatePresence>
       </div>
 
-      {/* Right Sidebar - Freelancer Dashboard */}
       <div className="w-full md:w-1/4 space-y-6 border-0 px-2">
-        <FreelancerDashboard  />
+        <FreelancerDashboard />
         <RecentBids />
       </div>
     </div>

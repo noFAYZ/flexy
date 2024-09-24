@@ -15,15 +15,16 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./items/SortableItem";
 import LineChart from "./items/profile-view";
+import { SalesBar } from "./items/sales-bar";
 
 export default function Bento() {
   const [items, setItems] = useState([
-    { id: 1, width: "32%", height: 500, children: <LineChart></LineChart> },
-    { id: 2, width: "32%", height: 500 },
-    { id: 3, width: "32%", height: 500 },
-    { id: 4, width: "32%", height: 500 },
-    { id: 5, width: "32%", height: 500 },
-    { id: 6, width: "32%", height: 500 },
+    { id: 1, width: "32%", height: 500, children: <LineChart /> },
+    { id: 2, width: "32%", height: 500, children: <SalesBar /> },
+    { id: 3, width: "32%", height: 500, children: <SalesBar /> },
+    { id: 4, width: "32%", height: 500, children: <SalesBar /> },
+    { id: 5, width: "32%", height: 500, children: <SalesBar /> },
+    { id: 6, width: "32%", height: 500, children: <SalesBar /> },
   ]);
 
   return (
@@ -44,7 +45,7 @@ export default function Bento() {
               width={item.width}
               height={item.height}
             >
-              <LineChart />
+              {item?.children}
              </SortableItem>
           ))}
         </SortableContext>

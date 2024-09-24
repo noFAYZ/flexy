@@ -1,6 +1,7 @@
 import { Input } from '@nextui-org/react'
 import { Search } from 'lucide-react'
 import React from 'react'
+import { IconParkTwotoneSearch, LetsIconsSearchDuotone, MingcuteSearch3Fill } from '../icons/icons'
 
 const SearchWidget = () => {
   return (
@@ -17,7 +18,7 @@ const SearchWidget = () => {
 								size="sm"
 								type="search"
 								/>
-								<Search size={22} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-400 group-hover:left-3 transition-all duration-300" />
+								<IconParkTwotoneSearch className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-400 group-hover:left-3 transition-all duration-300" />
 							</div>
     </>
   )

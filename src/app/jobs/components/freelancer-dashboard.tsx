@@ -3,6 +3,7 @@ import { CardContent, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionItem, Card, CardHeader, Chip, Popover, PopoverContent, PopoverTrigger, Progress, User } from "@nextui-org/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Briefcase, ChevronDown, DollarSign, MapPin, Star, Zap } from "lucide-react";
+import { NotoDollarBanknote, StreamlineBagDollar, StreamlineBagDollarSolid, StreamlineEmojisDollarBanknote } from '@/components/icons/icons';
 
 const freelancerData = {
   name: "John Doe",
@@ -53,7 +54,7 @@ export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
                       <Chip className='flex w-full px-2' startContent={ <Zap className="text-yellow-500 mb-1" fill="yellow" size={18}/>}>     
                       <p className="font-semibold text-sm">{freelancer.connects}</p>
                       </Chip>
-                      <Chip className='flex w-full px-2' startContent={ <DollarSign className="text-success mb-1" fill="green" size={18}/>}>     
+                      <Chip className='flex w-full px-2' startContent={ <NotoDollarBanknote className=" mb-1 -rotate-45" fill="green" height={18}/>}>     
                       <p className="font-semibold text-sm">12,000</p>
                       </Chip>
                     

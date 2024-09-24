@@ -1,310 +1,258 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Checkbox, Slider, Button, Chip, RadioGroup, Radio, Select, SelectItem, Accordion, AccordionItem, Avatar } from "@nextui-org/react";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, DollarSign, Star, RefreshCw, Filter, Zap, Briefcase, Clock, Award, SortAsc, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Input, Slider, Button, Chip, Switch, Tabs, Tab, Tooltip } from "@nextui-org/react";
+import { Search, DollarSign, Star, RefreshCw, Filter, Briefcase, ChevronLeft, ChevronRight, User, Zap } from 'lucide-react';
+import { FluentBriefcase20Filled, MingcuteUser3Fill } from '@/components/icons/icons';
 
-const accentColor = "rgb(249 115 22 / var(--tw-text-opacity))"; // Indigo-500 from Tailwind CSS
-
-const FilterSidebar = ({ onFilterChange }) => {
-  const [filters, setFilters] = useState({
-    searchTerm: '',
-    categoryFilter: 'all',
-    jobType: [],
-    experienceLevel: [],
-    clientRating: 0,
-    budgetRange: [0, 15000],
-    duration: 'any',
-    sortBy: 'relevance',
-    selectedTags: []
-  });
-
-  const [isOpen, setIsOpen] = useState(true);
+const FilterSidebar = ({ onFilterChange, activeTab, filters }) => {
+  const [isOpen, setIsOpen] = React.useState(true);
 
   const updateFilter = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  useEffect(() => {
-    onFilterChange(filters);
-  }, [filters, onFilterChange]);
-
-  const resetFilters = () => {
-    setFilters({
-      searchTerm: '',
-      categoryFilter: 'all',
-      jobType: [],
-      experienceLevel: [],
-      clientRating: 0,
-      budgetRange: [0, 15000],
-      duration: 'any',
-      sortBy: 'relevance',
-      selectedTags: []
+    onFilterChange({
+      type: activeTab,
+      filters: { ...filters, [key]: value }
     });
   };
 
-  const categories = ['All', 'Web Development', 'Mobile Development', 'UI/UX Design', 'Data Science', 'Writing', 'Marketing'];
-  const jobTypes = ['Hourly', 'Fixed-price', 'Long-term', 'Short-term'];
-  const experienceLevels = ['Entry', 'Intermediate', 'Expert'];
-  const durations = ['Less than 1 month', '1 to 3 months', '3 to 6 months', 'More than 6 months'];
-  const popularTags = ['React', 'Node.js', 'Python', 'JavaScript', 'UI/UX', 'Machine Learning'];
+  const resetFilters = () => {
+    onFilterChange({
+      type: activeTab,
+      filters: activeTab === 'jobs' ? {
+        searchTerm: '',
+        categoryFilter: 'all',
+        jobType: [],
+        experienceLevel: [],
+        clientRating: 0,
+        budgetRange: [0, 35000],
+        duration: 'any',
+        sortBy: 'relevance',
+        selectedTags: []
+      } : {
+        searchTerm: '',
+        skills: [],
+        experienceLevel: [],
+        hourlyRate: [0, 150],
+        rating: 0,
+      }
+    });
+  };
 
+  const categories = ['All', 'Web', 'Mobile', 'UI/UX', 'Data', 'Writing', 'Marketing'];
+  const jobTypes = ['Hourly', 'Fixed', 'Long-term', 'Short-term'];
+  const experienceLevels = ['Entry', 'Intermediate', 'Expert'];
 
   return (
     <motion.div
-      initial={{ width: "35%" }}
-      animate={{ width: isOpen ? "35%" : "60px", height: isOpen ? "100%" : "600px" }}
- 
+      initial={{ width: "300px" }}
+      animate={{ width: isOpen ? "300px" : "60px" }}
       transition={{ duration: 0.1 }}
-      className="bg-muted/70 overflow-hidden rounded-3xl h-full border-medium border-default  relative"
-      style={{ maxWidth: "400px" }}
+      className="bg-background/80 backdrop-blur-md overflow-hidden rounded-2xl h-full border border-divider   min-w-[300px] shadow-lg"
     >
-      <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
-          {isOpen && (
-            <motion.h2
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-lg font-semibold flex items-center"
-            >
-              <Filter className="mr-2" size={20} />
+      <div className="flex flex-col h-full">
+        <motion.div 
+          className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4"
+          animate={{ opacity: isOpen ? 1 : 0 }}
+        >
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold flex items-center">
+              <Filter className="mr-2 text-primary" size={24} />
               Filters
-            </motion.h2>
-          )}
-          <div className="flex space-x-2 ml-auto mr-10">
-            {isOpen && (
+            </h2>
+            <Tooltip content="Reset Filters">
               <Button 
                 isIconOnly 
                 color="primary" 
                 variant="light" 
                 onPress={resetFilters}
                 aria-label="Reset filters"
+                className="relative right-6 overflow-hidden group"
               >
-                <RefreshCw size={18} />
+                <RefreshCw size={18} className="group-hover:scale-125 transition-transform duration-300" />
+                <span className="absolute inset-0 bg-primary/10 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full" />
               </Button>
+            </Tooltip>
+          </div>
+        </motion.div>
+
+        {isOpen && (
+          <div className="flex-grow overflow-y-auto custom-scrollbar p-4">
+            {activeTab === 'jobs' ? (
+              <JobFilters filters={filters} updateFilter={updateFilter} categories={categories} jobTypes={jobTypes} experienceLevels={experienceLevels} />
+            ) : (
+              <FreelancerFilters filters={filters} updateFilter={updateFilter} experienceLevels={experienceLevels} />
             )}
           </div>
-        </div>
-        
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Accordion>
-                <AccordionItem key="search" aria-label="Search" title="Search">
-                  <Input
-                    placeholder="Search jobs..."
-                    value={filters.searchTerm}
-                    onChange={(e) => updateFilter('searchTerm', e.target.value)}
-                    startContent={<Search className="text-gray-400" size={18} />}
-                    className="max-w-full"
-                    classNames={{
-                      input: "bg-muted",
-                      inputWrapper: "bg-background data-[hover=true]:bg-background/50 group-data-[focus=true]:bg-background/80",
-                    }}
-                    styles={{
-                      input: { 
-                        '&:focus': { 
-                          outlineColor: accentColor,
-                        }
-                      },
-                    }}
-                  />
-                </AccordionItem>
+        )}
 
-                <AccordionItem key="category" aria-label="Category" title="Category">
-                  <Select 
-                    label="Select category" 
-                    value={filters.categoryFilter}
-                    onChange={(e) => updateFilter('categoryFilter', e.target.value)}
-                    classNames={{
-                      trigger: "bg-background data-[hover=true]:bg-background/50 group-data-[focus=true]:bg-background/80",
-                      popoverContent:"bg-background data-[hover=true]:bg-background/50 group-data-[focus=true]:bg-background/80",
-              
-                    }}
-                    styles={{
-                      trigger: { 
-                        '&:focus': { 
-                          outlineColor: accentColor,
-                        }
-                      },
-                    }}
-                  >
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category.toLowerCase()}>{category}</SelectItem>
-                    ))}
-                  </Select>
-                </AccordionItem>
-
-                <AccordionItem key="jobType" aria-label="Job Type" title="Job Type">
-                  <div className="flex flex-wrap gap-2">
-                    {jobTypes.map(type => (
-                      <Chip
-                        key={type}
-                        variant={filters.jobType.includes(type) ? "solid" : "bordered"}
-                        onClick={() => {
-                          updateFilter('jobType', filters.jobType.includes(type)
-                            ? filters.jobType.filter(t => t !== type)
-                            : [...filters.jobType, type]
-                          );
-                        }}
-                        style={{
-                          backgroundColor: filters.jobType.includes(type) ? accentColor : 'transparent',
-                          color: filters.jobType.includes(type) ? 'white' : accentColor,
-                          borderColor: accentColor,
-                        }}
-                      >
-                        {type}
-                      </Chip>
-                    ))}
-                  </div>
-                </AccordionItem>
-
-                <AccordionItem key="experienceLevel" aria-label="Experience Level" title="Experience Level">
-                  <div className="space-y-2">
-                    {experienceLevels.map(level => (
-                      <Checkbox
-                        key={level}
-                        isSelected={filters.experienceLevel.includes(level)}
-                        onValueChange={(isSelected) => {
-                          updateFilter('experienceLevel', isSelected 
-                            ? [...filters.experienceLevel, level] 
-                            : filters.experienceLevel.filter(l => l !== level)
-                          );
-                        }}
-                        color="primary"
-                        style={{ '--nextui-colors-primary': accentColor }}
-                      >
-                        {level}
-                      </Checkbox>
-                    ))}
-                  </div>
-                </AccordionItem>
-
-                <AccordionItem key="clientRating" aria-label="Client Rating" title="Client Rating">
-                  <div className="flex items-center space-x-2">
-                    <Slider
-                      size="sm"
-                      step={0.1}
-                      maxValue={5}
-                      minValue={0}
-                      value={filters.clientRating}
-                      onChange={(value) => updateFilter('clientRating', value)}
-                      className="max-w-full"
-                      color="primary"
-                      style={{ '--nextui-colors-primary': accentColor }}
-                    />
-                    <div className="flex items-center">
-                      <Star style={{ color: accentColor }} className="mr-1" size={18} />
-                      <span className="text-sm font-semibold">{filters.clientRating.toFixed(1)}</span>
-                    </div>
-                  </div>
-                </AccordionItem>
-
-                <AccordionItem key="budgetRange" aria-label="Budget Range" title="Budget Range">
-                  <div className="space-y-4">
-                    <Slider
-                      size="sm"
-                      step={100}
-                      minValue={0}
-                      maxValue={15000}
-                      value={filters.budgetRange}
-                      onChange={(value) => updateFilter('budgetRange', value)}
-                      className="max-w-full"
-                      color="primary"
-                      style={{ '--nextui-colors-primary': accentColor }}
-                    />
-                    <div className="flex justify-between">
-                      <span className="text-sm font-semibold">${filters.budgetRange[0]}</span>
-                      <span className="text-sm font-semibold">${filters.budgetRange[1]}</span>
-                    </div>
-                  </div>
-                </AccordionItem>
-
-                <AccordionItem key="duration" aria-label="Project Duration" title="Project Duration">
-                  <RadioGroup 
-                    value={filters.duration} 
-                    onValueChange={(value) => updateFilter('duration', value)}
-                    color="primary"
-                    style={{ '--nextui-colors-primary': accentColor }}
-                  >
-                    {durations.map(d => (
-                      <Radio key={d} value={d}>{d}</Radio>
-                    ))}
-                  </RadioGroup>
-                </AccordionItem>
-
-                <AccordionItem key="sortBy" aria-label="Sort By" title="Sort By">
-                  <Select 
-                    label="Sort by"
-                    value={filters.sortBy}
-                    onChange={(e) => updateFilter('sortBy', e.target.value)}
-                    classNames={{
-                      trigger: "bg-muted",
-                    }}
-                    styles={{
-                      trigger: { 
-                        '&:focus': { 
-                          outlineColor: accentColor,
-                        }
-                      },
-                    }}
-                  >
-                    <SelectItem value="relevance">Relevance</SelectItem>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="oldest">Oldest</SelectItem>
-                    <SelectItem value="budget-high-to-low">Budget: High to Low</SelectItem>
-                    <SelectItem value="budget-low-to-high">Budget: Low to High</SelectItem>
-                  </Select>
-                </AccordionItem>
-
-                <AccordionItem key="popularTags" aria-label="Popular Tags" title="Popular Tags">
-                  <div className="flex flex-wrap gap-2">
-                    {popularTags.map(tag => (
-                      <Chip
-                        key={tag}
-                        variant={filters.selectedTags.includes(tag) ? "solid" : "bordered"}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          updateFilter('selectedTags', filters.selectedTags.includes(tag)
-                            ? filters.selectedTags.filter(t => t !== tag)
-                            : [...filters.selectedTags, tag]
-                          );
-                        }}
-                        style={{
-                          backgroundColor: filters.selectedTags.includes(tag) ? accentColor : 'transparent',
-                          color: filters.selectedTags.includes(tag) ? 'white' : accentColor,
-                          borderColor: accentColor,
-                        }}
-                      >
-                        {tag}
-                      </Chip>
-                    ))}
-                  </div>
-                </AccordionItem>
-              </Accordion>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-          {/* Toggle button outside of AnimatePresence */}
-      <Button
-        isIconOnly
-        color="primary"
-        variant="faded"
-        onPress={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-        className="absolute top-4 -right-2 rounded-2xl bg-background z-40 overflow-visible"
-      >
-        {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
-      </Button>
+        <Tooltip content={isOpen ? "Collapse sidebar" : "Expand sidebar"} placement="right">
+          <Button
+            isIconOnly
+            color="primary"
+            variant="flat"
+            onPress={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+            className="absolute top-4 -right-3 rounded-l-full shadow-lg hover:scale-110 transition-transform"
+          >
+            {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+          </Button>
+        </Tooltip>
       </div>
     </motion.div>
   );
 };
+
+const JobFilters = ({ filters, updateFilter, categories, jobTypes, experienceLevels }) => (
+  <div className="space-y-6 mt-4">
+
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Categories</h3>
+      <div className="flex flex-wrap gap-2">
+        {categories.map(category => (
+          <motion.div key={category} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Chip
+              variant={filters.categoryFilter === category.toLowerCase() ? "solid" : "flat"}
+              onClick={() => updateFilter('categoryFilter', category.toLowerCase())}
+              color="primary"
+              className="transition-all duration-300 hover:shadow-md"
+            >
+              {category}
+            </Chip>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Job Type</h3>
+      <div className="flex flex-wrap gap-2">
+        {jobTypes.map(type => (
+          <motion.div key={type} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Chip
+              variant={filters.jobType.includes(type) ? "solid" : "flat"}
+              onClick={() => {
+                updateFilter('jobType', filters.jobType.includes(type)
+                  ? filters.jobType.filter(t => t !== type)
+                  : [...filters.jobType, type]
+                );
+              }}
+              color="primary"
+              className="transition-all duration-300 hover:shadow-md"
+            >
+              {type}
+            </Chip>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Experience Level</h3>
+      <div className="flex flex-wrap gap-4">
+        {experienceLevels.map(level => (
+          <Switch
+            key={level}
+            size="sm"
+            color="primary"
+            isSelected={filters.experienceLevel.includes(level)}
+            onValueChange={(isSelected) => {
+              updateFilter('experienceLevel', isSelected 
+                ? [...filters.experienceLevel, level] 
+                : filters.experienceLevel.filter(l => l !== level)
+              );
+            }}
+          >
+            {level}
+          </Switch>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Budget Range</h3>
+      <Slider
+        size="sm"
+        step={100}
+        minValue={0}
+        maxValue={35000}
+        value={filters.budgetRange}
+        onChange={(value) => updateFilter('budgetRange', value)}
+        className="max-w-full"
+        startContent={<DollarSign size={18} />}
+        endContent={<DollarSign size={18} />}
+      />
+      <div className="flex justify-between mt-2">
+        <span className="text-sm">${filters.budgetRange[0]}</span>
+        <span className="text-sm">${filters.budgetRange[1]}</span>
+      </div>
+    </div>
+  </div>
+);
+
+const FreelancerFilters = ({ filters, updateFilter, experienceLevels }) => (
+  <div className="space-y-6 mt-4">
+
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Experience Level</h3>
+      <div className="flex flex-wrap gap-4">
+        {experienceLevels.map(level => (
+          <Switch
+            key={level}
+            size="sm"
+            color="primary"
+            isSelected={filters.experienceLevel.includes(level)}
+            onValueChange={(isSelected) => {
+              updateFilter('experienceLevel', isSelected 
+                ? [...filters.experienceLevel, level] 
+                : filters.experienceLevel.filter(l => l !== level)
+              );
+            }}
+          >
+            {level}
+          </Switch>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Hourly Rate</h3>
+      <Slider
+        size="sm"
+        step={5}
+        minValue={0}
+        maxValue={150}
+        value={filters.hourlyRate}
+        onChange={(value) => updateFilter('hourlyRate', value)}
+        className="max-w-full"
+        startContent={<DollarSign size={18} />}
+        endContent={<DollarSign size={18} />}
+      />
+      <div className="flex justify-between mt-2">
+        <span className="text-sm">${filters.hourlyRate[0]}/hr</span>
+        <span className="text-sm">${filters.hourlyRate[1]}/hr</span>
+      </div>
+    </div>
+
+    <div>
+      <h3 className="text-sm font-semibold mb-2">Rating</h3>
+      <div className="flex items-center space-x-2">
+        <Slider
+          size="sm"
+          step={0.5}
+          maxValue={5}
+          minValue={0}
+          value={filters.rating}
+          onChange={(value) => updateFilter('rating', value)}
+          className="max-w-full"
+        />
+        <div className="flex items-center">
+          <Star size={18} />
+          <span className="text-sm font-semibold ml-1">{filters.rating.toFixed(1)}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default FilterSidebar;

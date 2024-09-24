@@ -48,6 +48,7 @@ import {
   CircleGauge,
   MessageCircle,
   SearchIcon,
+  Store,
 } from "lucide-react";
 import BalanceWidget from "./widgets/BalanceWidget";
 import NotificationWidget from "./widgets/NotificationWidget";
@@ -56,7 +57,7 @@ import SearchWidget from "./widgets/SearchWidget";
 import { FancySwitch } from "@omit/react-fancy-switch";
 import { useRouter, usePathname } from "next/navigation";
 import MenuBar from "./widgets/middle-menu";
-import { MageMessageDotsRound, MageMessageRound } from "./icons/icons";
+import { AntDesignMessageTwotone, IconParkTwotoneSearch, LetsIconsSearchDuotone, MageMessageDotsRound, MageMessageDotsRoundFill, MageMessageRound, MingcuteUser3Fill, MingcuteUserSearchFill, SolarCardSearchBoldDuotone, SolarShopBold, TablerLayoutDashboardFilled } from "./icons/icons";
 
 export const NavbarNew = () => {
   const [isLoggingIn, setisLoggingIn] = useState(false);
@@ -78,17 +79,24 @@ export const NavbarNew = () => {
 
   // Map of icons for nav items
   const iconMap = {
-    "Hire Talent": CircleGauge,
-    Dashboard: LayoutDashboardIcon,
-    "Find Work": Search,
+    "Hire Talent": MingcuteUserSearchFill,
+    Dashboard: TablerLayoutDashboardFilled,
+    "Find Work": IconParkTwotoneSearch,
+    "Start Selling": SolarShopBold
   };
   const dashboardTypes: string[] = ["Buyer", "Seller"];
   const [dashboardType, setdashboardType] = useState<string>();
 
   return (
-    <div className="flex flex-col lg:px-24 md:px-6 mb-5 pb-5 md:pb-5 lg:pb-5 z-40">
+  
+<>
+       {pathname == "/comming-soon" ? <></>  : 
+       
+       <>
+  <div className="flex flex-col lg:px-24 md:px-6 mb-5 pb-5 md:pb-5 lg:pb-5 z-40 bg-transparent">
+       
       <NextUINavbar
-        className="py-2 md:py-12 backdrop-blur-none bg-transparent backdrop-filter-none"
+        className="py-2 md:py-12  backdrop-filter-none bg-transparent shadow-none bg-opacity-100 backdrop-blur-0"
         maxWidth="full"
       >
         <NavbarContent className="flex justify-between items-center w-full">
@@ -140,7 +148,7 @@ export const NavbarNew = () => {
                       placement="top-right"
                     >
                       <div className="bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full opacity-100 hover:opacity-80 w-14 h-14 flex items-center justify-center">
-                        <MessageCircleMoreIcon height={22} width={22} className="text-white" />
+                        <AntDesignMessageTwotone height={22} width={22} className="text-white" />
                       </div>
                     </Badge>
                   </NavbarItem>
@@ -167,7 +175,7 @@ export const NavbarNew = () => {
                   }}
                   isLoading={isLoggingIn}
                 >
-                  <User size={22} />
+                  <MingcuteUser3Fill height={'1.5rem'} />
                 </Button>
               ) : (
                 <>
@@ -327,11 +335,12 @@ export const NavbarNew = () => {
 
 
         </>
-      ) : (
-        <>
-      
-        </>
-      )}
-    </div>
+      ) : (<>  </>)}
+      </div>
+      </>}
+
+
+</>
+    
   );
 };

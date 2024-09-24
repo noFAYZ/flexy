@@ -1,6 +1,7 @@
 import { Dropdown, DropdownTrigger, NavbarItem, DropdownMenu, DropdownItem, Badge, Popover, PopoverTrigger, PopoverContent, Button } from '@nextui-org/react'
 import {  BellDotIcon, User } from 'lucide-react'
 import React from 'react'
+import { MdiBellBadge, SolarBellBingBold } from '../icons/icons'
 
 const NotificationWidget = () => {
   return (
@@ -19,7 +20,7 @@ const NotificationWidget = () => {
                     <div className=" bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full opacity-100 hover:opacity-80  w-14 h-14" />
                     <div className="absolute inset-0 flex items-center justify-center  p-0">
 
-                    <BellDotIcon size={22} className="text-white" />
+                    <MdiBellBadge height={22} className="text-white" />
                 
                 </div></Badge>
             </NavbarItem>
