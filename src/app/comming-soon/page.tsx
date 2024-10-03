@@ -150,7 +150,7 @@ const ComingSoonPage = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
           > 
-            We're <FlipWords words={words} className="text-white"/>
+            We&apos;re <FlipWords words={words} className="text-white"/>
           </motion.h1>
 
           <motion.div 
