@@ -209,8 +209,8 @@ const ComingSoonPage = () => {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
-          >
-            We're <FlipWords words={words} className="text-white" />
+          > 
+            We&apos;re <FlipWords words={words} className="text-white"/>
           </motion.h1>
 
           <SpaceshipEmailCapture />
