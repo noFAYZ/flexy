@@ -1,17 +1,39 @@
 "use client"
 
 import React, { useState, Suspense, useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PointMaterial, Points, useGLTF } from '@react-three/drei';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { NextUIProvider, Input, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import NextLink from "next/link";
 import { FlipWords } from '@/components/ui/flip-words';
-import { ReactComponent as FlexyLogo } from "/public/icons/logo.svg";
-import { ReactComponent as DarkFlexyLogo } from "/public/icons/darklogo.svg";
+import { ReactComponent as FlexyLogo } from "/public/images/logo/DeFlexy-dark.svg";
+import { ReactComponent as DarkFlexyLogo } from "/public/images/logo/DeFlexy.svg";
 
+import SpaceshipEmailCapture from './components/EmailForm';
+import * as THREE from 'three';
+
+// Load GLTF model
+const SpaceshipModel = ({ position, rotation, isHovering, isLaunching }) => {
+  const gltf = useGLTF('/spaceship.glb');
+  const ref = useRef();
+  useFrame(() => {
+    if (isHovering) {
+      ref.current.position.y += Math.sin(Date.now() * 0.002) * 0.02;
+    }
+    if (isLaunching) {
+      ref.current.position.y += 0.05;
+    }
+  });
+
+  return (
+    <group ref={ref} position={[position.x, position.y, 0]} rotation={[0, 0, rotation]}>
+      <primitive object={gltf.scene} scale={0.7} />
+    </group>
+  );
+};
 
 function Planet() {
   const { scene } = useGLTF("/earth.glb");
@@ -35,7 +57,6 @@ const generateSpherePoints = (count, radius) => {
   }
   return points;
 };
-
 
 const StarField = ({ count = 5000 }) => {
   const points = useRef();
@@ -61,40 +82,43 @@ const StarField = ({ count = 5000 }) => {
   );
 };
 
-const ImmersiveBackground = () => {
-  return (
-    <div className="  fixed inset-0">
-      <Canvas camera={{ position: [0, 0, 1] }}>
-        <ambientLight intensity={0.5} />
-        <StarField />
-     
-      </Canvas>
-    </div>
-  );
-};
+const ImmersiveBackground = () => (
+  <div className="fixed inset-0">
+    <Canvas camera={{ position: [0, 0, 1] }}>
+      <ambientLight intensity={0.5} />
+      <StarField />
+    </Canvas>
+  </div>
+);
 
 const ComingSoonNavbar = () => {
   const { theme } = useTheme();
   return (
-    <Navbar className="py-4 bg-transparent shadow-none bg-opacity-100 backdrop-blur-0">
-      <NavbarContent className="flex justify-between items-center w-full max-w-7xl mx-auto px-6">
-        <NavbarBrand>
+    <Navbar className="py-6 md:py-8 bg-transparent shadow-none">
+      <NavbarContent className="w-full mx-auto px-4 md:px-6 flex justify-between items-center">
+        {/* Logo on the left */}
+        <NavbarBrand className="flex justify-center items-center">
           <NextLink href="/" passHref>
             <Link>
               {theme === "dark" ? (
-                <DarkFlexyLogo width={90} height={45} />
+                <DarkFlexyLogo width={140} height={100} /> // Smaller on mobile
               ) : (
-                <FlexyLogo width={90} height={45} />
+                <FlexyLogo width={120} height={90} />
               )}
             </Link>
           </NextLink>
         </NavbarBrand>
-        <NavbarContent justify="end">
+
+        {/* Button on the right */}
+        <NavbarContent
+          className="flex justify-center items-center"
+          justify="center"
+        >
           <NavbarItem>
-            <Button 
-              as={Link} 
+            <Button
+              as={Link}
               href="#waitlist"
-              className="bg-gradient-to-r from-pink-500 to-orange-500 text-white font-medium rounded-full hover:opacity-80 transition-opacity"
+              className="bg-gradient-to-r from-pink-500 to-orange-500 text-white font-medium rounded-full hover:opacity-80 transition-opacity px-4 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Join Waitlist
             </Button>
@@ -105,10 +129,50 @@ const ComingSoonNavbar = () => {
   );
 };
 
+const SpaceScene = ({ animationState }) => {
+  const { viewport } = useThree();
+  let position, rotation, isHovering, isLaunching;
+
+  switch (animationState) {
+    case 'entering':
+      position = { x: THREE.MathUtils.lerp(-viewport.width / 2, 0, 0.5), y: 0 };
+      rotation = 5.33;
+      isHovering = true;
+      isLaunching = false;
+      break;
+    case 'hovering':
+      position = { x: -4, y: 2 };
+      rotation = -1;
+      isHovering = true;
+      isLaunching = false;
+      break;
+    case 'exiting':
+      position = { x: 0, y: 0 };
+      rotation = 0;
+      isHovering = false;
+      isLaunching = true;
+      break;
+    default:
+      position = { x: -viewport.width / 2, y: 0 };
+      rotation = 0;
+      isHovering = false;
+      isLaunching = false;
+  }
+
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} />
+      <SpaceshipModel position={position} rotation={rotation} isHovering={isHovering} isLaunching={isLaunching} />
+    </>
+  );
+};
+
 const ComingSoonPage = () => {
   const [email, setEmail] = useState('');
   const [showThankYou, setShowThankYou] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [animationState, setAnimationState] = useState('entering');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,14 +190,10 @@ const ComingSoonPage = () => {
   ];
 
   return (
-    <NextUIProvider>
-      <div className="relative h-screen w-full overflow-hidden">     
-        <div className="absolute inset-0 bg-[#0D0D1B]">
-          <div className="stars"></div>
-          <div className="stars2"></div>
-          <div className="stars3"></div>
-        </div>
-        <ComingSoonNavbar />
+  
+      <div className="relative h-screen w-full overflow-hidden">
+        <ImmersiveBackground />
+      
         <Canvas className="absolute inset-0 z-10" camera={{ position: [0, 0, 15], fov: 75 }}>
           <Suspense fallback={null}>
             <ambientLight intensity={0.5} />
@@ -145,69 +205,15 @@ const ComingSoonPage = () => {
 
         <div className="absolute inset-0 flex flex-col items-center justify-between pt-60">
           <motion.h1
-            className="text-[2rem] items-center px-5 text-center md:text-[3.5rem] lg:text-[5rem] font-bold font-lufga z-10 text-orange-500 tracking-wider"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl items-center px-5 text-center font-bold font-lufga z-10 text-orange-500 tracking-wider"
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
-          > 
-            We're <FlipWords words={words} className="text-white"/>
+          >
+            We're <FlipWords words={words} className="text-white" />
           </motion.h1>
 
-          <motion.div 
-            className="w-full max-w-md mx-auto p-6 bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-3xl shadow-lg border-2 border-orange-500 z-20"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <Input
-                  fullWidth
-                  color="warning"
-                  placeholder="Enter your email"
-                  startContent={<EmailIcon />}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="text-orange-100 placeholder-orange-300"
-                  classNames={{
-                    inputWrapper: "bg-gray-700 bg-opacity-50 border border-orange-400 rounded-full py-1",
-                    input: "text-orange-100"
-                  }}
-                />
-              </div>
-              <Button 
-                auto 
-                type="submit"
-                size="lg"
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105"
-              >
-                Join the Adventure
-              </Button>
-              <Button
-                auto
-                size="lg"
-                className="w-full bg-gray-700 bg-opacity-50 text-orange-300 font-bold rounded-full transition-all duration-300 transform hover:scale-105 hover:bg-gray-600"
-                onClick={() => setIsOpen(true)}
-              >
-                Discover More
-              </Button>
-            </form>
-
-            <AnimatePresence>
-              {showThankYou && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="mt-4 p-4 bg-orange-600 bg-opacity-20 rounded-lg"
-                >
-                  <p className="text-center text-orange-300 font-semibold">
-                    Welcome aboard! Get ready to reshape the future of work.
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+          <SpaceshipEmailCapture />
 
           <motion.div
             className="mt-8 text-center z-20 pb-10"
@@ -229,7 +235,7 @@ const ComingSoonPage = () => {
               ))}
             </div>
           </motion.div>
-        </div>
+          </div>
 
         <Modal 
           isOpen={isOpen} 
@@ -264,7 +270,7 @@ const ComingSoonPage = () => {
           </ModalContent>
         </Modal>
       </div>
-    </NextUIProvider>
+   
   );
 };
 

@@ -114,3 +114,8 @@ export function StreamlineGalaxy2(props: SVGProps<SVGSVGElement>) {
 export function StreamlineAiEmailGeneratorSparkSolid(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width={props?.width|| '1.7rem'} height={props?.height|| '1.7rem'} viewBox="0 0 14 14" {...props}><path fill="currentColor" fillRule="evenodd" d="M1.62.051h9.312c.857 0 1.552.695 1.552 1.552v.077L6.276 4.784L.07 1.68v-.077A1.55 1.55 0 0 1 1.62.051M.07 3.078V7.81c0 .857.694 1.552 1.551 1.552h4.927c.257-.292.622-.51 1.094-.592c.516-.09.926-.481 1.04-.991l.022-.095c.431-1.97 3.237-1.983 3.686-.016l.009.04l.016.07q.024.1.061.193q.009-.08.009-.161V3.078L6.556 6.042a.63.63 0 0 1-.56 0zm9.696 4.84c.183-.837 1.373-.842 1.564-.007l.009.04l.018.077a2.39 2.39 0 0 0 1.921 1.812c.873.152.873 1.404 0 1.556a2.395 2.395 0 0 0-1.925 1.827l-.023.103c-.19.834-1.381.83-1.564-.007l-.02-.088a2.38 2.38 0 0 0-1.917-1.836c-.871-.152-.871-1.402 0-1.553a2.38 2.38 0 0 0 1.915-1.827l.014-.064z" clipRule="evenodd"></path></svg>);
 }
+
+
+export function MajesticonsDoorEnter(props) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width={props?.width|| '1.7rem'} height={props?.height|| '1.7rem'} viewBox="0 0 24 24" {...props}><g fill="none"><path fill="currentColor" fillRule="evenodd" d="M10.138 1.815A3 3 0 0 1 14 4.688v14.624a3 3 0 0 1-3.862 2.873l-6-1.8A3 3 0 0 1 2 17.512V6.488a3 3 0 0 1 2.138-2.873zM15 4a1 1 0 0 1 1-1h3a3 3 0 0 1 3 3v1a1 1 0 1 1-2 0V6a1 1 0 0 0-1-1h-3a1 1 0 0 1-1-1m6 12a1 1 0 0 1 1 1v1a3 3 0 0 1-3 3h-3a1 1 0 1 1 0-2h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1M9 11a1 1 0 1 0 0 2h.001a1 1 0 1 0 0-2z" clipRule="evenodd"></path><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12h-5m0 0l2-2m-2 2l2 2"></path></g></svg>);
+}

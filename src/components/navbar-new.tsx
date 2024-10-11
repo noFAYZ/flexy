@@ -13,10 +13,12 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@nextui-org/button";
 
-import { ReactComponent as FlexyLogo } from "/public/icons/logo.svg";
-import { ReactComponent as DarkFlexyLogo } from "/public/icons/darklogo.svg";
+import { ReactComponent as FlexyLogo } from "/public/images/logo/DeFlexy-dark.svg";
+import { ReactComponent as DarkFlexyLogo } from "/public/images/logo/DeFlexy.svg";
 import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/flexyicon.svg";
 import { ReactComponent as DarkFlexyLogoIcon } from "/public/images/logo/flexyicondark.svg";
+
+
 
 import { useLogin, usePrivy, useWallets } from "@privy-io/react-auth";
 
@@ -57,7 +59,8 @@ import SearchWidget from "./widgets/SearchWidget";
 import { FancySwitch } from "@omit/react-fancy-switch";
 import { useRouter, usePathname } from "next/navigation";
 import MenuBar from "./widgets/middle-menu";
-import { AntDesignMessageTwotone, IconParkTwotoneSearch, LetsIconsSearchDuotone, MageMessageDotsRound, MageMessageDotsRoundFill, MageMessageRound, MingcuteUser3Fill, MingcuteUserSearchFill, SolarCardSearchBoldDuotone, SolarShopBold, TablerLayoutDashboardFilled } from "./icons/icons";
+import { AntDesignMessageTwotone, IconParkTwotoneSearch, LetsIconsSearchDuotone, MageMessageDotsRound, MageMessageDotsRoundFill, MageMessageRound, MajesticonsDoorEnter, MingcuteUser3Fill, MingcuteUserSearchFill, SolarCardSearchBoldDuotone, SolarShopBold, TablerLayoutDashboardFilled } from "./icons/icons";
+import { motion } from "framer-motion";
 
 export const NavbarNew = () => {
   const [isLoggingIn, setisLoggingIn] = useState(false);
@@ -90,7 +93,106 @@ export const NavbarNew = () => {
   return (
   
 <>
-       {pathname == "/comming-soon" ? <></>  : 
+       {pathname == "/comming-soon" ? <>
+        <div className=" absolute w-full flex flex-col lg:px-24 md:px-6  bg-transparent">
+       
+       <NextUINavbar
+         className="py-2 md:py-12  backdrop-filter-none bg-transparent shadow-none bg-opacity-100 backdrop-blur-0"
+         maxWidth="full"
+       >
+         <NavbarContent className="flex justify-between items-center w-full">
+           {/* Left side - Logo */}
+           <div className="w-[20%]">
+             <NavbarContent className="hidden lg:flex items-center justify-between    space-x-4  ">
+               <NavbarBrand className="flex-grow-0 ">
+                 <NextLink href="/" className="flex justify-center items-center   rounded-full  border-0 shadow-none ">
+                   {theme == "dark" ? (
+                     <DarkFlexyLogo width={200} height={105} />
+                   ) : (
+                     <FlexyLogo width={200} height={105} />
+                   )}
+                 </NextLink>
+               </NavbarBrand>
+             </NavbarContent>
+             <NavbarContent className="lg:hidden sm:flex items-center justify-between  ">
+               <NavbarBrand className="">
+                 <NextLink href="/" className="flex justify-center items-center bg-gradient-to-r from-pink-600 to-orange-600 backdrop-blur-lg  rounded-full shadow-lg px-4 h-14">
+                   {theme == "dark" ? (
+                     <DarkFlexyLogoIcon width={40} height={45} />
+                   ) : (
+                     <FlexyLogoIcon width={40} height={45} />
+                   )}
+                 </NextLink>
+               </NavbarBrand>
+             </NavbarContent>
+           </div>
+ 
+           {/* Center - Menu */}
+           <div className="hidden md:flex w-[60%] flex-grow-0 justify-center">
+            
+              {/*  <MenuBar siteConfig={siteConfig.navItems} iconMap={iconMap} /> */}
+           
+           </div>
+ 
+           {/* Right side - Search, Login/Avatar, ThemeSwitch */}
+           <div className=" w-[70%] md:w-[20%]  flex justify-end items-center gap-4">
+         
+             <div className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium rounded-full shadow">
+             <div className="relative">
+              <motion.div
+                initial={{ width: "3.5rem" }}
+                whileHover={{ width: "12rem" }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="overflow-hidden rounded-full flex items-center"
+              >
+                <Button
+           
+                  className="h-14 px-4 w-14 hover:w-[12rem] bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full flex items-center justify-start transition-all duration-500 ease-in-out"
+                >
+                  <motion.span
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center justify-center"
+                  >
+                    <MajesticonsDoorEnter width="22" color="white" />
+                  </motion.span>
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="ml-3 text-white text-sm font-semibold"
+                    transition={{ duration: 0.3 }}
+                  >
+                    Join Waitlist
+                  </motion.span>
+                </Button>
+              </motion.div>
+            </div>
+               <ThemeSwitch />
+              
+                 <Button
+                   isIconOnly
+                   className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-md rounded-full hover:opacity-80 transition-opacity w-14 h-14"
+                   variant="flat"
+                   disabled={disableLogin}
+                   onClick={() => {
+                     setisLoggingIn(true);
+                     login();
+                   }}
+                   isLoading={isLoggingIn}
+                 >
+                   <MingcuteUser3Fill height={'1.5rem'} />
+                 </Button>
+              
+           
+             </div>
+           </div>
+         </NavbarContent>
+       </NextUINavbar>
+ 
+       </div>
+       
+       </>  : 
        
        <>
   <div className="flex flex-col lg:px-24 md:px-6 mb-5 pb-5 md:pb-5 lg:pb-5 z-40 bg-transparent">
@@ -102,13 +204,13 @@ export const NavbarNew = () => {
         <NavbarContent className="flex justify-between items-center w-full">
           {/* Left side - Logo */}
           <div className="w-[20%]">
-            <NavbarContent className="hidden lg:flex items-center justify-between   mr-32 space-x-4 space-y-4 ">
+            <NavbarContent className="hidden lg:flex items-center justify-between    space-x-4  ">
               <NavbarBrand className="flex-grow-0 ">
-                <NextLink href="/" className="flex justify-center items-center  backdrop-blur-lg  rounded-full shadow-lg px-5 h-14">
+                <NextLink href="/" className="flex justify-center items-center   rounded-full  border-0 shadow-none ">
                   {theme == "dark" ? (
-                    <DarkFlexyLogo width={90} height={45} />
+                    <DarkFlexyLogo width={200} height={105} />
                   ) : (
-                    <FlexyLogo width={90} height={45} />
+                    <FlexyLogo width={200} height={105} />
                   )}
                 </NextLink>
               </NavbarBrand>
