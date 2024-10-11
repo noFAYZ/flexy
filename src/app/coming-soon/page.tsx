@@ -14,6 +14,8 @@ import { ReactComponent as DarkFlexyLogo } from "/public/images/logo/DeFlexy.svg
 
 import SpaceshipEmailCapture from './components/EmailForm';
 import * as THREE from 'three';
+import { GithubIcon, TwitterIcon } from '@/components/icons';
+import { IconBrandTelegram } from '@tabler/icons-react';
 
 // Load GLTF model
 const SpaceshipModel = ({ position, rotation, isHovering, isLaunching }) => {
@@ -168,6 +170,7 @@ const SpaceScene = ({ animationState }) => {
   );
 };
 
+
 const ComingSoonPage = () => {
   const [email, setEmail] = useState('');
   const [showThankYou, setShowThankYou] = useState(false);
@@ -175,7 +178,7 @@ const ComingSoonPage = () => {
   const [animationState, setAnimationState] = useState('entering');
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  
     setShowThankYou(true);
     setTimeout(() => setShowThankYou(false), 3000);
   };
@@ -190,52 +193,73 @@ const ComingSoonPage = () => {
   ];
 
   return (
-  
-      <div className="relative h-screen w-full overflow-hidden">
-        <ImmersiveBackground />
+    <div className="relative h-screen w-full overflow-hidden">
+      <ImmersiveBackground />
       
-        <Canvas className="absolute inset-0 z-10" camera={{ position: [0, 0, 15], fov: 75 }}>
-          <Suspense fallback={null}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
-            <Planet />
-            <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-          </Suspense>
-        </Canvas>
+      <Canvas className="absolute inset-0 z-10" camera={{ position: [0, 0, 15], fov: 75 }}>
+        <Suspense fallback={null}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+          <Planet />
+          <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+        </Suspense>
+      </Canvas>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-between pt-60">
-          <motion.h1
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl items-center px-5 text-center font-bold font-lufga z-10 text-orange-500 tracking-wider"
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          > 
-            We&apos;re <FlipWords words={words} className="text-white"/>
-          </motion.h1>
+      <div className="absolute inset-0 flex flex-col items-center justify-between pt-60">
+        <motion.h1
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl items-center px-5 text-center font-bold font-lufga z-10 text-orange-500 tracking-wider"
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        > 
+          We&apos;re <FlipWords words={words} className="text-white"/>
+        </motion.h1>
 
-          <SpaceshipEmailCapture />
-
+        {showThankYou ? (
           <motion.div
-            className="mt-8 text-center z-20 pb-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-20"
           >
-            <p className="text-orange-200 mb-2">Powered by Cutting-Edge Technologies</p>
-            <div className="flex flex-wrap justify-center gap-2 mt-2">
-              {['Ceramic Network', 'Base Network', 'Account Abstraction'].map((tech) => (
-                <motion.span
-                  key={tech}
-                  className="text-xs bg-orange-800 px-3 py-1 rounded-full text-orange-100"
-                  whileHover={{ scale: 1.1, backgroundColor: '#f97316' }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
+            Thank you for subscribing!
           </motion.div>
+        ) : (
+          <SpaceshipEmailCapture onSubmit={handleSubmit} />
+        )}
+
+        <motion.div
+          className="mt-8 text-center z-20 pb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          <p className="text-orange-200 mb-2">Powered by Cutting-Edge Technologies</p>
+          <div className="flex flex-wrap justify-center gap-2 mt-2">
+            {['Ceramic Network', 'Base Network', 'Account Abstraction'].map((tech) => (
+              <motion.span
+                key={tech}
+                className="text-xs bg-orange-800 px-3 py-1 rounded-full text-orange-100"
+                whileHover={{ scale: 1.1, backgroundColor: '#f97316' }}
+                transition={{ duration: 0.2 }}
+              >
+                {tech}
+              </motion.span>
+            ))}
           </div>
+          <div className="flex justify-center mt-6 space-x-4">
+            <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer">
+              <GithubIcon className="text-2xl text-white hover:text-orange-500 transition-colors" />
+            </a>
+            <a href="https://twitter.com/your-twitter" target="_blank" rel="noopener noreferrer">
+              <TwitterIcon className="text-2xl text-white hover:text-orange-500 transition-colors" />
+            </a>
+            <a href="https://t.me/your-telegram" target="_blank" rel="noopener noreferrer">
+              <IconBrandTelegram className="text-2xl text-white hover:text-orange-500 transition-colors" />
+            </a>
+          </div>
+        </motion.div>
+      </div>
 
         <Modal 
           isOpen={isOpen} 

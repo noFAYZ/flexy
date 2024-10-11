@@ -93,7 +93,7 @@ export const NavbarNew = () => {
   return (
   
 <>
-       {pathname == "/comming-soon" ? <>
+       {pathname == "/coming-soon" ? <>
         <div className=" absolute w-full flex flex-col lg:px-24 md:px-6  bg-transparent">
        
        <NextUINavbar
