@@ -9,6 +9,7 @@ import SpaceshipEmailCapture from './components/EmailForm';
 import { GithubIcon, TwitterIcon } from '@/components/icons';
 import { IconBrandTelegram } from '@tabler/icons-react';
 import { Card } from '@nextui-org/react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 
 
@@ -124,7 +125,7 @@ const EnhancedEmailCapture = () => {
     <>
       <motion.form
         key="email-form"
-        className="bg-gray-800 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col sm:flex-row gap-3 align-middle items-center transition-all duration-300"
+        className="bg-gray-800 z-20 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col sm:flex-row gap-3 align-middle items-center transition-all duration-300"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
@@ -199,6 +200,43 @@ const FloatingSocialIcons = () => (
   </motion.div>
 );
 
+const FeatureCard = ({ title, description, step }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      className="relative w-64 h-36 rounded-lg bg-gray-800 bg-opacity-70 backdrop-blur-md p-4 flex flex-col justify-center items-center cursor-pointer overflow-hidden"
+      whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(255, 165, 0, 0.5)' }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+    >
+      <div className="absolute top-2 left-2 w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
+        {step}
+      </div>
+      <motion.h2 
+        className="text-xl font-bold text-orange-500 mb-2 text-center"
+        animate={{ y: isHovered ? -10 : 0 }}
+      >
+        {title}
+      </motion.h2>
+      <motion.p 
+        className="text-white text-center"
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: isHovered ? 1 : 0.6 }}
+      >
+        {description}
+      </motion.p>
+      <motion.div
+        className="absolute bottom-0 left-0 w-full h-1 bg-orange-500"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      />
+    </motion.div>
+  );
+};
+
+
 const ComingSoonPage = () => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
@@ -241,7 +279,7 @@ const ComingSoonPage = () => {
         </Suspense>
       </Canvas>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-between py-28 md:py-28 px-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-between pt-28 md:pt-28 px-4">
         <div className="z-20 text-center">
           <motion.h1
             className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl items-center px-2 sm:px-5 text-center font-bold font-lufga text-orange-500 tracking-wider"
@@ -263,30 +301,61 @@ const ComingSoonPage = () => {
         <div className="hidden md:block md:absolute md:left-6 md:top-1/2 md:transform md:-translate-y-1/2 z-30">
           <CreativeTimer days={days} hours={hours} minutes={minutes} seconds={seconds} />
         </div>
-
+    {/*<SpaceshipEmailCapture />     */}
         <div className="flex flex-wrap justify-center gap-6 mt-6 sm:mt-10 z-20 w-full">
-     {/*      <EnhancedEmailCapture /> */}
+       <EnhancedEmailCapture />
 
 
-
-      <Card className="bg-gray-800 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col  gap-3 align-middle items-center transition-all duration-300">
-        <h2 className="text-lg sm:text-xl font-bold text-orange-500 mb-2">Join the Community</h2>
-        <p className="text-white mb-4">Get notified when we launch</p>
-
-      </Card>
-
-      <Card className="bg-gray-800 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col  gap-3 align-middle items-center transition-all duration-300">
-        <h2 className="text-lg sm:text-xl font-bold text-orange-500 mb-2">Join the Community</h2>
-
-        <p className="text-white mb-4">Get notified when we launch</p>
+     <div className="relative w-full  flex flex-col items-center justify-center p-4 overflow-hidden">
+    
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(100)].map((_, i) => (
+          <div
+            key={i}
+            className="star"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          ></div>
+        ))}
+      </div>
+      
+      <ScrollArea className="w-full">
+    <div className="relative z-10 hidden md:flex flex-col items-center justify-center p-8">
+   
+      <div className="flex flex-wrap justify-center gap-8 mb-8">
+        <FeatureCard
+          title="Register"
+          description="Create your account and set up your professional profile"
+          step={1}
+        />
         
-      </Card>
+        <FeatureCard
+          title="Discover"
+          description="Find projects or talent matching your skills and requirements"
+          step={2}
+        />
+        
+        <FeatureCard
+          title="Collaborate"
+          description="Work on projects with secure communication and file sharing"
+          step={3}
+        />
+        
+        <FeatureCard
+          title="Get Paid"
+          description="Receive payments securely through smart contracts"
+          step={4}
+        />
+      </div>
       
-      <Card className="bg-gray-800 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col  gap-3 align-middle items-center transition-all duration-300">
-        <h2 className="text-lg sm:text-xl font-bold text-orange-500 mb-2">Join the Community</h2>
-        <p className="text-white mb-4">Get notified when we launch</p>
-      </Card>
-      
+
+    </div>
+  </ScrollArea>
+    </div>
+
 
 
         </div>

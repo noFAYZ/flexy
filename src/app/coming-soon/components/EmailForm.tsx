@@ -36,7 +36,7 @@ const SpaceshipEmailCapture = () => {
   );
 
   return (
-    <div className="relative w-full min-h-[400px] z-10 flex items-center justify-center">
+    <div className="relative w-full py-40 z-10 flex items-center justify-center">
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <AnimatePresence>
           {!showForm ? (
@@ -52,7 +52,7 @@ const SpaceshipEmailCapture = () => {
                 className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105"
                 onClick={() => setShowForm(true)}
               >
-                Join the waitlist
+                Get Early Access
               </Button>
             </motion.div>
           ) : (
@@ -105,10 +105,10 @@ const SpaceshipEmailCapture = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                <span className="text-3xl font-bold text-orange-500">🚀 Mission Accomplished!</span>
-              </ModalHeader>
-              <ModalBody>
+            
+             
+             
+              <ModalBody>   <span className="text-3xl font-bold text-orange-500">🚀 Mission Accomplished!</span>
                 <div className="space-y-4">
                   <p className="text-lg">You've successfully joined our cosmic crew! Prepare for an out-of-this-world experience.</p>
                   <div className="bg-gray-800 p-4 rounded-lg">
@@ -123,13 +123,13 @@ const SpaceshipEmailCapture = () => {
                       <SocialIcon Icon={IconBrandTelegram} href="https://t.me/cosmicwaitlist" color="blue-300" />
                     </div>
                   </div>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="warning" variant="light" onPress={onClose}>
+                </div> 
+                
+                <Button color="warning" variant="solid" onPress={onClose}>
                   Return to Earth
                 </Button>
-              </ModalFooter>
+              </ModalBody>
+          
             </>
           )}
         </ModalContent>
