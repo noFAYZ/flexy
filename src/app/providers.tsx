@@ -9,7 +9,7 @@ import { WagmiProvider } from '@privy-io/wagmi';
 import { config } from '@/lib/wagmi';
 import * as Ably from "ably";
 import { AblyProvider } from "ably/react";
-import {ReactComponent as DarkFlexyLogo} from '/public/icons/darklogo.svg';
+import {ReactComponent as DarkFlexyLogo} from '/public/images/logo/DeFlexy.svg';
 import  { OrbisConnectResult, OrbisDB } from "@useorbis/db-sdk"
 import { providerToBrowserProvider } from '@/utils/providerUtil';
 import {OrbisEVMAuth} from '@useorbis/db-sdk/auth'
@@ -121,7 +121,7 @@ const InnerProviders = ({ children, themeProps }: ProvidersProps) => {
 
   if (!ready && !ablyClient && !user) {
     return (
-      <div className="absolute top-0 left-0 w-full h-full bg-[#020817] z-50 flex flex-col justify-center items-center">
+      <div className="absolute top-0 left-0 w-full h-full bg-[#000102] z-50 flex flex-col justify-center items-center">
         <DarkFlexyLogo className="w-60 h-60" /> 
         <Loader />
       </div>

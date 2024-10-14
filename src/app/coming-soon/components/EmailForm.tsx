@@ -1,20 +1,14 @@
-import { useRef, Suspense, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Sparkles } from '@react-three/drei';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import * as THREE from 'three';
-import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/react';
-
+import { Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react';
 import { GithubIcon, TwitterIcon } from '@/components/icons';
 import { IconBrandTelegram } from '@tabler/icons-react';
 
-const SpaceshipEmailCapture = ({ onubmit }) => {
+const SpaceshipEmailCapture = () => {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(false);
-  const [animationState, setAnimationState] = useState('entering');
   const [showForm, setShowForm] = useState(false);
-  const [showThankYou, setShowThankYou] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
@@ -23,27 +17,31 @@ const SpaceshipEmailCapture = ({ onubmit }) => {
   };
 
   const handleSubmit = (e) => {
-
+    e.preventDefault();
     if (isValid) {
-      setAnimationState('exiting'); // Trigger spaceship takeoff
-      setShowThankYou(true);
-      onSubmit(email);
-      setTimeout(() => {
-        setShowForm(false);
-        setShowThankYou(false);
-        setAnimationState('entering'); // Reset the form
-        setEmail('');
-      }, 3000); // Delay for the takeoff animation
+      setShowModal(true);
+      setShowForm(false);
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setEmail('');
+  };
+
+  const SocialIcon = ({ Icon, href, color }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`text-${color} hover:text-${color}-600 transition-colors duration-300`}>
+      <Icon size={24} />
+    </a>
+  );
+
   return (
-    <div className="relative w-full h-screen z-10 flex items-center justify-center">
+    <div className="relative w-full min-h-[400px] z-10 flex items-center justify-center">
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <AnimatePresence>
-          {!showForm && !showThankYou ? (
+          {!showForm ? (
             <motion.div
-              key="hop-in-button"
+              key="join-waitlist-button"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -50 }}
@@ -52,33 +50,21 @@ const SpaceshipEmailCapture = ({ onubmit }) => {
                 auto
                 size="lg"
                 className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105"
-                onClick={() => {
-                  setAnimationState('hovering');
-                  setShowForm(true);
-                }}
+                onClick={() => setShowForm(true)}
               >
                 Join the waitlist
               </Button>
             </motion.div>
-          ) : showThankYou ? (
-            <motion.div
-              key="thank-you-message"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
-            >
-              Thank you for subscribing!
-            </motion.div>
           ) : (
             <motion.form
               key="email-form"
-              className="bg-gray-800 bg-opacity-70 backdrop-blur-md p-6 rounded-3xl flex gap-2 align-middle items-center transition-all duration-300"
+              className="bg-gray-800 bg-opacity-70 backdrop-blur-md p-6 rounded-3xl flex flex-col gap-4 items-center transition-all duration-300"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               onSubmit={handleSubmit}
             >
+              <h2 className="text-2xl font-bold text-orange-300 mb-2">Get Early Access</h2>
               <Input
                 fullWidth
                 color="warning"
@@ -87,36 +73,67 @@ const SpaceshipEmailCapture = ({ onubmit }) => {
                 onChange={handleEmailChange}
                 className="text-orange-100 placeholder-orange-300"
                 classNames={{
-                  inputWrapper: `bg-gray-700 bg-opacity-50 border border-orange-400 rounded-full py-1 transition-all duration-300
-                    min-w-[200px] sm:min-w-[300px] md:min-w-[400px] lg:min-w-[500px]`, // Adjusts based on screen size
+                  inputWrapper: "bg-gray-700 bg-opacity-50 border border-orange-400 rounded-full py-1 transition-all duration-300 min-w-[300px]",
                   input: "text-orange-100",
                 }}
               />
               <Button
                 auto
                 type="submit"
-                size="md"
+                size="lg"
                 className={`w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-bold rounded-full 
-                transition-all duration-300 transform hover:scale-105`}
+                transition-all duration-300 transform hover:scale-105 ${!isValid && 'opacity-50 cursor-not-allowed'}`}
                 disabled={!isValid}
               >
-                Join
+                Blast Off!
               </Button>
             </motion.form>
           )}
         </AnimatePresence>
       </div>
-      <div className="absolute bottom-8 flex justify-center space-x-4 w-full">
-        <a href="https://github.com/your-github" target="_blank" rel="noopener noreferrer">
-          <GithubIcon className="text-2xl text-white hover:text-orange-500 transition-colors" />
-        </a>
-        <a href="https://twitter.com/your-twitter" target="_blank" rel="noopener noreferrer">
-          <TwitterIcon className="text-2xl text-white hover:text-orange-500 transition-colors" />
-        </a>
-        <a href="https://t.me/your-telegram" target="_blank" rel="noopener noreferrer">
-          <IconBrandTelegram className="text-2xl text-white hover:text-orange-500 transition-colors" />
-        </a>
-      </div>
+
+      <Modal 
+        isOpen={showModal} 
+        onClose={closeModal}
+        classNames={{
+          base: "bg-gradient-to-br from-gray-900 to-black text-white",
+          header: "border-b border-orange-500/20",
+          body: "py-6",
+          footer: "border-t border-orange-500/20"
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <span className="text-3xl font-bold text-orange-500">🚀 Mission Accomplished!</span>
+              </ModalHeader>
+              <ModalBody>
+                <div className="space-y-4">
+                  <p className="text-lg">You've successfully joined our cosmic crew! Prepare for an out-of-this-world experience.</p>
+                  <div className="bg-gray-800 p-4 rounded-lg">
+                    <p className="text-orange-300 font-semibold mb-2">Your Cosmic Coordinates:</p>
+                    <p className="text-white">{email}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-orange-300 font-semibold">Connect with fellow space travelers:</p>
+                    <div className="flex justify-center space-x-6">
+                      <SocialIcon Icon={TwitterIcon} href="https://twitter.com/cosmicwaitlist" color="blue-400" />
+                      <SocialIcon Icon={GithubIcon} href="https://github.com/cosmicwaitlist" color="gray-400" />
+                      <SocialIcon Icon={IconBrandTelegram} href="https://t.me/cosmicwaitlist" color="blue-300" />
+                    </div>
+                  </div>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="warning" variant="light" onPress={onClose}>
+                  Return to Earth
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

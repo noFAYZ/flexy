@@ -15,8 +15,8 @@ import { Button } from "@nextui-org/button";
 
 import { ReactComponent as FlexyLogo } from "/public/images/logo/DeFlexy-dark.svg";
 import { ReactComponent as DarkFlexyLogo } from "/public/images/logo/DeFlexy.svg";
-import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/flexyicon.svg";
-import { ReactComponent as DarkFlexyLogoIcon } from "/public/images/logo/flexyicondark.svg";
+import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/DeFlexy-Icon.svg";
+import { ReactComponent as DarkFlexyLogoIcon } from "/public/images/logo/DeFlexy-Icon3.svg";
 
 
 
@@ -97,10 +97,11 @@ export const NavbarNew = () => {
         <div className=" absolute w-full flex flex-col lg:px-24 md:px-6  bg-transparent">
        
        <NextUINavbar
-         className="py-2 md:py-12  backdrop-filter-none bg-transparent shadow-none bg-opacity-100 backdrop-blur-0"
+         className="py-2 md:py-12  backdrop-filter-none bg-transparent shadow-none bg-opacity-100 backdrop-blur-0 justify-between"
          maxWidth="full"
+        
        >
-         <NavbarContent className="flex justify-between items-center w-full">
+       
            {/* Left side - Logo */}
            <div className="w-[20%]">
              <NavbarContent className="hidden lg:flex items-center justify-between    space-x-4  ">
@@ -116,11 +117,11 @@ export const NavbarNew = () => {
              </NavbarContent>
              <NavbarContent className="lg:hidden sm:flex items-center justify-between  ">
                <NavbarBrand className="">
-                 <NextLink href="/" className="flex justify-center items-center bg-gradient-to-r from-pink-600 to-orange-600 backdrop-blur-lg  rounded-full shadow-lg px-4 h-14">
+                 <NextLink href="/" className="flex justify-center items-center backdrop-blur-lg  rounded-full shadow-lg  h-14">
                    {theme == "dark" ? (
-                     <DarkFlexyLogoIcon width={40} height={45} />
+                     <DarkFlexyLogoIcon width={100} height={65} />
                    ) : (
-                     <FlexyLogoIcon width={40} height={45} />
+                     <FlexyLogoIcon width={100} height={65} />
                    )}
                  </NextLink>
                </NavbarBrand>
@@ -135,40 +136,30 @@ export const NavbarNew = () => {
            </div>
  
            {/* Right side - Search, Login/Avatar, ThemeSwitch */}
-           <div className=" w-[70%] md:w-[20%]  flex justify-end items-center gap-4">
+           <div className="   flex justify-end items-center gap-4">
          
              <div className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium rounded-full shadow">
              <div className="relative">
-              <motion.div
-                initial={{ width: "3.5rem" }}
-                whileHover={{ width: "12rem" }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="overflow-hidden rounded-full flex items-center"
-              >
-                <Button
-           
-                  className="h-14 px-4 w-14 hover:w-[12rem] bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full flex items-center justify-start transition-all duration-500 ease-in-out"
-                >
-                  <motion.span
+               <motion.span
                     initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ duration: 0.2 }}
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.12 }}
                     className="flex items-center justify-center"
                   >
-                    <MajesticonsDoorEnter width="22" color="white" />
-                  </motion.span>
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="ml-3 text-white text-sm font-semibold"
-                    transition={{ duration: 0.3 }}
-                  >
+                <Button
+           
+                  className="h-12 px-4 bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full flex items-center justify-start transition-all duration-500 ease-in-out text-md font-semibold "
+                >
+             
+                    <MajesticonsDoorEnter width="24" color="white" />
+                
+                
                     Join Waitlist
-                  </motion.span>
+                 
                 </Button>
-              </motion.div>
+             </motion.span>
             </div>
-               <ThemeSwitch />
+            {/*    <ThemeSwitch />
               
                  <Button
                    isIconOnly
@@ -183,11 +174,11 @@ export const NavbarNew = () => {
                  >
                    <MingcuteUser3Fill height={'1.5rem'} />
                  </Button>
-              
+               */}
            
              </div>
            </div>
-         </NavbarContent>
+       
        </NextUINavbar>
  
        </div>
