@@ -11,6 +11,7 @@ import { IconBrandTelegram } from '@tabler/icons-react';
 import { Button, Card } from '@nextui-org/react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
+import { FileIconsTelegram, HugeiconsNewTwitterRectangle, SimpleIconsDiscord } from '@/components/icons/icons';
 
 
 
@@ -250,9 +251,9 @@ const EnhancedEmailCapture = () => {
                 <div className="space-y-2">
                   <p className="text-orange-300 font-semibold text-center">Connect with fellow space travelers:</p>
                   <div className="flex justify-center gap-2 space-x-6">
-                    <SocialIcon Icon={TwitterIcon} href="https://twitter.com/cosmicwaitlist" color="blue-400" bg={'bg-black'}/>
-                    <SocialIcon Icon={GithubIcon} href="https://github.com/cosmicwaitlist" color="white" bg={'bg-blue-500'}/>
-                    <SocialIcon Icon={IconBrandTelegram} href="https://t.me/cosmicwaitlist" color="blue-300" bg={'bg-blue-600'} />
+        {/*             <SocialIcon Icon={HugeiconsNewTwitterRectangle} href="https://twitter.com/#" color="blue-400" bg={'bg-black'}/> */}
+                    <SocialIcon Icon={SimpleIconsDiscord} href="https://discord.gg/YG3UJGgv" color="white" bg={'bg-blue-500'}/>
+                    {/* <SocialIcon Icon={FileIconsTelegram} href="https://t.me/#" color="blue-300" bg={'bg-blue-600'} /> */}
                   </div>
                 </div>
               </div>
