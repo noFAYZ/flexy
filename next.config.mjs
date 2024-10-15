@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/coming-soon',
+        permanent: false,
+      },
+    ]
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
