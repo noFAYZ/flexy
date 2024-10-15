@@ -14,6 +14,8 @@ import Link from 'next/link';
 
 
 
+
+
 function Planet() {
   const { scene } = useGLTF("/earth.glb");
   useFrame(() => {

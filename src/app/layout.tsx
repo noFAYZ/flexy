@@ -43,7 +43,7 @@ export default function RootLayout({
           fontLufga.variable
         )}
       >
-       <Providers themeProps={{ attribute: "data-theme", defaultTheme: "system" }}>
+       <Providers themeProps={{ attribute: "data-theme", defaultTheme: "dark" }}>
 
        <FadedBackground />
           <NavbarNew  />
