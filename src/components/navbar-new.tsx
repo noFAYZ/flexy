@@ -148,7 +148,7 @@ export const NavbarNew = () => {
                   >
                 <Button
            
-                  className="h-12 px-4 bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full flex items-center justify-start transition-all duration-500 ease-in-out text-md font-semibold "
+                  className="h-12 px-4 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-start transition-all duration-500 ease-in-out text-md font-semibold "
                 >
              
                     <MajesticonsDoorEnter width="24" color="white" />

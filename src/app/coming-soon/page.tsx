@@ -8,8 +8,9 @@ import { FlipWords } from '@/components/ui/flip-words';
 import SpaceshipEmailCapture from './components/EmailForm';
 import { GithubIcon, TwitterIcon } from '@/components/icons';
 import { IconBrandTelegram } from '@tabler/icons-react';
-import { Card } from '@nextui-org/react';
+import { Button, Card } from '@nextui-org/react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import Link from 'next/link';
 
 
 
@@ -111,40 +112,122 @@ const CreativeTimer = ({ days, hours, minutes, seconds }) => {
     </motion.div>
   );
 };
+const SocialIcon = ({ Icon, href, color, bg }) => (
+
+    <Button as={Link} target='_blank' rel='noopener noreferrer' href={href} className={`text-${color} hover:text-${color}-600 transition-colors duration-300 rounded-2xl max-w-md ${bg}`}>
+      <Icon size={24} />
+    </Button>
+
+);
+
 
 const EnhancedEmailCapture = () => {
   const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowModal(true);
+    if (email.trim() !== '') {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch('/api/submitEmail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to submit email');
+        }
+        setIsSubmitted(true);
+        setShowModal(true);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (!showInput) {
+      setShowInput(true);
+    } else if (email.trim() !== '') {
+      handleSubmit(new Event('submit'));
+    }
   };
 
   return (
     <>
-      <motion.form
-        key="email-form"
-        className="bg-gray-800 z-20 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col sm:flex-row gap-3 align-middle items-center transition-all duration-300"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          className="w-full sm:w-64 md:w-80 px-6 py-3 rounded-full bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-lg"
-        />
-        <button
-          type="submit"
-          className="w-full sm:w-auto px-8 py-3 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 text-lg"
+      <AnimatePresence>
+        {!isSubmitted && (
+          <motion.form
+            key="email-form"
+            className="bg-gray-800 z-20 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl flex flex-col sm:flex-row gap-3 align-middle items-center transition-all duration-300"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            onSubmit={handleSubmit}
+          >
+            <AnimatePresence>
+              {showInput && (
+                <motion.input
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: "100%", opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full sm:w-96 md:w-96 lg:w-96 px-6 py-4 rounded-full bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-xl"
+                  required
+                  disabled={isLoading}
+                />
+              )}
+            </AnimatePresence>
+            <button
+              type="submit"
+              onClick={showInput ? undefined : handleButtonClick}
+              className="px-4 py-3 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 text-lg w-full sm:w-auto disabled:opacity-50"
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : showInput ? "Join " : "Get Early Access"}
+            </button>
+          </motion.form>
+        )}
+      </AnimatePresence>
+
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="bg-red-500 text-white p-4 rounded-md mt-4"
         >
-          Join the Mission
-        </button>
-      </motion.form>
+          {error}
+        </motion.div>
+      )}
+
+      <AnimatePresence>
+        {isSubmitted && !showModal && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-gray-800 z-20 bg-opacity-70 backdrop-blur-md p-4 sm:p-6 rounded-3xl text-center"
+          >
+            <p className="text-white text-xl">Thank you for joining our waitlist!</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showModal && (
@@ -156,8 +239,21 @@ const EnhancedEmailCapture = () => {
           >
             <div className="bg-gray-900 bg-opacity-80 backdrop-blur-lg p-6 md:p-8 rounded-2xl shadow-lg max-w-md w-full">
               <h2 className="text-2xl md:text-3xl font-bold text-orange-500 mb-4">Welcome Aboard!</h2>
-          
-              <p className="text-white mb-6">Congrats! You're an Early bird. Stay tuned we've some gifts for you ;)</p>
+              <div className="flex flex-col space-y-4 py-10">
+                <p className="text-lg mb-6">Congrats! You're an Early bird. Stay tuned we've some gifts for you ;)</p>
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <p className="text-orange-300 font-semibold mb-2">Your Cosmic Coordinates:</p>
+                  <p className="text-white">{email}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-orange-300 font-semibold text-center">Connect with fellow space travelers:</p>
+                  <div className="flex justify-center gap-2 space-x-6">
+                    <SocialIcon Icon={TwitterIcon} href="https://twitter.com/cosmicwaitlist" color="blue-400" bg={'bg-black'}/>
+                    <SocialIcon Icon={GithubIcon} href="https://github.com/cosmicwaitlist" color="white" bg={'bg-blue-500'}/>
+                    <SocialIcon Icon={IconBrandTelegram} href="https://t.me/cosmicwaitlist" color="blue-300" bg={'bg-blue-600'} />
+                  </div>
+                </div>
+              </div>
               <button
                 onClick={() => setShowModal(false)}
                 className="w-full px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 text-lg"
@@ -171,7 +267,6 @@ const EnhancedEmailCapture = () => {
     </>
   );
 };
-
 
 const FloatingSocialIcons = () => (
   <motion.div
@@ -360,7 +455,7 @@ const ComingSoonPage = () => {
 
         </div>
 
-        <motion.div
+     <motion.div
           className="mt-6 sm:mt-8 text-center z-20 pb-6 sm:pb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -379,7 +474,7 @@ const ComingSoonPage = () => {
               </motion.span>
             ))}
           </div>
-        </motion.div>
+        </motion.div> 
       </div>
 
 
