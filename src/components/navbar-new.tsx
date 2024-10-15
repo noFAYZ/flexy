@@ -139,7 +139,7 @@ export const NavbarNew = () => {
            <div className="   flex justify-end items-center gap-4">
          
              <div className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium rounded-full shadow">
-             <div className="relative">
+               {/*     <div className="relative">
                <motion.span
                     initial={{ scale: 1 }}
                     whileHover={{ scale: 1.08 }}
@@ -159,7 +159,7 @@ export const NavbarNew = () => {
                 </Button>
              </motion.span>
             </div>
-            {/*    <ThemeSwitch />
+         <ThemeSwitch />
               
                  <Button
                    isIconOnly
