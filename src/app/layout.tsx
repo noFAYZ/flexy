@@ -33,7 +33,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCKJ64RCZW"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-KCKJ64RCZW');
+      </script>
          
     
       </head >
