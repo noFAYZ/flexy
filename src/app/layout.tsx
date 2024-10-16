@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/navbar";
 import { Providers } from "./providers";
+import { GoogleTagManager } from '@next/third-parties/google'
 
 import {  fontLufga } from '@/config/fonts'
 import { NavbarNew } from "@/components/navbar-new";
@@ -32,15 +33,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+       <GoogleTagManager gtmId="G-KCKJ64RCZW" />
       <head>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCKJ64RCZW"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-KCKJ64RCZW');
-      </script>
+     
          
     
       </head >

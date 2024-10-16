@@ -2449,6 +2449,13 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.4.tgz#e65a1c6539a671f97bb86d5183d6e3a1733c29c7"
   integrity sha512-tkLrjBzqFTP8DVrAAQmZelEahfR9OxWpFR++vAI9FBhCiIxtwHwBHC23SBHCTURBtwB4kc/x44imVOnkKGNVGg==
 
+"@next/third-parties@^14.2.15":
+  version "14.2.15"
+  resolved "https://registry.yarnpkg.com/@next/third-parties/-/third-parties-14.2.15.tgz#becb2cf4f1ae2f451051923e406107cf57b28c59"
+  integrity sha512-15CvipE1p1GtlzVfbDfXPrAGIhzJJe75Yy6+GIBRTd36lu95BegRsUJwCxJYoKz47Q09stcU2gJDMduMGqrikw==
+  dependencies:
+    third-party-capital "1.0.20"
+
 "@nextui-org/accordion@2.0.38":
   version "2.0.38"
   resolved "https://registry.yarnpkg.com/@nextui-org/accordion/-/accordion-2.0.38.tgz#1c357556e8546ddbaf3a6a6aecdde15af552a528"
@@ -12438,6 +12445,11 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+third-party-capital@1.0.20:
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/third-party-capital/-/third-party-capital-1.0.20.tgz#e218a929a35bf4d2245da9addb8ab978d2f41685"
+  integrity sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==
+
 thread-stream@^0.15.1:
   version "0.15.2"
   resolved "https://registry.yarnpkg.com/thread-stream/-/thread-stream-0.15.2.tgz#fb95ad87d2f1e28f07116eb23d85aba3bc0425f4"
@@ -13284,6 +13296,7 @@ word-wrap@^1.2.5:
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
