@@ -9,6 +9,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import {  fontLufga } from '@/config/fonts'
 import { NavbarNew } from "@/components/navbar-new";
 import { WavyBackground } from "@/components/ui/wavy-background";
+import { Analytics } from "@vercel/analytics/react"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -56,7 +57,7 @@ export default function RootLayout({
         </Providers>
 
 
-   
+        <Analytics />
       </body>
     </html>
   );

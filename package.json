@@ -44,6 +44,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
     "@useorbis/db-sdk": "^0.0.53-alpha",
+    "@vercel/analytics": "^1.3.1",
     "ably": "^2.3.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
