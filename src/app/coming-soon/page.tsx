@@ -3,15 +3,19 @@
 import React, { useState, Suspense, useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PointMaterial, Points, useGLTF } from '@react-three/drei';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { FlipWords } from '@/components/ui/flip-words';
 import SpaceshipEmailCapture from './components/EmailForm';
 import { GithubIcon, TwitterIcon } from '@/components/icons';
 import { IconBrandTelegram } from '@tabler/icons-react';
-import { Button, Card } from '@nextui-org/react';
+import { Button, Card, Code } from '@nextui-org/react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
 import { FileIconsTelegram, HugeiconsNewTwitterRectangle, SimpleIconsDiscord } from '@/components/icons/icons';
+import LearnMoreSection from './components/ComparisonSection';
+import InnovativeCardComparison from './components/ComparisonSection';
+import AdditionalSections from './components/ComparisonSection';
+import { Rocket, Shield, Users, Globe, Zap } from 'lucide-react';
 
 
 
@@ -22,7 +26,7 @@ function Planet() {
   useFrame(() => {
     scene.rotation.y += 0.001;
   });
-  return <primitive object={scene} scale={9.5} position={[0,-4, 0]} />;
+  return <primitive object={scene} scale={9.5} position={[0,-5, 0]} />;
 }
 
 const generateSpherePoints = (count, radius) => {
@@ -75,15 +79,15 @@ const ImmersiveBackground = () => (
 
 const CreativeTimer = ({ days, hours, minutes, seconds }) => {
   const timeUnits = [
-    { label: 'D', value: days },
-    { label: 'H', value: hours },
-    { label: 'M', value: minutes },
-    { label: 'S', value: seconds },
+    { label: 'D', value: days, max: 365, color: '#F05831' },
+    { label: 'H', value: hours, max: 24, color: '#F05831' },
+    { label: 'M', value: minutes, max: 60, color: '#F05831' },
+    { label: 'S', value: seconds, max: 60, color: '#F05831' },
   ];
 
   return (
     <motion.div 
-      className="flex justify-center space-x-2 md:space-x-0 md:space-y-4 md:flex-col"
+      className="flex justify-center py-8 px-4 space-x-4 md:space-x-0 md:space-y-6 md:flex-col"
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, delay: 0.5 }}
@@ -91,30 +95,83 @@ const CreativeTimer = ({ days, hours, minutes, seconds }) => {
       {timeUnits.map((unit, index) => (
         <motion.div
           key={unit.label}
-          className="relative w-16 h-16 md:w-20 md:h-20"
-          whileHover={{ scale: 1.1 }}
+          className="relative w-22 h-22 md:w-28 md:h-28"
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.95, rotate: -5 }}
         >
           <svg className="w-full h-full" viewBox="0 0 100 100">
-            <circle
+            <defs>
+              <filter id={`glow-${index}`}>
+                <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            
+            {/* Background circle */}
+            <circle cx="50" cy="50" r="45" fill="rgba(255,255,255,0.1)" />
+            
+            {/* Animated progress circle */}
+            <motion.circle
               cx="50"
               cy="50"
               r="45"
               fill="none"
-              stroke="#ff6b6b"
+              stroke={unit.color}
               strokeWidth="8"
-              strokeDasharray={`${(unit.value / (index === 0 ? 365 : index === 1 ? 24 : 60)) * 283} 283`}
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: unit.value / unit.max }}
+              transition={{ duration: 1, delay: index * 0.2 }}
               transform="rotate(-90 50 50)"
             />
-            <text x="50" y="50" fontSize="24" fill="#ff6b6b" textAnchor="middle" dominantBaseline="central">
+            
+      
+            
+            {/* Value text */}
+            <motion.text 
+              x="50" 
+              y="45" 
+              fontSize="24" 
+              fontWeight="bold"
+              fill={unit.color} 
+              textAnchor="middle" 
+              dominantBaseline="central"
+            
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1 + index * 0.2 }}
+            >
               {unit.value}
-            </text>
-            <text x="50" y="75" fontSize="14" fill="#ff6b6b" textAnchor="middle">{unit.label}</text>
+            </motion.text>
+            
+            {/* Label text */}
+            <motion.text 
+              x="50" 
+              y="65" 
+              fontSize="14" 
+              fill={unit.color} 
+              textAnchor="middle"
+            
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1.2 + index * 0.2 }}
+            >
+              {unit.label}
+            </motion.text>
+            
+         
           </svg>
         </motion.div>
       ))}
     </motion.div>
   );
 };
+
+
+
 const SocialIcon = ({ Icon, href, color, bg }) => (
 
     <Button as={Link} target='_blank' rel='noopener noreferrer' href={href} className={`text-${color} hover:text-${color}-600 transition-colors duration-300 rounded-2xl max-w-md ${bg}`}>
@@ -335,11 +392,35 @@ const FeatureCard = ({ title, description, step }) => {
 };
 
 
+
+const AnimatedPlanet = ({ scrollYProgress }) => {
+  const mesh = useRef();
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const yPos = useTransform(scrollYProgress, [0, 0.5], [0, -2]);
+
+  useFrame(() => {
+    if (mesh.current) {
+      mesh.current.scale.set(scale.get(), scale.get(), scale.get());
+      mesh.current.position.y = yPos.get();
+    }
+  });
+
+  return (
+    <group ref={mesh}>
+      <Planet />
+    </group>
+  );
+};
+
 const ComingSoonPage = () => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const secondSectionY = useTransform(scrollYProgress, [0, 1], ['100%', '0%']);
 
   useEffect(() => {
     const target = new Date('2024-11-30T23:59:59');
@@ -365,19 +446,26 @@ const ComingSoonPage = () => {
   ];
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      <ImmersiveBackground />
-      
-      <Canvas className="absolute inset-0 z-10" camera={{ position: [0, 0, 15], fov: 75 }}>
-        <Suspense fallback={null}>
+    <>
+    <div className="relative bg-black">
+      <motion.div 
+        className="fixed inset-0 z-0"
+        style={{ opacity }}
+      >
+        <ImmersiveBackground />
+      </motion.div>
+
+      <div className="sticky top-0 h-screen overflow-hidden ">
+        <Canvas camera={{ position: [0, 0, 15], fov: 75 }}>
+          <AnimatedPlanet scrollYProgress={scrollYProgress} />
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
-          <Planet />
-          <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-        </Suspense>
-      </Canvas>
+          <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} />
+        </Canvas>
+      </div>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-between pt-28 md:pt-28 px-4">
+      
+      <div className="absolute h-screen top-0 inset-0 flex flex-col items-center justify-between pt-28 md:pt-28 px-4">
         <div className="z-20 text-center">
           <motion.h1
             className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl items-center px-2 sm:px-5 text-center font-bold font-lufga text-orange-500 tracking-wider"
@@ -400,8 +488,30 @@ const ComingSoonPage = () => {
           <CreativeTimer days={days} hours={hours} minutes={minutes} seconds={seconds} />
         </div>
     {/*<SpaceshipEmailCapture />     */}
-        <div className="flex flex-wrap justify-center gap-6 mt-6 sm:mt-10 z-20 w-full">
-       <EnhancedEmailCapture />
+    <EnhancedEmailCapture />
+    <div> <motion.div 
+      className=" pb-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1 }}
+    >
+      <p className="text-gray-400 mb-2 text-lg uppercase tracking-widest font-bold">Scroll to Explore</p>
+      <motion.div
+        className="w-6 h-10 border-2 border-gray-400 rounded-full p-1"
+        initial={{ y: 0 }}
+        animate={{ y: [0, 5, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <motion.div 
+          className="w-1 h-2 bg-orange-500 rounded-full mx-auto"
+          initial={{ y: 0 }}
+          animate={{ y: [0, 16, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+    </motion.div></div>
+        {/*   <div className="flex flex-wrap justify-center gap-6 mt-6 sm:mt-10 z-20 w-full">
+       
 
 
      <div className="relative w-full  flex flex-col items-center justify-center p-4 overflow-hidden">
@@ -458,7 +568,7 @@ const ComingSoonPage = () => {
 
         </div>
 
-     <motion.div
+   <motion.div
           className="mt-6 sm:mt-8 text-center z-20 pb-6 sm:pb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -477,11 +587,22 @@ const ComingSoonPage = () => {
               </motion.span>
             ))}
           </div>
-        </motion.div> 
+        </motion.div>  */}
       </div>
 
+  
+
+ <motion.section 
+          className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 relative z-20"
+         
+        > 
+  <AdditionalSections />
+        </motion.section>
 
     </div>
+
+
+    </>
   );
 };
 

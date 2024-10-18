@@ -119,9 +119,9 @@ export const NavbarNew = () => {
                <NavbarBrand className="">
                  <NextLink href="/" className="flex justify-center items-center backdrop-blur-lg  rounded-full shadow-lg  h-14">
                    {theme == "dark" ? (
-                     <DarkFlexyLogoIcon width={100} height={65} />
+                     <DarkFlexyLogo width={100} height={65} />
                    ) : (
-                     <FlexyLogoIcon width={100} height={65} />
+                     <FlexyLogo width={100} height={65} />
                    )}
                  </NextLink>
                </NavbarBrand>
