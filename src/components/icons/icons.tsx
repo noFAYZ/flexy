@@ -168,3 +168,19 @@ export function UpworkIcon(props) {
 export function SimpleIconsFiverr(props) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="currentColor" d="M23.004 15.588a.995.995 0 1 0 .002-1.99a.995.995 0 0 0-.002 1.99m-.996-3.705h-.85c-.546 0-.84.41-.84 1.092v2.466h-1.61v-3.558h-.684c-.547 0-.84.41-.84 1.092v2.466h-1.61v-4.874h1.61v.74c.264-.574.626-.74 1.163-.74h1.972v.74c.264-.574.625-.74 1.162-.74h.527zm-6.786 1.501h-3.359c.088.546.43.858 1.006.858c.43 0 .732-.175.83-.487l1.425.4c-.351.848-1.22 1.364-2.255 1.364c-1.748 0-2.549-1.355-2.549-2.515c0-1.14.703-2.505 2.45-2.505c1.856 0 2.471 1.384 2.471 2.408c0 .224-.01.37-.02.477zm-1.562-.945c-.04-.42-.342-.81-.889-.81c-.508 0-.81.225-.908.81zM7.508 15.44h1.416l1.767-4.874h-1.62l-.86 2.837l-.878-2.837H5.72l1.787 4.874zm-6.6 0H2.51v-3.558h1.524v3.558h1.591v-4.874H2.51v-.302c0-.332.235-.536.606-.536h.918V8.412H2.85c-1.162 0-1.943.712-1.943 1.755v.4H0v1.316h.908v3.558z"></path></svg>);
 }
+
+
+export const CrownIcon = (props) => (
+	<svg className={props.className} width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+	  <path d="M5 30L10 10L20 20L30 10L35 30H5Z" fill="#FFD700" stroke="#FF6600" strokeWidth="2"/>
+	  <circle cx="10" cy="10" r="3" fill="#FF6600"/>
+	  <circle cx="20" cy="20" r="3" fill="#FF6600"/>
+	  <circle cx="30" cy="10" r="3" fill="#FF6600"/>
+	</svg>
+);
+
+
+
+export function PepiconsPencilCrownCircleFilled(props) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" idth={props?.width|| '1.7rem'} height={props?.height|| '1.7rem'} viewBox="0 0 26 26" {...props}><g fill="none"><defs><mask id="pepiconsPencilCrownCircleFilled0"><path fill="#fff" d="M0 0h26v26H0z"></path><g fill="#000"><path fillRule="evenodd" d="m17.896 16.818l1.515-5.766l-2.214 1.41a2 2 0 0 1-2.74-.578L13 9.695l-1.458 2.19a2 2 0 0 1-2.74.577l-2.213-1.41l1.515 5.766zm-10.77-6.61c-.767-.489-1.736.218-1.505 1.098l1.516 5.766a1 1 0 0 0 .967.746h9.792a1 1 0 0 0 .967-.746l1.516-5.766c.23-.88-.738-1.586-1.505-1.098l-2.214 1.41a1 1 0 0 1-1.37-.288l-1.458-2.19a1 1 0 0 0-1.664 0l-1.458 2.19a1 1 0 0 1-1.37.289z" clipRule="evenodd"></path><path d="M13.944 6.945a.945.945 0 1 1-1.89.002a.945.945 0 0 1 1.89-.002M21.5 8.836a.945.945 0 1 1-1.89.001a.945.945 0 0 1 1.89 0M6.389 8.836a.945.945 0 1 1-1.89.001a.945.945 0 0 1 1.89 0"></path><path fillRule="evenodd" d="M8.25 19a.5.5 0 0 1 .5-.5h8.737a.5.5 0 1 1 0 1H8.75a.5.5 0 0 1-.5-.5" clipRule="evenodd"></path></g></mask></defs><circle cx={13} cy={13} r={13} fill="currentColor" mask="url(#pepiconsPencilCrownCircleFilled0)"></circle></g></svg>);
+}

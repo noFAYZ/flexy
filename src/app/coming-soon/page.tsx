@@ -489,7 +489,69 @@ const ComingSoonPage = () => {
         </div>
     {/*<SpaceshipEmailCapture />     */}
     <EnhancedEmailCapture />
-    <div> <motion.div 
+
+    <div className="flex flex-wrap justify-center gap-6 mt-6 sm:mt-10 z-20 w-full">
+       
+
+
+       <div className="relative w-full  flex flex-col items-center justify-center p-4 overflow-hidden">
+      
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(100)].map((_, i) => (
+            <div
+              key={i}
+              className="star"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            ></div>
+          ))}
+        </div>
+        
+        <ScrollArea className="w-full">
+      <div className="relative z-10 hidden md:flex flex-col items-center justify-center p-8">
+     
+        <div className="flex flex-wrap justify-center gap-8 mb-8">
+          <FeatureCard
+            title="Register"
+            description="Create your account and set up your professional profile"
+            step={1}
+          />
+          
+          <FeatureCard
+            title="Discover"
+            description="Find projects or talent matching your skills and requirements"
+            step={2}
+          />
+          
+          <FeatureCard
+            title="Collaborate"
+            description="Work on projects with secure communication and file sharing"
+            step={3}
+          />
+          
+          <FeatureCard
+            title="Get Paid"
+            description="Receive payments securely through smart contracts"
+            step={4}
+          />
+        </div>
+        
+  
+      </div>
+    </ScrollArea>
+      </div>
+  
+  
+  
+          </div>
+
+    <div> 
+
+      
+      <motion.div 
       className=" pb-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -509,64 +571,20 @@ const ComingSoonPage = () => {
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         />
       </motion.div>
-    </motion.div></div>
-        {/*   <div className="flex flex-wrap justify-center gap-6 mt-6 sm:mt-10 z-20 w-full">
-       
-
-
-     <div className="relative w-full  flex flex-col items-center justify-center p-4 overflow-hidden">
+    </motion.div>
     
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(100)].map((_, i) => (
-          <div
-            key={i}
-            className="star"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          ></div>
-        ))}
-      </div>
-      
-      <ScrollArea className="w-full">
-    <div className="relative z-10 hidden md:flex flex-col items-center justify-center p-8">
-   
-      <div className="flex flex-wrap justify-center gap-8 mb-8">
-        <FeatureCard
-          title="Register"
-          description="Create your account and set up your professional profile"
-          step={1}
-        />
-        
-        <FeatureCard
-          title="Discover"
-          description="Find projects or talent matching your skills and requirements"
-          step={2}
-        />
-        
-        <FeatureCard
-          title="Collaborate"
-          description="Work on projects with secure communication and file sharing"
-          step={3}
-        />
-        
-        <FeatureCard
-          title="Get Paid"
-          description="Receive payments securely through smart contracts"
-          step={4}
-        />
-      </div>
-      
-
     </div>
-  </ScrollArea>
-    </div>
+       
+      </div>
 
+  
 
+ <motion.section 
+          className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 relative z-20"
+         
+        > 
+  <AdditionalSections />
 
-        </div>
 
    <motion.div
           className="mt-6 sm:mt-8 text-center z-20 pb-6 sm:pb-10"
@@ -587,16 +605,7 @@ const ComingSoonPage = () => {
               </motion.span>
             ))}
           </div>
-        </motion.div>  */}
-      </div>
-
-  
-
- <motion.section 
-          className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 relative z-20"
-         
-        > 
-  <AdditionalSections />
+        </motion.div>  
         </motion.section>
 
     </div>

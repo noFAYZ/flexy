@@ -4,9 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp} from 'lucide-react';
 
 import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/DeFlexy.svg";
-import { ReactComponent as FiverrLogoIcon } from "/public/images/logo/fiverr.svg";
-import { ReactComponent as UpworkLogoIcon } from "/public/images/logo/upwork.svg";
-import { FiverrIcon, UpworkIcon } from '@/components/icons/icons';
+import { CrownIcon, FiverrIcon, PepiconsPencilCrownCircleFilled, UpworkIcon } from '@/components/icons/icons';
+import { Chip } from '@nextui-org/react';
 
 
 
@@ -36,7 +35,7 @@ const CosmicComparisonChart = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center space-x-1 sm:space-x-2">
           <UpworkIcon className="w-12 h-10 sm:w-24 sm:h-24 md:w-28 md:h-20" />
           <span className=" hidden sm:flex text-xs sm:text-sm md:text-base">/</span>
-          <FiverrIcon className="w-12 h-10 sm:w-16 sm:h-16 md:w-20 md:h-16" />
+          <FiverrIcon className="w-12 h-8 sm:w-16 sm:h-16 md:w-20 md:h-16" />
         </div>
       ),
       color: "#14a800",
@@ -159,16 +158,18 @@ const CosmicComparisonChart = () => {
                 >
                   <span className="platform-icon scale-75 sm:scale-90 md:scale-100">{platform.icon}</span>
                   {platform.name === "DeFlexy" && (
-                    <div className="best-choice-badge text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem]">
-                      <span>Best Choice</span>
-                    </div>
+                    <Chip  startContent={<PepiconsPencilCrownCircleFilled />} className="absolute bg-white -top-5 text-black font-bold right-0">
+                      <span className='text-xs font-bold'>Best Choice</span>
+                    </Chip>
+
+                    
                   )}
                 </motion.div>
                 {features.map((feature, featureIndex) => (
                   <motion.div 
                     key={`${platform.name}-${feature}`} 
                     className={`platform-feature text-center items-center 
-                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg font-mono font-bold py-1 sm:py-4 md:py-6' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
+                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg font-mono font-bold py-[0.45rem] sm:py-4 md:py-6' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
                       ${platform.name === 'DeFlexy' && platform.features[feature] === '0%' ? 'highlight' : ''} 
                       ${hoveredFeature === feature ? 'hovered' : ''}`}
                     initial={{ opacity: 0, scale: 0.95 }}
