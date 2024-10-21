@@ -5,7 +5,7 @@ export const StarRating = ({
   initialRating = 0, 
   maxRating = 5, 
   size = 24, 
-  color = "gold", 
+  color = "#e47419", 
   onRatingChange,
   isInteractive = true
 }) => {

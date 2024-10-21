@@ -1,5 +1,7 @@
 import { Dock, DockIcon } from "@/components/dock";
-import { BriefcaseBusinessIcon, UserRound, UserRoundCog } from "lucide-react";
+import { GithubIcon, TwitterIcon } from "@/components/icons";
+import { IconBrandBehance } from "@tabler/icons-react";
+import { BriefcaseBusinessIcon, Globe2Icon, InstagramIcon, UserRound, UserRoundCog } from "lucide-react";
 import React from "react";
 
 
@@ -10,21 +12,24 @@ export function ProfileDock() {
 
       
     <Dock 
-    className="bg-gray-800"
+    className="bg-muted shadow-md rounded-3xl"
     mobileDirection="bottom"
     desktopDirection="right"
   >
-    <DockIcon tooltip="About">
-      <UserRound className="size-6" />
+    <DockIcon tooltip="Twitter" >
+      <TwitterIcon className="size-6" />
     </DockIcon>
-    <DockIcon tooltip="Experience">
-      <BriefcaseBusinessIcon className="size-6" />
+    <DockIcon tooltip="Instagram">
+      <InstagramIcon className="size-6" />
     </DockIcon>
-    <DockIcon tooltip="Notion">
-      <Icons.notion className="size-6" />
+    <DockIcon tooltip="Github">
+      <GithubIcon className="size-6" />
     </DockIcon>
-    <DockIcon tooltip="WhatsApp">
-      <Icons.whatsapp className="size-6" />
+    <DockIcon tooltip="Behance">
+      <IconBrandBehance className="size-6" />
+    </DockIcon>
+    <DockIcon tooltip="Behance">
+      <Globe2Icon className="size-6" />
     </DockIcon>
   </Dock>
    

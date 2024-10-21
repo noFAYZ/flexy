@@ -17,7 +17,7 @@ const NotificationWidget = () => {
                     shape="circle" 
                     placement="top-right"
                 >
-                    <div className=" bg-gradient-to-tr from-pink-500 to-yellow-500 rounded-full opacity-100 hover:opacity-80  w-14 h-14" />
+                    <div className=" bg-gradient-to-r from-pink-500 to-orange-600 rounded-full opacity-100 hover:opacity-80  w-14 h-14" />
                     <div className="absolute inset-0 flex items-center justify-center  p-0">
 
                     <MdiBellBadge height={22} className="text-white" />

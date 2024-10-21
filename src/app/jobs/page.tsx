@@ -554,7 +554,7 @@ const JobsList = () => {
   }, [activeTab, activeFilters, jobs, freelancers]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-4">
+    <div className="flex flex-col md:flex-row gap-6  lg:px-48 md:px-24 justify-center  pb-10">
       <FilterSidebar 
         onFilterChange={handleFilterChange}
         activeTab={activeTab}

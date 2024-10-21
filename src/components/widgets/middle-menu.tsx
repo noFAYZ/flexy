@@ -23,7 +23,7 @@ const MenuBar = ({ siteConfig, iconMap }) => {
 
   return (
     <div>
-            <NavbarContent className=" items-center bg-gradient-to-r from-pink-600 to-orange-600 gap-none border-0 rounded-full shadow-2xl gap-0 hidden md:flex drop-shadow-2xl ">
+            <NavbarContent className=" items-center bg-gradient-to-r from-pink-600 to-orange-600 gap-none border-0 rounded-full  gap-0 hidden md:flex  ">
               {/* Left side - Menu icons */}
               {siteConfig.map((item, index) => {
                 const IconComponent = iconMap[item?.label] || Star; // Default to Home if icon not found

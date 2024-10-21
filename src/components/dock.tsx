@@ -105,8 +105,8 @@ const DockIcon: React.FC<DockIconProps> = ({
         onMouseEnter={onHover}
         onMouseLeave={onLeave}
         animate={{
-          scale: isHovered ? 1.5 : 1,
-          backgroundColor: isHovered ? "rgba(255, 255, 255, 0.8)" : "rgba(255, 255, 255, 0.1)",
+          scale: isHovered ? 1.2 : 1,
+          backgroundColor: isHovered ? "muted" : "#da5b22",
         }}
         className={cn(
           "flex aspect-square w-10 h-10 cursor-pointer items-center justify-center rounded-full transition-colors",
@@ -116,7 +116,7 @@ const DockIcon: React.FC<DockIconProps> = ({
         <motion.div
           animate={{
             scale: isHovered ? 1.2 : 1,
-            color: isHovered ? "#1a202c" : "#718096",
+            color: isHovered ? "#ffffdf" : "#ffffff",
           }}
         >
           {children}

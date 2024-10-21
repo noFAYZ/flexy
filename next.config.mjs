@@ -32,6 +32,8 @@ const nextConfig = {
       }, 
       images: {
         domains: [
+          'logo.clearbit.com',
+          'avatar.iran.liara.run',
           'images.unsplash.com',
           'i.pravatar.cc',
           'picsum.photos',

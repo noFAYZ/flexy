@@ -29,14 +29,14 @@ const ProfileMenu = () => {
 
 
 
-  return (<div className='flex justify-end w-full'>
-    <div className='flex flex-wrap gap-2 '>  
+  return (<div className='flex  justify-end w-full'>
+    <div className='flex justify-end flex-wrap gap-2 '>  
 
    
       
    
 
-    <Button startContent={<Send size={16} />} variant='shadow' onPress={onOpen} className='bg-gradient-to-r from-pink-800  to-violet-700 drop-shadow-md' >
+    <Button startContent={<Send size={16} />} size='sm' variant='shadow' onPress={onOpen} className='bg-gradient-to-br from-amber-500 to-rose-700 hover:bg-gradient-to-br hover:from-amber-700 hover:to-rose-700  drop-shadow-md rounded-3xl text-md text-white' >
       Message
     </Button>
 
@@ -81,7 +81,7 @@ const ProfileMenu = () => {
 
 
    
-
+{/* 
     <Dropdown placement="bottom-end">
         <DropdownTrigger>
           <Button isIconOnly variant='flat'>
@@ -106,7 +106,7 @@ const ProfileMenu = () => {
             {labelsMap["rebase"]}
           </DropdownItem>
         </DropdownMenu>
-      </Dropdown>
+      </Dropdown> */}
   
   </div> </div>
   )

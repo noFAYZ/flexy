@@ -6,12 +6,12 @@ import React from 'react'
 const ProfileSocials = () => {
   return (
 
-    <div className='flex justify-end w-full'> 
+    <div className='flex justify-center  w-full'> 
     <div className='flex gap-2'>
-         <Button variant='ghost' isIconOnly className='rounded-full p-1'> <TwitterIcon size={16}/></Button>
-        <Button variant='ghost' isIconOnly className='rounded-full p-1'> <Instagram  size={16}/></Button>
-        <Button variant='ghost' isIconOnly className='rounded-full p-1'> <Facebook size={16}/></Button>
-        <Button variant='ghost' isIconOnly className='rounded-full p-1'> <GlobeIcon size={16}/></Button>
+         <Button  isIconOnly className='rounded-3xl p-1 bg-blue-500 hover:bg-blue-800 text-white'> <TwitterIcon size={16}/></Button>
+        <Button  isIconOnly className='rounded-3xl p-1 bg-red-500 hover:bg-red-800 text-white'> <Instagram  size={16}/></Button>
+        <Button isIconOnly className='rounded-3xl p-1 bg-blue-600 hover:bg-blue-800 text-white'> <Facebook size={16}/></Button>
+        <Button  isIconOnly className='rounded-3xl p-1'> <GlobeIcon size={16}/></Button>
     </div>
        
     </div>

@@ -147,7 +147,7 @@ const CosmicComparisonChart = () => {
             {platforms.map((platform, platformIndex) => (
               <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column backdrop:blur-lg bg-opacity-65 uppercase" : "max-w-[12rem] sm:max-w-[15rem] md:max-w-[18rem]"}`}>
                 <motion.div 
-                  className={`platform-header rounded-tr-[1rem] sm:rounded-tr-[2rem] ${platform.name === "DeFlexy" ? "deflexy-header py-2 sm:py-3 md:py-4 uppercase rounded-t-[1rem] sm:rounded-t-[2rem] rounded-b-[0.5rem] sm:rounded-b-[1rem] border-2 border-orange-600 border-b-red-500 shadow-xl backdrop:blur-lg" : "uppercase"}`}
+                  className={`platform-header rounded-tr-[1rem] sm:rounded-tr-[2rem] ${platform.name === "DeFlexy" ? "deflexy-header py-2 sm:py-3 md:py-4 uppercase rounded-t-[1rem] sm:rounded-t-[2rem] rounded-b-[0.5rem] sm:rounded-b-[2rem] border-2 border-orange-600 border-b-red-500 shadow-xl backdrop:blur-lg" : "uppercase"}`}
                   style={{ 
                     backgroundColor: platform.color,
                     scale: platform.name === "DeFlexy" ? 1.02 : 1 

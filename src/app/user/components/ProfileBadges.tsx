@@ -4,9 +4,9 @@ import React from 'react'
 
 const ProfileBadges = () => {
   return (
-    <div className='flex flex-wrap justify-center  md:justify-end w-full'>
+    <div className=' flex flex-wrap justify-center sm:justify-end  w-full '>
         <div className='flex  gap-4'>
-      <Chip
+    {/*   <Chip
         startContent={<BellRing size={18} />}
         variant="shadow"
       classNames={{
@@ -28,10 +28,10 @@ const ProfileBadges = () => {
         className='px-2'
       >
         Online
-      </Chip>
+      </Chip> */}
 
       <Chip
-        startContent={<CrownIcon size={18} />}
+        startContent={<CrownIcon className='text-white font-semibold' size={22} />}
         variant="shadow"
       classNames={{
         base: "bg-gradient-to-br from-amber-500 to-rose-700 border-small border-white/50 shadow-pink-500/30",
