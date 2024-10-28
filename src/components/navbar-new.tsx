@@ -36,7 +36,7 @@ import UserDropdownWidget from "@/components/widgets/UserDropdownWidget";
 import SearchWidget from "@/components/widgets/SearchWidget";
 
 // Assuming these are imported correctly
-import { ReactComponent as FlexyLogo } from "/public/images/logo/DeFlexy-dark.svg";
+import { ReactComponent as FlexyLogo } from "/public/images/logo/DeFlexy-light3.svg";
 import { ReactComponent as DarkFlexyLogo } from "/public/images/logo/DeFlexy.svg";
 import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/DeFlexy-Icon.svg";
 import { ReactComponent as DarkFlexyLogoIcon } from "/public/images/logo/DeFlexy-Icon3.svg";
@@ -50,7 +50,7 @@ const Logo = ({ theme, isMobile = false }) => {
 
   return (
     <NextLink href="/" className={`flex justify-center items-center rounded-full ${isMobile ? 'bg-gradient-to-r from-pink-600 to-orange-600 backdrop-blur-lg shadow-lg px-4 h-14' : 'border-0 shadow-none'}`}>
-      <LogoComponent width={width} height={height} />
+      <LogoComponent width={width} height={height} className=' antialiased' />
     </NextLink>
   );
 };

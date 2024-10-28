@@ -1,14 +1,26 @@
-"use client";
-import { Progress } from "@nextui-org/react";
+import { Button, Progress } from '@nextui-org/react';
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
+import { AboutMeCard, CertificationsCard, EducationCard, FeaturedProjectsCard, LanguageesCard, ProfileHeader, ProfileStats, ReviewsCard, SkillsCard, SocialsCard, WorkHistoryCard } from '../components/UserPageCards';
 
-import React from "react";
-import { Button } from "@nextui-org/react";
-import { AboutMeCard, CertificationsCard, EducationCard, FeaturedProjectsCard, LanguageesCard, ProfileHeader, ProfileStats, ReviewsCard, SkillsCard, SocialsCard, WorkHistoryCard } from "./components/UserPageCards";
+interface UserPageProps {
+  params: {
+    username: string
+  }
+}
 
+async function getUserProfile(username: string) {
+  // Simulated API call - replace with your actual data fetching logic
+ /*  const res = await fetch(`https://api.example.com/users/${username}`, {
+    next: {
+      revalidate: 3600 // Cache for 1 hour
+    }
+  })
+  
+  if (!res.ok) {
+    return null
+  } */
 
-
-
-const UserPage = () => {
   const user = {
     name: "Sophia Rodriguez",
     username: "sophiarodriguez",
@@ -25,6 +37,19 @@ const UserPage = () => {
       I'm particularly interested in AI integration and sustainable technology practices, always staying at the forefront of emerging technologies and industry trends.
       Through my journey, I've had the privilege of working with diverse teams and clients across multiple industries, 
       which has enriched my perspective and enhanced my ability to adapt to various project requirements and technological challenges.`,
+      quickFacts: [
+        {
+          icon: "Globe",
+          title: "Location",
+          value: "San Francisco, CA"
+        },
+        {
+          icon: "Briefcase",
+          title: "Experience",
+          value: "7+ Years"
+        },
+    
+      ],
       
       location: "San Francisco, CA",
       yearsOfExperience: 7,
@@ -441,8 +466,45 @@ const UserPage = () => {
       twitter: "twitter.com/sophiadev",
     },
   };
+  
+  return user
+}
 
+function UserProfileSkeleton() {
   return (
+    <div className="animate-pulse">
+      <div className="h-32 w-32 rounded-full bg-gray-200 mb-4"/>
+      <div className="h-8 w-64 bg-gray-200 mb-4"/>
+      <div className="h-4 w-48 bg-gray-200"/>
+    </div>
+  )
+}
+
+export async function generateMetadata({ params }: UserPageProps) {
+  const user = await getUserProfile(params.username)
+
+  if (!user) {
+    return {
+      title: 'User Not Found'
+    }
+  }
+  
+  return {
+    title: `${user.name}'s Profile | deFlexy`,
+    description: `View ${user.name}'s profile and activity`
+  }
+}
+
+export default async function UserProfilePage({ params }: UserPageProps) {
+  const user = await getUserProfile(params.username)
+  console.log(user)
+  if (!user) {
+    notFound()
+  }
+  
+  return (
+    <Suspense fallback={<UserProfileSkeleton />}>
+    
     <div className="w-full   ">
       <div className="hidden justify-between max-w-full bg-gradient-to-r from-orange-500  to-pink-500 rounded-2xl py-2  px-6 ">
         <Progress
@@ -480,7 +542,7 @@ const UserPage = () => {
       <div className="flex w-full flex-col  sm:px-10 pb-10">
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-grow lg:w-2/3">
-          <AboutMeCard aboutData={user.aboutData} />  
+          <AboutMeCard aboutData={user.aboutData} onUpdate={undefined} />  
           <ReviewsCard completedWork={user.completedWork} inProgressWork={user.inProgressWork} />
           <FeaturedProjectsCard projects={user.projects} />
         </div>
@@ -501,9 +563,7 @@ const UserPage = () => {
 
   {/*     <ProfileDock /> */}
     </div>
-  );
-};
 
-
-
-export default UserPage;
+    </Suspense>
+  )
+}

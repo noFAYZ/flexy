@@ -116,7 +116,7 @@ import { CalendarIcon, ChevronDownIcon, ChevronUpIcon, CodeIcon, ExternalLinkIco
 
       const ProfilePage = () => {
         return (
-          <div className="max-w-5xl mx-auto p-4 ">
+          <div className=" p-4 ">
             <Card className="mb-6">
               <CardBody className="flex flex-col md:flex-row items-center md:items-start gap-4 p-4">
                 <Avatar src={user.avatar} className="w-24 h-24" />

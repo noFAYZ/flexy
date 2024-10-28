@@ -19,7 +19,7 @@ const CreativeProgressBar = ({ currentStep, totalSteps }) => {
                 className={`w-12 h-12 mb-2 rounded-full flex items-center justify-center ${
                   step <= currentStep
                     ? 'bg-gradient-to-br from-orange-500 to-pink-500'
-                    : 'bg-gray-200'
+                    : 'bg-muted'
                 }`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}

@@ -14,6 +14,7 @@ import  { OrbisConnectResult, OrbisDB } from "@useorbis/db-sdk"
 import { providerToBrowserProvider } from '@/utils/providerUtil';
 import {OrbisEVMAuth} from '@useorbis/db-sdk/auth'
 import Loader from '@/components/Loader2';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 
 export interface ProvidersProps {
@@ -149,6 +150,8 @@ const InnerProviders = ({ children, themeProps }: ProvidersProps) => {
 
 export function Providers({ children, themeProps }: ProvidersProps) {
   return (
+    
+
     <PrivyProvider
       appId="clzwzrl1502494w3quowyhb0p"
       config={{
@@ -164,8 +167,11 @@ export function Providers({ children, themeProps }: ProvidersProps) {
       }}
     >
       <InnerProviders themeProps={themeProps}>
+        <TooltipProvider>
         {children}
+        </TooltipProvider>
       </InnerProviders>
     </PrivyProvider>
+    
   );
 }
