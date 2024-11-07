@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Badge, CardHeader, Chip, Input,  Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Progress,  Select,  SelectItem,  Tab,  Tabs,  Textarea,  Tooltip, useDisclosure } from "@nextui-org/react";
+import { Avatar, Badge, CardHeader, Chip, Input,  Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Progress,    Tab,  Tabs,  Textarea,  Tooltip, useDisclosure } from "@nextui-org/react";
 import {
   Award,
   BadgeCheck,
@@ -29,6 +29,7 @@ import {
   Trophy,
   User,
   Users,
+  Wrench,
   X,
 } from "lucide-react";
 import React, { useState } from "react";
@@ -38,7 +39,7 @@ import { StarRating } from "@/components/rating";
 
 
 import { Card, CardBody } from "@nextui-org/react";
-import {  CarbonBadge, ClarityCertificateLine, F7Wrench, FluentBriefcaseSearch20Regular, HugeiconsContact, HugeiconsNoteDone, MingcuteExchangeDollarLine, SolarLayersBroken } from "@/components/icons/icons";
+import {  CarbonBadge, ClarityCertificateLine, F7Wrench, FluentBriefcase20Filled, FluentBriefcaseSearch20Regular, FluentMdl2Education, HugeiconsContact, HugeiconsNoteDone, MingcuteExchangeDollarLine, MynauiBriefcase, SolarLayersBroken } from "@/components/icons/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { CardContent, CardTitle } from "@/components/ui/card";
 import { Image } from "@nextui-org/react";
@@ -47,6 +48,15 @@ import ProfileBadges from "./ProfileBadges";
 import ProfileSocials from "./ProfileSocials";
 import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
 import { Content } from "@tiptap/react";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useDrawer } from "@/app/hooks/useDrawer";
+
 
 export const ProfileHeader = ({ user }) => (
     <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 w-full lg:w-auto">
@@ -139,25 +149,58 @@ export const ProfileHeader = ({ user }) => (
     </div>
   );
   
- export const AboutMeCard = ({ aboutData, onUpdate }) => {
+  export const AboutMeCard = ({ aboutData, onUpdate }) => {
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [editData, setEditData] = useState(aboutData);
-    const [value, setValue] = useState<Content>('')
-
+    const { openDrawer } = useDrawer();
+ 
     const handleSave = () => {
-      console.log(aboutData)
+      console.log(aboutData);
       onUpdate(editData);
-      onClose();
+    
+    };
+
+
+   
+  
+    const handleEditClick = () => {
+      openDrawer({
+        content: (
+          <div className="space-y-4 sm:space-y-6">
+            <div>
+              <label className="text-sm font-medium text-foreground/80 mb-2 block">
+                Bio
+              </label>
+              <MinimalTiptapEditor
+                value={aboutData.bio}
+                onChange={(e) => setEditData({ ...editData, bio: e })}
+                className="w-full"
+                editorContentClassName="p-3 sm:p-5"
+                output="html"
+                placeholder="Type your description here..."
+                autofocus={true}
+                editable={true}
+                editorClassName="focus:outline-none"
+              />
+            </div>
+            <QuickFactsEditor quickFacts={aboutData.quickFacts} setEditData={setEditData} />
+          </div>
+        ),
+        title: "Edit About Me",
+        width: "full",
+        onSave: () => onUpdate(editData)
+      });
     };
   
     return (
       <>
         <Card className="mb-6 bg-background shadow-none rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden">
-          <CardBody className="p-6">
-            <div className="space-y-6">
+          <CardBody className="p-4 sm:p-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Header with Edit Button */}
               <div className="flex justify-between items-start">
-                <h2 className="text-2xl font-semibold mb-4 text-foreground flex items-center">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-4 text-foreground flex items-center">
                   <span className="bg-gradient-to-r from-pink-500 to-orange-500 text-transparent bg-clip-text">
                     About Me
                   </span>
@@ -166,7 +209,7 @@ export const ProfileHeader = ({ user }) => (
                   isIconOnly
                   size="sm"
                   variant="light"
-                  onClick={onOpen}
+                  onClick={handleEditClick}
                   className="text-default-500 hover:text-primary"
                 >
                   <Pencil size={18} />
@@ -175,13 +218,13 @@ export const ProfileHeader = ({ user }) => (
   
               {/* Main Bio Section */}
               <div>
-                <p className="text-md text-foreground/70 leading-relaxed mb-4">
+                <p className="text-sm sm:text-md text-foreground/70 leading-relaxed mb-4">
                   {aboutData.bio}
                 </p>
               </div>
   
               {/* Quick Facts Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <QuickFact
                   icon={<Globe />}
                   title="Location"
@@ -207,213 +250,147 @@ export const ProfileHeader = ({ user }) => (
           </CardBody>
         </Card>
   
-        {/* Edit Drawer */}
-        <div
-          className={`fixed inset-y-0 right-0 w-full sm:w-1/2 bg-background shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
-            isOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
-        >
-          <div className="h-full flex flex-col">
-            {/* Drawer Header */}
-            <div className="p-6 border-b border-divider flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Edit About Me</h2>
-              <Button
-                isIconOnly
-                size="sm"
-                variant="light"
-                onClick={onClose}
-                className="text-default-500"
-              >
-                <X size={20} />
-              </Button>
-            </div>
   
-            {/* Drawer Content */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-6">
-                <div>
-                  <label className="text-sm font-medium text-foreground/80 mb-2 block">
-                    Bio
-                  </label>
-                  <MinimalTiptapEditor
-                    value={editData.bio}
-                    onChange={(e) => setEditData({ ...editData, bio: e })}
-                    className="w-full"
-                    editorContentClassName="p-5"
-                    output="html"
-                    placeholder="Type your description here..."
-                    autofocus={true}
-                    editable={true}
-                    editorClassName="focus:outline-none"
-                  />
-                </div>
-  
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <QuickFactsEditor quickFacts={aboutData.quickFacts} setEditData={setEditData} />
-             
-                </div>
-              </div>
-            </div>
-  
-            {/* Drawer Footer */}
-            <div className="p-6 border-t border-divider">
-              <div className="flex justify-end gap-2">
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button
-                  className="bg-gradient-to-r from-pink-500 to-orange-500 text-white"
-                  onPress={handleSave}
-                >
-                  Save Changes
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        {/* Backdrop */}
-        {isOpen && (
-          <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-            onClick={onClose}
-          />
-        )}
       </>
     );
-  };
+};
 
-  const availableIcons = [
-    { label: 'Globe', icon: Globe },
-    { label: 'Briefcase', icon: Briefcase },
-    { label: 'Trophy', icon: Trophy },
-    { label: 'Coffee', icon: Coffee },
-    { label: 'Target', icon: Target },
-    { label: 'Heart', icon: Heart },
-    { label: 'Star', icon: Star },
-    { label: 'Award', icon: Award },
-    { label: 'Users', icon: Users },
-    { label: 'Clock', icon: Clock },
-    { label: 'Code', icon: Code },
-    { label: 'Book', icon: BookOpen },
-    { label: 'CPU', icon: Cpu },
-    { label: 'Location', icon: MapPin }
-  ];
-  
-  const QuickFactsEditor = ({ quickFacts, setEditData }) => {
-    
+const availableIcons = [
+  { label: 'Globe', icon: Globe },
+  { label: 'Briefcase', icon: Briefcase },
+  { label: 'Trophy', icon: Trophy },
+  { label: 'Coffee', icon: Coffee },
+  { label: 'Target', icon: Target },
+  { label: 'Heart', icon: Heart },
+  { label: 'Star', icon: Star },
+  { label: 'Award', icon: Award },
+  { label: 'Users', icon: Users },
+  { label: 'Clock', icon: Clock },
+  { label: 'Code', icon: Code },
+  { label: 'Book', icon: BookOpen },
+  { label: 'CPU', icon: Cpu },
+  { label: 'Location', icon: MapPin }
+];
+
+
+// QuickFactsEditor component with responsive improvements
+const QuickFactsEditor = ({ quickFacts = [], onChange }) => {
+    const [facts, setQuickFacts] = useState(quickFacts);
+
     const addQuickFact = () => {
-      console.log(quickFacts)
-      if (quickFacts?.length < 4) {
-        setEditData({
-          ...quickFacts,
-          quickFacts: [
-            ...quickFacts?.quickFacts,
-            { icon: 'Globe', title: '', value: '' }
-          ]
-        });
+      if (facts.length < 4) {
+        const newQuickFacts = [
+          ...facts,
+          { icon: 'Globe', title: '', value: '' }
+        ];
+        setQuickFacts(newQuickFacts);
       }
     };
-  
+
     const removeQuickFact = (index) => {
-      const newQuickFacts = quickFacts.filter((_, i) => i !== index);
-      setEditData({
-        ...quickFacts,
-        quickFacts: newQuickFacts
-      });
+      const newQuickFacts = facts.filter((_, i) => i !== index);
+      setQuickFacts(newQuickFacts)
     };
   
     const updateQuickFact = (index, field, value) => {
-      const newQuickFacts = [...quickFacts];
+      const newQuickFacts = [...facts];
       newQuickFacts[index] = {
         ...newQuickFacts[index],
         [field]: value
       };
-      setEditData({
-        ...quickFacts,
-        quickFacts: newQuickFacts
-      });
+      setQuickFacts(newQuickFacts)
+    };
+  
+    const IconComponent = ({ iconName }) => {
+      const IconFound = availableIcons.find(i => i.label === iconName)?.icon;
+      return IconFound ? <IconFound size={16} /> : <Globe size={16} />;
     };
   
     return (
       <div className="space-y-4">
         <div className="flex justify-between items-center mb-4">
-          <label className="text-lg font-medium text-foreground/80">
+          <label className="text-base sm:text-lg font-medium">
             Quick Facts
           </label>
           <Button
             size="sm"
             variant="flat"
-            color="primary"
-            startContent={<Plus size={16} />}
             onClick={addQuickFact}
-            disabled={quickFacts?.length >= 4}
-            className="bg-gradient-to-r from-pink-500/20 to-orange-500/20"
+            disabled={facts.length >= 4}
+            className="bg-gradient-to-br from-orange-500 to-pink-500"
           >
+            <Plus className="w-4 h-4 mr-2" />
             Add Fact
           </Button>
         </div>
-  
-        <div className="space-y-4">
-          {quickFacts?.map((fact, index) => (
+     
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {facts.map((fact, index) => (
             <div 
               key={index}
-              className="p-4 bg-content2 rounded-xl border border-divider"
+              className="p-3 sm:p-4 bg-card rounded-lg border"
             >
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-sm font-medium text-foreground/80">
+              <div className="flex justify-between items-start mb-3 sm:mb-4">
+                <h3 className="text-sm font-medium">
                   Fact {index + 1}
                 </h3>
                 <Button
                   isIconOnly
-                  size="sm"
-                  color="danger"
                   variant="light"
+                  size="sm"
                   onClick={() => removeQuickFact(index)}
+                  className="text-destructive hover:text-destructive/90 rounded-full"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
   
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-foreground/60 mb-2 block">
+              <div className="grid grid-cols-1 gap-3 sm:gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">
                     Icon
                   </label>
                   <Select
                     value={fact.icon}
-                    onChange={(e) => updateQuickFact(index, 'icon', e.target.value)}
-                    size="sm"
+                    onValueChange={(value) => updateQuickFact(index, 'icon', value)}
                   >
-                    {availableIcons.map((iconOption) => (
-                      <SelectItem key={iconOption.label} value={iconOption.label}>
+                    <SelectTrigger className="focus:ring-none">
+                      <SelectValue>
                         <div className="flex items-center gap-2">
-                          <iconOption.icon size={16} />
-                          {iconOption.label}
+                          <IconComponent iconName={fact.icon} />
+                          {fact.icon}
                         </div>
-                      </SelectItem>
-                    ))}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableIcons.map((iconOption) => (
+                        <SelectItem key={iconOption.label} value={iconOption.label}>
+                          <div className="flex items-center gap-2">
+                            <iconOption.icon className="w-4 h-4" />
+                            {iconOption.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
   
-                <div>
-                  <label className="text-sm font-medium text-foreground/60 mb-2 block">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">
                     Title
                   </label>
                   <Input
-                    size="sm"
                     value={fact.title}
                     onChange={(e) => updateQuickFact(index, 'title', e.target.value)}
                     placeholder="Enter title"
                   />
                 </div>
   
-                <div>
-                  <label className="text-sm font-medium text-foreground/60 mb-2 block">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">
                     Value
                   </label>
                   <Input
-                    size="sm"
                     value={fact.value}
                     onChange={(e) => updateQuickFact(index, 'value', e.target.value)}
                     placeholder="Enter value"
@@ -424,14 +401,14 @@ export const ProfileHeader = ({ user }) => (
           ))}
         </div>
   
-        {quickFacts?.length === 0 && (
-          <div className="text-center py-8 text-foreground/60">
+        {facts.length === 0 && (
+          <div className="text-center py-6 sm:py-8 text-muted-foreground">
             No quick facts added. Click "Add Fact" to start.
           </div>
         )}
       </div>
     );
-  };
+};
 
 
   
@@ -890,34 +867,214 @@ export const ProfileHeader = ({ user }) => (
     </div>
   );
   
-  export const WorkHistoryCard = ({ workHistory }) => (
-    <Card className="bg-accent shadow backdrop-blur-0 rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4">
-        <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
-          <FluentBriefcaseSearch20Regular
-            size={22}
-            className="text-primary mr-2"
-          />
-          Work History
-        </CardTitle>
-      </CardHeader>
-      <CardBody className="p-4">
-        <div className="relative">
-          {workHistory.map((work, index) => (
-            <WorkHistoryItem
-              key={index}
-              work={work}
-              isLast={index === workHistory.length - 1}
-            />
-          ))}
-        </div>
-      </CardBody>
-    </Card>
-  );
+  export const WorkHistoryCard = ({ workHistory, onUpdate }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [editedHistory, setEditedHistory] = useState(workHistory);
   
-  export  const WorkHistoryItem = ({ work, isLast }) => (
+    const handleSave = () => {
+      onUpdate(editedHistory);
+      onClose();
+    };
+  
+    return (
+      <>
+        <Card className="bg-accent shadow backdrop-blur-0 rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4 flex items-center justify-between">
+            <CardTitle className="text-lg sm:text-xl font-semibold ">
+              <div className="flex items-center">
+                <MynauiBriefcase height={24} className="text-primary mr-2" />
+                Work History
+              </div>
+      
+            </CardTitle>        
+            <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onClick={onOpen}
+                className="text-default-500 hover:text-primary"
+              >
+                <Pencil size={18} />
+              </Button>
+          </CardHeader>
+          <CardBody className="p-4">
+            <div className="relative">
+              {workHistory.map((work, index) => (
+                <WorkHistoryItem
+                  key={index}
+                  work={work}
+                  isLast={index === workHistory.length - 1}
+                />
+              ))}
+            </div>
+          </CardBody>
+        </Card>
+  
+        {/* Responsive Drawer */}
+        <div
+          className={`fixed inset-0 w-full h-full bg-background/95 backdrop-blur-sm transform transition-all duration-300 ease-in-out z-50 
+            ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+            sm:w-1/2  sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:bg-background`}
+        >
+          <div className="h-full flex flex-col max-h-screen">
+            {/* Drawer Header */}
+            <div className="p-4 sm:p-6 border-b border-divider flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur-sm">
+              <h2 className="text-lg sm:text-xl font-semibold">Edit Work History</h2>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onClick={onClose}
+                className="text-default-500"
+              >
+                <X size={20} />
+              </Button>
+            </div>
+  
+            {/* Drawer Content */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <div className="space-y-6">
+                <Button
+                  onClick={() => setEditedHistory([
+                    { title: '', company: '', period: '', description: '' },
+                    ...editedHistory
+                  ])}
+                  className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white"
+                >
+                  <Plus size={18} className="mr-2" />
+                  Add New Position
+                </Button>
+  
+                <div className="grid grid-cols-2 gap-4">
+                {editedHistory.map((work, index) => (
+                  <WorkHistoryEditor
+                    key={index}
+                    work={work}
+                    onUpdate={(updatedWork) => {
+                      const newHistory = [...editedHistory];
+                      newHistory[index] = updatedWork;
+                      setEditedHistory(newHistory);
+                    }}
+                    onDelete={() => {
+                      setEditedHistory(editedHistory.filter((_, i) => i !== index));
+                    }}
+                  />
+                ))}
+
+                </div>
+  
+                {editedHistory.length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No work history added. Add your first position above.
+                  </div>
+                )}
+              </div>
+            </div>
+  
+            {/* Drawer Footer */}
+            <div className="p-4 sm:p-6 border-t border-divider sticky bottom-0 bg-background/95 backdrop-blur-sm">
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="light"
+                  color="danger"
+                  onClick={() => {
+                    setEditedHistory(workHistory);
+                    onClose();
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="bg-gradient-to-r from-pink-500 to-orange-500 text-white"
+                  onClick={handleSave}
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+  
+  const WorkHistoryEditor = ({ work, onUpdate, onDelete }) => {
+    const handleChange = (field, value) => {
+      onUpdate({ ...work, [field]: value });
+    };
+  
+    return (
+      <div className="p-4 border rounded-lg bg-card space-y-4">
+        <div className="flex justify-between items-start">
+          <div className="space-y-4 flex-1">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <label className="text-sm font-medium text-muted-foreground">
+                  Job Title
+                </label>
+                <Input
+                  value={work.title}
+                  onChange={(e) => handleChange('title', e.target.value)}
+                  placeholder="e.g. Senior Developer"
+                  className="mt-1"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-sm font-medium text-muted-foreground">
+                  Company
+                </label>
+                <Input
+                  value={work.company}
+                  onChange={(e) => handleChange('company', e.target.value)}
+                  placeholder="e.g. Tech Corp"
+                  className="mt-1"
+                />
+              </div>
+            </div>
+  
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">
+                Period
+              </label>
+              <Input
+                value={work.period}
+                onChange={(e) => handleChange('period', e.target.value)}
+                placeholder="e.g. 2020 - Present"
+                className="mt-1"
+              />
+            </div>
+  
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">
+                Description
+              </label>
+              <Textarea
+                value={work.description}
+                onChange={(e) => handleChange('description', e.target.value)}
+                placeholder="Describe your role and achievements..."
+                className="mt-1"
+                rows={3}
+              />
+            </div>
+          </div>
+  
+          <Button
+            isIconOnly
+            variant="light"
+            size="sm"
+            onClick={onDelete}
+            className="text-destructive hover:text-destructive/90 ml-2"
+          >
+            <Trash2 size={16} />
+          </Button>
+        </div>
+      </div>
+    );
+  };
+  
+  const WorkHistoryItem = ({ work, isLast }) => (
     <div className="flex items-start space-x-4 mb-4 relative">
-      <div className=" w-full ">
+      <div className="w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Image
@@ -965,29 +1122,175 @@ export const ProfileHeader = ({ user }) => (
     </Card>
   );
   
-  export const SkillsCard = ({ skills }) => (
-    <Card className=" bg-accent shadow backdrop-blur-0 rounded-[2.5rem] border-medium border-default  bg-gradient-to-br from-background to-muted/50 overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4">
-        <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
-          <motion.div className="mr-2">
-            <F7Wrench size={22} className="text-primary" />
-          </motion.div>
-          Skills
-        </CardTitle>
-      </CardHeader>
-      <CardBody className="p-4">
-        <div className="flex flex-wrap gap-1 ">
-          {skills.map((skill, index) => (
-            <div key={index}>
-              <Chip className="font-semibold bg-gradient-to-r from-pink-500 to-orange-500 text-white">
-                {skill.name}
-              </Chip>
+  export const SkillsCard = ({ skills, onUpdate }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [editedSkills, setEditedSkills] = useState(skills);
+    const [newSkill, setNewSkill] = useState('');
+  
+    const handleSave = () => {
+      onUpdate(editedSkills);
+      onClose();
+    };
+  
+    const handleAddSkill = (e) => {
+      e.preventDefault();
+      if (newSkill.trim()) {
+        setEditedSkills([...editedSkills, { name: newSkill.trim() }]);
+        setNewSkill('');
+      }
+    };
+  
+    const handleRemoveSkill = (index) => {
+      setEditedSkills(editedSkills.filter((_, i) => i !== index));
+    };
+  
+    return (
+      <>
+        <Card className="bg-accent shadow backdrop-blur-0 rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden">
+          <CardHeader className="flex bg-gradient-to-r from-primary/10 to-secondary/10 p-4 justify-between">
+            <CardTitle className=" text-lg sm:text-xl font-semibold flex items-center ">
+              <div className="flex items-center">
+                <motion.div className="mr-2">
+                  <Wrench size={22} className="text-primary" />
+                </motion.div>
+                Skills
+              </div>
+            
+            </CardTitle>  
+            <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onClick={onOpen}
+                className="text-default-500 hover:text-primary"
+              >
+                <Pencil size={18} />
+              </Button>
+          </CardHeader>
+          <CardBody className="p-4">
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill, index) => (
+                <div key={index}>
+                  <Chip className="font-semibold bg-gradient-to-r from-pink-500 to-orange-500 text-white">
+                    {skill.name}
+                  </Chip>
+                </div>
+              ))}
             </div>
-          ))}
+          </CardBody>
+        </Card>
+  
+        {/* Responsive Drawer */}
+        <div
+          className={`fixed inset-0 w-full h-full bg-background/95 backdrop-blur-sm transform transition-all duration-300 ease-in-out z-50 
+            ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+            sm:w-[95%] sm:max-w-xl sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:bg-background`}
+        >
+          <div className="h-full flex flex-col max-h-screen">
+            {/* Drawer Header */}
+            <div className="p-4 sm:p-6 border-b border-divider flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur-sm">
+              <h2 className="text-lg sm:text-xl font-semibold">Edit Skills</h2>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onClick={onClose}
+                className="text-default-500"
+              >
+                <X size={20} />
+              </Button>
+            </div>
+  
+            {/* Drawer Content */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <div className="space-y-6">
+                {/* Add New Skill Form */}
+                <form onSubmit={handleAddSkill} className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground/80">
+                      Add New Skill
+                    </label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newSkill}
+                        onChange={(e) => setNewSkill(e.target.value)}
+                        placeholder="Enter skill name"
+                        className="flex-1"
+                      />
+                      <Button
+                        type="submit"
+                        className="bg-gradient-to-r from-pink-500 to-orange-500 text-white"
+                        disabled={!newSkill.trim()}
+                      >
+                        <Plus size={18} className="mr-1" />
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+                </form>
+  
+                {/* Skills List */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground/80">
+                    Current Skills
+                  </label>
+                  <div className="space-y-2">
+                    {editedSkills.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        No skills added. Add your first skill above.
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {editedSkills.map((skill, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-2 rounded-full border bg-gradient-to-r from-pink-500 to-orange-500"
+                          >
+                            <span className="text-sm font-medium">{skill.name}</span>
+                            <Button
+                              isIconOnly
+                              size="sm"
+                              variant="light"
+                              onClick={() => handleRemoveSkill(index)}
+                              className="text-white hover:text-white rounded-full bg-orange-900"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            {/* Drawer Footer */}
+            <div className="p-4 sm:p-6 border-t border-divider sticky bottom-0 bg-background/95 backdrop-blur-sm">
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="light"
+                  color="danger"
+                  onClick={() => {
+                    setEditedSkills(skills);
+                    onClose();
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="bg-gradient-to-r from-pink-500 to-orange-500 text-white"
+                  onClick={handleSave}
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-      </CardBody>
-    </Card>
-  );
+      </>
+    );
+  };
   
   export const SocialsCard = () => (
     <Card className=" bg-accent shadow backdrop-blur-0 rounded-[2.5rem] border-medium border-default  bg-gradient-to-br from-background to-muted/50 overflow-hidden">
@@ -1079,7 +1382,7 @@ export const ProfileHeader = ({ user }) => (
       <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4">
         <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
           <motion.div className="mr-2">
-            <TrendingUp size={24} className="text-primary" />
+          <FluentMdl2Education height={24} className="text-primary" />
           </motion.div>
           Education
         </CardTitle>
@@ -1131,7 +1434,7 @@ export const ProfileHeader = ({ user }) => (
       <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4">
         <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
           <motion.div className="mr-2">
-            <TrendingUp size={24} className="text-primary" />
+            <FluentMdl2Education height={24} className="text-primary" />
           </motion.div>
           Education
         </CardTitle>

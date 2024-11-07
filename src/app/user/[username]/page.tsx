@@ -497,7 +497,7 @@ export async function generateMetadata({ params }: UserPageProps) {
 
 export default async function UserProfilePage({ params }: UserPageProps) {
   const user = await getUserProfile(params.username)
-  console.log(user)
+
   if (!user) {
     notFound()
   }

@@ -7,10 +7,14 @@ import { User, SettingsIcon, HelpCircle, LogOutIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import NextLink from "next/link";
 import Link from 'next/link';
+import { useOrbisStore } from '@/app/lib/orbis';
 
 const UserDropdownWidget = () => {
     const [isLoggingIn, setisLoggingIn] = useState(false)
-
+    const {
+        disconnect,
+    
+    } = useOrbisStore();
 	const {ready, authenticated, logout, user,} = usePrivy();
     const {login} = useLogin({
 		
@@ -22,6 +26,18 @@ const UserDropdownWidget = () => {
 		  setisLoggingIn(false)
 		},
 	  });  
+
+	  const handleDisconnect = async () => {
+        try {
+            await disconnect();
+            if (authenticated) {
+                await logout();
+            }
+          
+        } catch (err) {
+            console.error('Failed to disconnect:', err);
+        }
+    };
 
     const disableLogin = !ready || (ready && authenticated);
 
@@ -74,7 +90,7 @@ const UserDropdownWidget = () => {
 						
 								<DropdownItem key="help_and_feedback"
 								startContent={  <HelpCircle  size={16}/> }>Support</DropdownItem>
-								<DropdownItem key="logout" color="danger" className="flex bg-pink-200 !dark:bg-pink-950" onClick={() => logout()}
+								<DropdownItem key="logout" color="danger" className="flex bg-pink-200 !dark:bg-pink-950" onClick={() => handleDisconnect()}
 									startContent={  <LogOutIcon  size={16}/> }>
 								
 								<span>Log Out</span>

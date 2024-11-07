@@ -6,7 +6,7 @@ const UserLayout = ({
     children: React.ReactNode;
   }) => {
   return (
-    <div className='px-4 flex lg:px-48 md:px-24 justify-center  pb-10'> {children}</div>
+    <div className='px-4 flex container justify-center  pb-10'> {children}</div>
   )
 }
 

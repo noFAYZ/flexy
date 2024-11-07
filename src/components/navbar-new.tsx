@@ -44,12 +44,12 @@ import { ReactComponent as DarkFlexyLogoIcon } from "/public/images/logo/DeFlexy
 const HIDE_NAVBAR_ROUTES = ['/coming-soon', '/login', '/onboarding'];
 
 const Logo = ({ theme, isMobile = false }) => {
-  const LogoComponent = theme === 'dark' ? (isMobile ? DarkFlexyLogoIcon : DarkFlexyLogo) : (isMobile ? FlexyLogoIcon : FlexyLogo);
-  const width = isMobile ? 40 : 200;
-  const height = isMobile ? 45 : 105;
+  const LogoComponent = theme === 'dark' ? (isMobile ? FlexyLogoIcon : DarkFlexyLogo) : (isMobile ? FlexyLogoIcon : FlexyLogo);
+  const width = isMobile ? 60 : 200;
+  const height = isMobile ? 60 : 105;
 
   return (
-    <NextLink href="/" className={`flex justify-center items-center rounded-full ${isMobile ? 'bg-gradient-to-r from-pink-600 to-orange-600 backdrop-blur-lg shadow-lg px-4 h-14' : 'border-0 shadow-none'}`}>
+    <NextLink href="/" className={`flex justify-center items-center rounded-full ${isMobile ? '' : 'border-0 shadow-none'}`}>
       <LogoComponent width={width} height={height} className=' antialiased' />
     </NextLink>
   );
@@ -127,19 +127,19 @@ export const NavbarNew = () => {
   };
 
   return (
-    <div className="flex flex-col lg:px-24 md:px-6 mb-5 pb-5 md:pb-5 lg:pb-5 z-40 bg-transparent">
+    <div className="flex flex-col xl:px-24 md:px-6 mb-5 pb-5 md:pb-5 lg:pb-5 z-40 bg-transparent">
       <NextUINavbar
         className="py-2 md:py-12 backdrop-filter-none bg-transparent shadow-none bg-opacity-100 backdrop-blur-0"
         maxWidth="full"
       >
         <NavbarContent className="flex justify-between items-center w-full">
           <div className="w-[20%]">
-            <NavbarContent className="hidden lg:flex items-center justify-between space-x-4">
+            <NavbarContent className="hidden xl:flex items-center justify-between space-x-4">
               <NavbarBrand className="flex-grow-0">
                 <Logo theme={theme} />
               </NavbarBrand>
             </NavbarContent>
-            <NavbarContent className="lg:hidden sm:flex items-center justify-between">
+            <NavbarContent className="xl:hidden sm:flex items-center justify-between">
               <NavbarBrand>
                 <Logo theme={theme} isMobile={true} />
               </NavbarBrand>
