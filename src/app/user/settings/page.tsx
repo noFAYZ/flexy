@@ -22,7 +22,7 @@ import { AppearanceSettings } from './components/Appearance/Appearance';
 import { BillingSettings } from './components/Billing/Billing';
 import { FreelancerAvailabilitySettings } from './components/Availability/Availability';
 import { ClientHiringSettings } from './components/Hiring/Hiring';
-import { TokenGovernanceSettings } from './components/Governance/governance';
+import { TokenGovernanceSettings } from './components/Governance/Governance';
 
  const metadata: Metadata = {
   title: 'Account Settings',
