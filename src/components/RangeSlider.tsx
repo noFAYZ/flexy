@@ -5,16 +5,20 @@ export const RangeSlider = ({
   min = 0,
   max = 100,
   step = 1,
-  defaultValue = [25, 75],
+  value,
   formatLabel = (value) => `$${value}`,
   onChange,
   className = "",
 }) => {
-  const [values, setValues] = useState(defaultValue);
+  const [values, setValues] = useState(value);
   const [isDragging, setIsDragging] = useState(null);
   const [activeThumb, setActiveThumb] = useState(null);
   const [hoverTrack, setHoverTrack] = useState(false);
   const rangeRef = useRef(null);
+
+  useEffect(() => {
+    setValues(value);
+  }, [value]);
 
   const getPercent = useCallback(
     (value) => ((value - min) / (max - min)) * 100,
@@ -40,15 +44,19 @@ export const RangeSlider = ({
       const x = e.clientX - rect.left;
       const percent = Math.max(0, Math.min(1, x / rect.width));
       const rawValue = min + (max - min) * percent;
-      const value = Math.round(rawValue / step) * step;
+      const newValue = Math.round(rawValue / step) * step;
 
-      setValues((prev) => {
-        const newValues = [...prev];
-        newValues[isDragging] = value;
-        return newValues.sort((a, b) => a - b);
-      });
+      const newValues = [...values];
+      newValues[isDragging] = newValue;
+      
+      const sortedValues = newValues[0] <= newValues[1] ? newValues : [newValues[1], newValues[0]];
+      
+      if (JSON.stringify(sortedValues) !== JSON.stringify(values)) {
+        setValues(sortedValues);
+        onChange?.(sortedValues);
+      }
     },
-    [isDragging, min, max, step]
+    [isDragging, min, max, step, values, onChange]
   );
 
   useEffect(() => {
@@ -61,10 +69,6 @@ export const RangeSlider = ({
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
-
-  useEffect(() => {
-    onChange?.(values);
-  }, [values, onChange]);
 
   const leftThumbPercent = getPercent(values[0]);
   const rightThumbPercent = getPercent(values[1]);
