@@ -1,9 +1,6 @@
 "use client";
-import { Progress } from "@nextui-org/react";
 
 import React from "react";
-import { Button } from "@nextui-org/react";
-import { AboutMeCard, CertificationsCard, EducationCard, FeaturedProjectsCard, LanguageesCard, ProfileHeader, ProfileStats, ReviewsCard, SkillsCard, SocialsCard, WorkHistoryCard } from "./components/UserPageCards";
 
 
 
@@ -444,62 +441,8 @@ const UserPage = () => {
 
   return (
     <div className="w-full   ">
-      <div className="hidden justify-between max-w-full bg-gradient-to-r from-orange-500  to-pink-500 rounded-2xl py-2  px-6 ">
-        <Progress
-          size="md"
-          radius="md"
-          classNames={{
-            base: "max-w-xl",
-            track: "drop-shadow-md ",
-            indicator: "bg-gradient-to-r from-orange-500 to-indigo-500",
-            label: "tracking-wider font-medium text-default-600",
-            value: "text-foreground/60",
-          }}
-          label="Profile completeness"
-          value={65}
-        />
-        <div className="flex gap-4 content-center  items-center text-center align-middle">
-          <span className="text-foreground/60 content-center  items-center text-center align-middle">
-            65%
-          </span>
-          <Button variant="flat">Complete</Button>
-        </div>
-      </div>
 
-      <div className="px-5 relative sm:px-10 pb-10">
-        <div className="flex flex-col sm:flex-row w-full  sm:pt-5 rounded-[3.5rem] justify-between gap-6">
 
-          <ProfileHeader user={user} />
-          <ProfileStats user={user} />
-        </div>
-        <div className=" flex flex-row justify-end w-full px-2 sm:px-10 ">
-        
-        </div>
-      </div>
-
-      <div className="flex w-full flex-col  sm:px-10 pb-10">
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="flex-grow lg:w-2/3">
-          <AboutMeCard aboutData={user.aboutData} />  
-          <ReviewsCard completedWork={user.completedWork} inProgressWork={user.inProgressWork} />
-          <FeaturedProjectsCard projects={user.projects} />
-        </div>
-        <div className="flex flex-col lg:w-1/3 gap-6">
-      
-         
-          <SkillsCard skills={user.skills} />
-          <WorkHistoryCard workHistory={user.workHistory} />
-          <EducationCard education={user.education} />
-          <CertificationsCard certifications={user.certifications} />
-          <LanguageesCard languages={user.languages} />
-          <SocialsCard/>
-          
-          {/* <Socials/> */}
-        </div>
-      </div>
-    </div>
-
-  {/*     <ProfileDock /> */}
     </div>
   );
 };

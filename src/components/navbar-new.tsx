@@ -57,7 +57,7 @@ const Logo = ({ theme, isMobile = false }) => {
 
 const NavbarRight = ({ authenticated, isLoggingIn, disableLogin, login }) => (
   <div className="w-[70%] md:w-[20%] flex justify-end items-center gap-4">
-    {authenticated && (
+{/*     {authenticated && (
       <Popover showArrow placement="bottom" className="hidden md:flex">
         <PopoverTrigger className="hidden lg:flex">
           <NavbarItem>
@@ -74,10 +74,10 @@ const NavbarRight = ({ authenticated, isLoggingIn, disableLogin, login }) => (
           <p>Hello new message</p>
         </PopoverContent>
       </Popover>
-    )}
+    )} */}
     <div className="flex items-center gap-4 bg-muted backdrop-blur-2xl border-default border-medium rounded-full shadow">
       {!authenticated ? <SearchWidget /> : <NotificationWidget />}
-      <ThemeSwitch />
+  {/*     <ThemeSwitch /> */}
       {!authenticated ? (
         <Button
           isIconOnly

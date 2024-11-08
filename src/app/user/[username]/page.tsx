@@ -1,7 +1,18 @@
+
 import { Button, Progress } from '@nextui-org/react';
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { AboutMeCard, CertificationsCard, EducationCard, FeaturedProjectsCard, LanguageesCard, ProfileHeader, ProfileStats, ReviewsCard, SkillsCard, SocialsCard, WorkHistoryCard } from '../components/UserPageCards';
+
+import { AboutMeCard } from './components/About/AboutMe';
+import { ProfileHeader } from './components/Header/ProfileHeader';
+import { ProfileStats } from './components/Header/ProfileStats';
+import { ReviewsCard } from './components/Reviews/ReviewsCard';
+import { FeaturedProjectsCard } from './components/Projects/ProjectCard';
+import { SkillsCard } from './components/Sidebar/SkillsCard';
+import { WorkHistoryCard } from './components/Sidebar/WorkHistoryCard';
+import { LanguageesCard } from './components/Sidebar/LanguagesCard';
+import { CertificationsCard } from './components/Sidebar/CertificationsCard';
+import { EducationCard } from './components/Sidebar/EducationCard';
 
 interface UserPageProps {
   params: {
@@ -549,12 +560,11 @@ export default async function UserProfilePage({ params }: UserPageProps) {
         <div className="flex flex-col lg:w-1/3 gap-6">
       
          
-          <SkillsCard skills={user.skills} />
-          <WorkHistoryCard workHistory={user.workHistory} />
+          <SkillsCard skills={user.skills} onUpdate={undefined} />
+          <WorkHistoryCard workHistory={user.workHistory} onUpdate={undefined} />
           <EducationCard education={user.education} />
           <CertificationsCard certifications={user.certifications} />
           <LanguageesCard languages={user.languages} />
-          <SocialsCard/>
           
           {/* <Socials/> */}
         </div>

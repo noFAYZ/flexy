@@ -296,3 +296,53 @@
   border-radius: 20px;
   border: transparent;
 }
+
+@layer components {
+  .settings-gradient-text {
+    @apply bg-gradient-to-r from-pink-500 to-orange-500 text-transparent bg-clip-text;
+  }
+  
+  .settings-card {
+    @apply bg-background shadow-none rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50;
+  }
+  
+  .settings-button {
+    @apply bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600;
+  }
+}
+@layer utilities {
+  .backdrop-blur-card {
+    @apply bg-background/60 backdrop-blur-md;
+  }
+  
+  .settings-gradient {
+    @apply bg-gradient-to-r from-pink-500 to-orange-500;
+  }
+}
+
+@layer utilities {
+  .settings-gradient {
+    @apply bg-gradient-to-r from-pink-500 to-orange-500;
+  }
+
+  .settings-card {
+    @apply bg-background/60 backdrop-blur-md rounded-[2.5rem] border border-divider/20;
+  }
+  
+  .settings-hover {
+    @apply hover:bg-default-100 transition-all duration-200;
+  }
+}
+@layer utilities {
+  .gradient-border {
+    @apply border border-transparent bg-gradient-to-r from-pink-500/20 to-orange-500/20 backdrop-blur-md;
+  }
+  
+  .hover-scale {
+    @apply transition-transform hover:scale-105;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-pink-500 to-orange-500 text-transparent bg-clip-text;
+  }
+}
