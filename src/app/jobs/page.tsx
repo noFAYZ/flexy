@@ -9,11 +9,7 @@ import { Briefcase, Search, DollarSign, Star, Clock, Zap, BarChart, Activity, Ch
 
 import {Card,  CardFooter, CardHeader,  CardBody, Chip, Divider, Input, Popover, PopoverContent, PopoverTrigger, Progress, Tooltip, User, Badge  } from '@nextui-org/react';
 
-import { Tabs } from '@radix-ui/react-tabs';
-import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/hooks/use-toast';
-import { Slider } from '@/components/ui/slider';
 import JobDetailsDrawer from './components/application-drawr';
 import FilterSidebar from './components/filter-sidebar';
 import RecentBids from './components/recent-bids'
@@ -24,14 +20,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import JobsListHeader from './components/joblist-header';
 
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Jobs | deFlexy',
-  description: 'Find work and hire talent on deFlexy',
-};
 
 const jobsData = [
     {
