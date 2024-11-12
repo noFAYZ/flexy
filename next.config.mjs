@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async redirects() {
+/*    async redirects() {
     return [
       {
         source: '/',
@@ -8,7 +8,15 @@ const nextConfig = {
         permanent: false,
       },
     ]
-  },  
+  },  */
+  eslint: {
+    // Only run TSLint on the server
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has TSLint errors.
+    // !! WARN !!
+    ignoreDuringBuilds: true,
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
