@@ -52,7 +52,7 @@ import {
 import { RangeSlider } from '@/components/RangeSlider';
 
 
-const JobPostingPage = () => {
+export default function NewJobPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     // Step 1: Project Type
@@ -1141,4 +1141,3 @@ const ProjectTypeStep = ({ formData, onUpdate }) => {
     );
   };
 
-export default JobPostingPage;

@@ -5,9 +5,9 @@ import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from 'fram
 import { Button } from "@/components/ui/button";
 
 
-import { Briefcase, Search, DollarSign, Star, Clock, Zap, BarChart, Activity, ChevronUp, ChevronDown, CheckCircleIcon, MapPin, Calendar, PinIcon, ThumbsUpIcon, Save, Coins, Users } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import {Chip, Input, Popover, PopoverContent, PopoverTrigger, Progress, Tooltip, User  } from '@nextui-org/react';
+import { Briefcase, Search, DollarSign, Star, Clock, Zap, BarChart, Activity, ChevronUp, ChevronDown, CheckCircleIcon, MapPin, Calendar, PinIcon, ThumbsUpIcon, Save, Coins, Users, Filter, Share2, CheckCircle, ArrowUpRight, Target, Globe } from 'lucide-react';
+
+import {Card,  CardFooter, CardHeader,  CardBody, Chip, Divider, Input, Popover, PopoverContent, PopoverTrigger, Progress, Tooltip, User, Badge  } from '@nextui-org/react';
 
 import { Tabs } from '@radix-ui/react-tabs';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,6 +26,12 @@ import {
 } from "@/components/ui/collapsible"
 import JobsListHeader from './components/joblist-header';
 
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Jobs | deFlexy',
+  description: 'Find work and hire talent on deFlexy',
+};
 
 const jobsData = [
     {
@@ -319,9 +325,9 @@ return (
           
             <div className={viewMode === 'list' ? 'w-full' : 'w-full'}>
               <div className="flex items-center justify-between mb-2">
-                <CardTitle className="text-xl font-medium text-orange-600">
+              
                   {job.title}
-                </CardTitle>
+               
                 <div className='flex items-center'>
                 <Tooltip content={`Posted ${job.postedDate}`}>
               <Chip color="success" variant="dot" className="text-xs px-2 py-1 rounded-full w-full flex items-center text-gray-400 gap-2 align-middle content-center text-center ">
@@ -449,7 +455,9 @@ return (
 };
 
 
-const JobsList = () => {
+const JobsPage = () => {
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -478,6 +486,12 @@ const JobsList = () => {
       rating: 0
     }
   });
+
+  const handleJobClick = (job) => {
+    setSelectedJob(job);
+    setIsDrawerOpen(true);
+  };
+
   const { toast } = useToast();
 
   const fetchJobsData = useCallback(async () => {
@@ -553,92 +567,151 @@ const JobsList = () => {
     }
   }, [activeTab, activeFilters, jobs, freelancers]);
 
+  
+
   return (
-    <div className="flex flex-col md:flex-row gap-6  lg:px-48 md:px-24 justify-center  pb-10">
-      <FilterSidebar 
-        onFilterChange={handleFilterChange}
-        activeTab={activeTab}
-        filters={activeFilters[activeTab]}
-      />
-
-      <div className="flex-grow">
-        <JobsListHeader
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          handleFilterChange={handleFilterChange}
-          activeFilters={activeFilters}
-        />
-
-        <AnimatePresence>
-          {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
+    <div className="w-full max-w-[1600px] mx-auto">
+      {/* Background Pattern */}
+      <div className="fixed inset-0 bg-gradient-to-br from-orange-500/5 via-pink-500/5 to-purple-500/5 -z-10">
+        <div className="absolute inset-0 bg-grid-white/[0.02]" />
+      </div>
+      
+      <div className="px-4 sm:px-6 lg:px-8 pb-10">
+        {/* Header Section */}
+        <div className="flex flex-col gap-6 mb-8 pt-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 
+                bg-clip-text text-transparent inline-flex items-center gap-2">
+                Find Work
+                <Badge className="bg-orange-500/10 text-orange-500 text-xs">50+ New</Badge>
+              </h1>
+              <p className="text-default-500 mt-1">
+                Discover projects that match your expertise
+              </p>
             </div>
-          ) : activeTab === 'jobs' ? (
-            filteredJobs.length > 0 ? (
-              <motion.div 
-                className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={{
-                  visible: { transition: { staggerChildren: 0.1 } }
-                }}
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button
+                className="bg-default-100 font-medium flex-1 sm:flex-none"
+                startContent={<Target size={18} />}
               >
-                {filteredJobs.map((job) => (
-                  <JobCard 
-                    key={job.id} 
-                    job={job} 
-                    viewMode={viewMode}
-                    onTagClick={(tag) => {
-                      const updatedTags = [...activeFilters.jobs.selectedTags, tag];
-                      handleFilterChange({
-                        type: 'jobs',
-                        filters: { ...activeFilters.jobs, selectedTags: updatedTags }
-                      });
-                    }}
-                  />
-                ))}
-              </motion.div>
-            ) : (
-              <p className="text-center text-muted-foreground mt-8">No jobs found matching your criteria.</p>
-            )
-          ) : (
-            filteredFreelancers.length > 0 ? (
-              <motion.div 
-                className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={{
-                  visible: { transition: { staggerChildren: 0.1 } }
-                }}
+                Job Alerts
+              </Button>
+              <Button
+                className="bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium
+                  shadow-lg hover:shadow-pink-500/25 transition-all duration-300 flex-1 sm:flex-none"
+                endContent={<ArrowUpRight size={16} />}
               >
-                {filteredFreelancers.map((freelancer) => (
-                  <FreelancerCard 
-                    key={freelancer.id} 
-                    freelancer={freelancer} 
-                    viewMode={viewMode}
-                  />
-                ))}
-              </motion.div>
-            ) : (
-              <p className="text-center text-muted-foreground mt-8">No freelancers found matching your criteria.</p>
-            )
-          )}
-        </AnimatePresence>
+                Post a Job
+              </Button>
+            </div>
+          </div>
+
+          {/* Search and Stats */}
+          <div className="grid gap-4">
+            {/* Search Bar */}
+            <Card className="bg-background/60 backdrop-blur-md border-medium border-default-200">
+              <CardBody className="p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex-1 flex flex-col sm:flex-row gap-3">
+                    <Input
+                      placeholder="Search projects..."
+                      startContent={<Search className="text-default-400" size={18} />}
+                      className="flex-1"
+                      classNames={{
+                        input: "bg-transparent",
+                        innerWrapper: "bg-transparent",
+                      }}
+                    />
+                    <Input
+                      placeholder="Location"
+                      startContent={<Globe className="text-default-400" size={18} />}
+                      className="sm:max-w-[200px]"
+                      classNames={{
+                        input: "bg-transparent",
+                        innerWrapper: "bg-transparent",
+                      }}
+                    />
+                  </div>
+                  <Button
+                    className="bg-default-100 font-medium"
+                    startContent={<Filter size={18} />}
+                  >
+                    Filters
+                  </Button>
+                </div>
+              </CardBody>
+            </Card>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { icon: Briefcase, label: "Active Jobs", value: "2.5k+" },
+                { icon: Users, label: "Companies", value: "850+" },
+                { icon: Coins, label: "Avg. Budget", value: "$8.5k" },
+                { icon: Zap, label: "Response Rate", value: "92%" }
+              ].map((stat) => (
+                <Card key={stat.label} 
+                  className="bg-background/60 backdrop-blur-md border-medium border-default-200 
+                    hover:bg-default-100/50 transition-all duration-300">
+                  <CardBody className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-default-100">
+                        <stat.icon size={20} className="text-default-500" />
+                      </div>
+                      <div>
+                        <p className="text-default-500 text-sm">{stat.label}</p>
+                        <p className="font-semibold text-large">{stat.value}</p>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-12 gap-6">
+          {/* Left Sidebar */}
+          <div className="hidden lg:block lg:col-span-3">
+            <FilterSidebar onFilterChange={handleFilterChange}
+                activeTab={activeTab}
+                filters={activeFilters[activeTab]} />
+          </div>
+
+          {/* Job Listings */}
+          <div className="col-span-12 lg:col-span-6 space-y-6">
+            <AnimatePresence>
+              {jobsData.map((job) => (
+                <JobCard 
+                  key={job.id} 
+                  job={job} 
+                  onClick={() => handleJobClick(job)} 
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Right Sidebar */}
+          <div className="hidden lg:block lg:col-span-3">
+            <div className="sticky top-6 space-y-6">
+              <FreelancerDashboard />
+              <RecentBids />
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="w-full md:w-1/4 space-y-6 border-0 px-2">
-        <FreelancerDashboard />
-        <RecentBids />
-      </div>
+      {/* Job Details Drawer */}
+      <JobDetailsDrawer 
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        job={selectedJob}
+      />
     </div>
   );
 };
 
-export default JobsList;
+
+export default JobsPage;

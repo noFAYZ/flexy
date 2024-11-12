@@ -29,7 +29,7 @@ export async function POST(request) {
       html: '<p>Thank you for joining our waitlist. We\'ll keep you updated on our progress!</p>'
     });
 
-    return NextResponse.json({ message: 'Email submitted successfully', id: audience?.id }, { status: 200 });
+    return NextResponse.json({ message: 'Email submitted successfully'}, { status: 200 });
   } catch (error) {
     console.error('Error submitting email:', error);
     return NextResponse.json({ error: 'Error submitting email' }, { status: 500 });

@@ -30,6 +30,7 @@ import LearnMoreSection from "./components/ComparisonSection";
 import InnovativeCardComparison from "./components/ComparisonSection";
 import AdditionalSections from "./components/ComparisonSection";
 import { Rocket, Shield, Users, Globe, Zap } from "lucide-react";
+import * as THREE from "three";
 
 function Planet() {
   const { scene } = useGLTF("/earth.glb");
@@ -55,12 +56,14 @@ const generateSpherePoints = (count, radius) => {
 };
 
 const StarField = ({ count = 5000 }) => {
-  const points = useRef();
+  const points = useRef<THREE.Points>(null);
   const spherePoints = useMemo(() => generateSpherePoints(count, 1.5), [count]);
 
   useFrame((state, delta) => {
-    points.current.rotation.x -= delta / 10;
-    points.current.rotation.y -= delta / 15;
+    if (points.current) {
+      points.current.rotation.x -= delta / 10;
+      points.current.rotation.y -= delta / 15;
+    }
   });
 
   return (
@@ -434,7 +437,7 @@ const FeatureCard = ({ title, description, step }) => {
 };
 
 const AnimatedPlanet = ({ scrollYProgress }) => {
-  const mesh = useRef();
+  const mesh = useRef<THREE.Group>(null);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
   const yPos = useTransform(scrollYProgress, [0, 0.5], [0, -2]);
 

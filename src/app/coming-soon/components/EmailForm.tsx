@@ -47,7 +47,7 @@ const SpaceshipEmailCapture = () => {
               exit={{ opacity: 0, y: -50 }}
             >
               <Button
-                auto
+           
                 size="lg"
                 className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105"
                 onClick={() => setShowForm(true)}
@@ -78,7 +78,7 @@ const SpaceshipEmailCapture = () => {
                 }}
               />
               <Button
-                auto
+             
                 type="submit"
                 size="lg"
                 className={`w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-bold rounded-full 

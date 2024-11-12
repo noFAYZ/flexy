@@ -1,4 +1,3 @@
-
 import { Button, Progress } from '@nextui-org/react';
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
@@ -13,6 +12,7 @@ import { WorkHistoryCard } from './components/Sidebar/WorkHistoryCard';
 import { LanguageesCard } from './components/Sidebar/LanguagesCard';
 import { CertificationsCard } from './components/Sidebar/CertificationsCard';
 import { EducationCard } from './components/Sidebar/EducationCard';
+import { ArrowUpRight, Zap } from 'lucide-react';
 
 interface UserPageProps {
   params: {
@@ -517,27 +517,156 @@ export default async function UserProfilePage({ params }: UserPageProps) {
     <Suspense fallback={<UserProfileSkeleton />}>
     
     <div className="w-full   ">
-      <div className="hidden justify-between max-w-full bg-gradient-to-r from-orange-500  to-pink-500 rounded-2xl py-2  px-6 ">
-        <Progress
-          size="md"
-          radius="md"
-          classNames={{
-            base: "max-w-xl",
-            track: "drop-shadow-md ",
-            indicator: "bg-gradient-to-r from-orange-500 to-indigo-500",
-            label: "tracking-wider font-medium text-default-600",
-            value: "text-foreground/60",
-          }}
-          label="Profile completeness"
-          value={65}
-        />
-        <div className="flex gap-4 content-center  items-center text-center align-middle">
-          <span className="text-foreground/60 content-center  items-center text-center align-middle">
-            65%
-          </span>
-          <Button variant="flat">Complete</Button>
+
+        <div className="w-full max-w-[1600px] mx-auto mb-6">
+          <div className="bg-background/60 backdrop-blur-md shadow-medium rounded-[2.5rem] border-medium border-default overflow-hidden">
+       
+            
+            <div className="p-6 space-y-6">
+              {/* Header Section */}
+              <div className="flex flex-col sm:flex-row gap-8 items-center">
+                {/* Enhanced Progress Circle */}
+                <div className="relative w-32 h-32 group">
+                  {/* Outer decorative ring */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-500 via-pink-500 to-red-500 animate-spin-slow opacity-20" />
+                  
+                  <div className="absolute inset-1 rounded-full bg-background/80 backdrop-blur-sm" />
+                  
+                  <svg className="w-full h-full relative" viewBox="0 0 100 100">
+                    {/* Decorative background circles */}
+                    <circle
+                      className="text-default-100/20"
+                      strokeWidth="4"
+                      stroke="currentColor"
+                      fill="transparent"
+                      r="44"
+                      cx="50"
+                      cy="50"
+                    />
+                    <circle
+                      className="text-default-100/10"
+                      strokeWidth="8"
+                      stroke="currentColor"
+                      fill="transparent"
+                      r="38"
+                      cx="50"
+                      cy="50"
+                    />
+                    
+                    {/* Main progress circle */}
+                    <circle
+                      className="text-primary transition-all duration-1000 ease-out"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      stroke="url(#progressGradient)"
+                      fill="transparent"
+                      r="41"
+                      cx="50"
+                      cy="50"
+                      style={{
+                        strokeDasharray: `${2 * Math.PI * 41}`,
+                        strokeDashoffset: `${2 * Math.PI * 41 * (1 - 65 / 100)}`,
+                        transform: 'rotate(-90deg)',
+                        transformOrigin: '50% 50%'
+                      }}
+                    />
+                    
+                    <defs>
+                      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#f97316" />
+                        <stop offset="50%" stopColor="#ec4899" />
+                        <stop offset="100%" stopColor="#f97316" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  
+                  {/* Centered percentage with animated background */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="relative">
+                      <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 via-pink-500 to-red-500">
+                        65%
+                      </span>
+                      <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs text-default-500">
+                        Complete
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress Details */}
+                <div className="flex-1 space-y-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h3 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 via-pink-500 to-red-500">
+                        Profile Completion
+                      </h3>
+                      <p className="text-default-500 text-sm mt-1">Complete your profile to increase visibility</p>
+                    </div>
+       {/*              <Button
+                      className="group bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg 
+                        hover:shadow-orange-500/25 transition-all duration-300 rounded-xl"
+                      size="sm"
+                      endContent={
+                        <ArrowUpRight 
+                          size={16} 
+                          className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                        />
+                      }
+                    >
+                      Complete Profile
+                    </Button> */}
+                  </div>
+                  
+                  {/* Progress Sections Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {[
+                      { name: 'About', progress: 100 },
+                      { name: 'Skills', progress: 80 },
+                      { name: 'Portfolio', progress: 40 },
+                      { name: 'Contact', progress: 60 }
+                    ].map((section) => (
+                      <div key={section.name} 
+                        className="group p-4 rounded-xl bg-default/40 backdrop-blur-md hover:bg-default/60 
+                          transition-all duration-300 cursor-pointer"
+                      >
+                        <div className="flex flex-col gap-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-medium">{section.name}</span>
+                            <span className="text-xs text-default-500">{section.progress}%</span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-default-200/50 overflow-hidden">
+                            <div 
+                              className="h-full rounded-full bg-gradient-to-r from-orange-500 via-pink-500 to-red-500 
+                                transition-all duration-500 ease-out group-hover:opacity-90"
+                              style={{ width: `${section.progress}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Tips Section */}
+              <div className="mt-6 p-4 rounded-2xl bg-default/40 backdrop-blur-md border border-default-200">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Zap size={18} className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Profile Tip</p>
+                    <p className="text-xs text-default-500 mt-1">
+                      A complete profile increases your chances of being discovered by 75%. 
+                      Add your recent projects and skills to stand out.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      
 
       <div className="px-5 relative sm:px-10 pb-10">
         <div className="flex flex-col sm:flex-row w-full  sm:pt-5 rounded-[3.5rem] justify-between gap-6">

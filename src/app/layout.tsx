@@ -4,7 +4,6 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/navbar";
 import { Providers } from "./providers";
-import { GoogleTagManager } from '@next/third-parties/google'
 
 import {  fontLufga } from '@/config/fonts'
 import { NavbarNew } from "@/components/navbar-new";
@@ -34,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-       <GoogleTagManager gtmId="G-KCKJ64RCZW" />
+     
       <head>
      
          
@@ -46,17 +45,13 @@ export default function RootLayout({
           fontLufga.variable
         )}
       >
-       <Providers themeProps={{ attribute: "data-theme", defaultTheme: "dark" }}>
-
-       <FadedBackground />
-          <NavbarNew  />
-    
-                {children}
-
-        
+        <Providers themeProps={{ attribute: "data-theme", defaultTheme: "dark" }}>
+          <>
+            <FadedBackground />
+            <NavbarNew />
+            {children}
+          </>
         </Providers>
-
-
         <Analytics />
       </body>
     </html>

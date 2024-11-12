@@ -21,13 +21,7 @@ const freelancerData = {
 export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
   <Card className="mb-6 border-none shadow-none px-2 sm:px-4 bg-transparent">
     <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
-      <Accordion defaultExpandedKeys={["theme"]} className="w-full">
-        <AccordionItem
-          key="theme"
-          aria-label="Theme"
-          indicator={<ChevronDown size={16} />}
-          title={
-            <Popover placement="bottom-start" className="">
+    <Popover placement="bottom-start" className="">
               <PopoverTrigger className="px-2 sm:px-4 py-2  rounded-3xl border-medium border-default bg-muted/70 w-full">
                 <div className="flex flex-col w-full gap-2">
                   <div className="flex justify-between w-full items-center">
@@ -66,7 +60,7 @@ export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
                       <span>Success Rate</span>
                       <span>{freelancer.successRate}%</span>
                     </div>
-                    <Progress value={freelancer.successRate} className="h-2 text-success bg-success-50 shadow-md" color="success" />
+                    <Progress value={freelancer.successRate} className="h-2 text-red-500   shadow-md"  />
                   </div>
                 </div>
               </PopoverTrigger>
@@ -96,32 +90,6 @@ export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
                 </div>
               </PopoverContent>
             </Popover>
-          }
-        >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-            <div className="flex flex-col items-center">
-              <Zap className="text-yellow-500 mb-1" />
-              <p className="font-semibold">{freelancer.connects}</p>
-              <p className="text-xs text-muted-foreground">Available Connects</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <Briefcase className="text-blue-500 mb-1" />
-              <p className="font-semibold">{freelancer.jobsWon}</p>
-              <p className="text-xs text-muted-foreground">Jobs Won</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <DollarSign className="text-green-500 mb-1" />
-              <p className="font-semibold">${freelancer.totalEarned}</p>
-              <p className="text-xs text-muted-foreground">Total Earned</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <Star className="text-orange-500 mb-1" />
-              <p className="font-semibold">{freelancer.rating}</p>
-              <p className="text-xs text-muted-foreground">Rating</p>
-            </div>
-          </div>
-        </AccordionItem>
-      </Accordion>
     </CardHeader>
     <CardContent>
       {/* Add any additional content here */}

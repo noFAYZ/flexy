@@ -1,78 +1,119 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Link from "next/link";
-import { ArrowUpRight, Settings2 } from "lucide-react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Check, Settings2, Pencil, Copy, Trash } from "lucide-react";
 
 interface SortableItemProps {
-  id: string;
-  width?: number;
-  height?: number;
+  id: number | string;
+  width: {
+    base: string;
+    sm?: string;
+    md?: string;
+    lg?: string;
+  };
+  height: {
+    base: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
+  };
   children?: React.ReactNode;
+  title?: string;
+  className?: string;
 }
 
-export function SortableItem({ id, width = 500, height = 500, children }: SortableItemProps) {
+export function SortableItem({ 
+  id, 
+  width,
+  height,
+  children,
+  title,
+  className 
+}: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
   
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    width,
-    height,
-    display: "flex",
-    cursor: "grab",
+    width: width.base,
+    minHeight: height.base,
+    '@media (min-width: 640px)': {
+      width: width.sm || width.base,
+      minHeight: height.sm || height.base,
+    },
+    '@media (min-width: 768px)': {
+      width: width.md || width.sm || width.base,
+      minHeight: height.md || height.sm || height.base,
+    },
+    '@media (min-width: 1024px)': {
+      width: width.lg || width.md || width.sm || width.base,
+      minHeight: height.lg || height.md || height.sm || height.base,
+    },
   };
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-blue border-1 border-background/80 dark:bg-card shadow-lg shadow-foreground/5 dark:border-card dark:shadow-card rounded-[3rem] sm:h-[200px] md:h-[400px] lg:h-[400px] xl:h-[400px] 2xl:h-[1000px] md:m-15 m-2"
+      className={`
+        bg-background/60 shadow-none rounded-[2.5rem] border-medium border-default 
+        bg-gradient-to-br from-background to-muted/50 overflow-hidden 
+        hover:shadow-lg hover:shadow-pink-500/10 transition-all duration-300
+        ${className}
+      `}
     >
-      <div className="relative w-full h-full group">
-        <Link
-          href=""
-          className="flex justify-center items-center"
-        >
-          <button className="absolute bg-foreground-100 top-4 right-20 w-10 h-10 md:w-[5.95rem] md:h-[3.55rem] px-2 rounded-3xl hover:bg-white border-0 border-transparent hover:text-black text-lg">
-            <div className="flex justify-center items-center">
-              Weekly
-            </div>
+      <div className="relative w-full h-full">
+        {/* Control Buttons - Hide on mobile */}
+        <div className="absolute top-4 sm:top-6 right-4 sm:right-6 z-10 hidden sm:flex gap-2">
+          <button 
+            className="p-2 rounded-xl bg-default/40 backdrop-blur-md hover:bg-default/60 
+              transition-all duration-300"
+            title="Edit"
+          >
+            <Pencil size={20} className="text-default-500" />
           </button>
-        </Link>
-        <Link
-          href=""
-          className="flex justify-center items-center"
-        >
-          <button className="absolute bg-foreground-100 top-4 right-4 w-10 h-10 md:w-[3.55rem] md:h-[3.55rem] px-2 rounded-3xl hover:bg-white border-0 border-transparent hover:text-black">
-            <div className="flex justify-center items-center">
-              <Settings2 size={26} />
-            </div>
+          <button 
+            className="p-2 rounded-xl bg-default/40 backdrop-blur-md hover:bg-default/60 
+              transition-all duration-300"
+            title="Duplicate"
+          >
+            <Copy size={20} className="text-default-500" />
           </button>
-        </Link>
+          <button 
+            className="p-2 rounded-xl bg-default/40 backdrop-blur-md hover:bg-default/60 
+              transition-all duration-300"
+            title="Delete"
+          >
+            <Trash size={20} className="text-default-500" />
+          </button>
+        </div>
 
-        <button className="absolute bg-foreground-100 bottom-4 right-4 transition-all w-14 h-14 md:w-[3.75rem] md:h-[3.75rem] duration-500 ease-in-out group-hover:w-40 p-2 rounded-full hover:bg-default-100 border-2 border-transparent dark:border-knight">
-          <div className="flex justify-center items-center">
-            <Link
-              href="https://beta.simplegen.ai/"
-              className="flex justify-center items-center"
-            >
-              <span className="text-sm md:text-medium text-nowrap hidden group-hover:block invisible group-hover:visible mr-1 animate-fade">
-                Check Now
-              </span>
-              <ArrowUpRight size={26} />
-            </Link>
-          </div>
-        </button>
+        {/* Mobile Control Button */}
+        <div className="absolute top-4 right-4 z-10 sm:hidden">
+          <button 
+            className="p-2 rounded-xl bg-default/40 backdrop-blur-md"
+            title="Options"
+          >
+            <Settings2 size={20} className="text-default-500" />
+          </button>
+        </div>
 
-        {/* Render the children prop */}
-         
-          {children}
-      
+        {/* Content */}
+        <div className="h-full flex flex-col">
+          {title && (
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-semibold">{title}</h3>
+            </CardHeader>
+          )}
+          <CardBody className="p-4 sm:p-6 flex-grow">
+            {children}
+          </CardBody>
+        </div>
       </div>
-    </div>
+    </Card>
   );
 }

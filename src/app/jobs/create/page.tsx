@@ -2,11 +2,9 @@
 import React from 'react'
 import { useOrbisStore } from "@/app/lib/orbis";
 import { Button } from '@nextui-org/button';
-import { HeroiconsOutlineStatusOffline, PhPlugsConnectedThin, SvgSpinnersPulse2 } from '@/components/icons/icons';
-import { CircleDot, Dot } from 'lucide-react';
 
 
-const page = () => {
+const Page = () => {
     const { createPost, loading } = useOrbisStore();
     const handleCreateJob = async () => {
             try {
@@ -46,6 +44,6 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
 
 

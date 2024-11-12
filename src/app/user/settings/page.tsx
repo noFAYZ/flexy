@@ -57,7 +57,7 @@ const SettingsPage = () => {
 
   return (
     
-    <div className="container mx-auto p-4">
+    <div className=" mx-auto p-4">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block lg:w-64">

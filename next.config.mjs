@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-   async redirects() {
+    async redirects() {
     return [
       {
         source: '/',
@@ -8,7 +8,7 @@ const nextConfig = {
         permanent: false,
       },
     ]
-  }, 
+  },  
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -16,11 +16,7 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
+
     webpack: (config) => {
         // Add rule for SVG files
         config.module.rules.push({

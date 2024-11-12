@@ -165,70 +165,12 @@ export const NavbarNew = () => {
         </NavbarContent>
       </NextUINavbar>
 
-      {authenticated && pathname === "/dashboard" && <DashboardHeader />}
+      
     </div>
   );
 };
 
-const DashboardHeader = () => (
-  <>
-    <div className="flex flex-wrap mt-10 px-6 gap-8 justify-between">
-      <WelcomeSection />
-      <StatSection title="Courses" value="1,176" subtext="total lessons" />
-      <StatSection title="Courses" value="1,176" />
-      <StatSection title="Net Income" value="$12,176" />
-    </div>
-    <DashboardMenu />
-  </>
-);
 
-const WelcomeSection = () => (
-  <div className="flex flex-col">
-    <span>Welcome,</span>
-    <h1 className="font-lufga text-4xl font-medium">Faizan Asad</h1>
-  </div>
-);
 
-const StatSection = ({ title, value, subtext }) => (
-  <div className="flex flex-col">
-    <span>{title}</span>
-    <span className="flex align-text-bottom">
-      <h1 className="font-lufga text-4xl font-medium">{value}</h1>
-      {subtext && <p className="align-bottom items-baseline">{subtext}</p>}
-    </span>
-  </div>
-);
-
-const DashboardMenu = () => {
-  const menuItems = [
-    { icon: LayoutDashboardIcon, text: "Dashboard", link: "/" },
-    { icon: HandCoinsIcon, text: "Payments", link: "/inbox" },
-    { icon: MessageCircleMoreIcon, text: "Messages", link: "/inbox", badge: "5200" },
-    { icon: SearchIcon, text: "Find Work", link: "/inbox" },
-  ];
-
-  return (
-    <div className="flex flex-wrap mt-10 px-6 gap-8 justify-between">
-      <div className="flex justify-center md:justify-start">
-        <div className="flex gap-4 align-middle items-center">
-          <NextUINavbar className="h-auto items-center" classNames={{ wrapper: "px-0" }}>
-            <div className="flex flex-wrap gap-3">
-              {menuItems.map((item, index) => (
-                <NavbarItem key={index}>
-                  <NextLink href={item.link} className="font-medium">
-                    <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
-                      <item.icon size={18} />
-                      {item.text}
-                    </div>
-                  </NextLink>
-                </NavbarItem>
-              ))}
-            </div>
-          </NextUINavbar>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default NavbarNew;

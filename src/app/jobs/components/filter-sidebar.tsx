@@ -1,258 +1,245 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Input, Slider, Button, Chip, Switch, Tabs, Tab, Tooltip } from "@nextui-org/react";
-import { Search, DollarSign, Star, RefreshCw, Filter, Briefcase, ChevronLeft, ChevronRight, User, Zap } from 'lucide-react';
-import { FluentBriefcase20Filled, MingcuteUser3Fill } from '@/components/icons/icons';
+import { 
+  Input, Slider, Button, Chip, 
+  Card, CardBody, Accordion, AccordionItem
+} from "@nextui-org/react";
+import { 
+  Search, DollarSign, Star, RefreshCw, 
+  Filter, Briefcase, Clock, Target, 
+  Award, Globe, Zap, X 
+} from 'lucide-react';
 
-const FilterSidebar = ({ onFilterChange, activeTab, filters }) => {
-  const [isOpen, setIsOpen] = React.useState(true);
+// Default filter values
+const defaultFilters = {
+  searchTerm: '',
+  projectType: [],
+  complexity: [],
+  duration: [],
+  budget: [0, 50000],
+  skills: [],
+  rating: 0,
+  verificationLevel: []
+};
+
+const projectTypes = ["Smart Contracts", "Design", "Cryptography", "NFT", "Data Science", "Security", "Core Development", "Community", "Economics"];
+
+const complexityLevels = ["1", "2", "3", "4", "5"];
+
+const durationOptions = ["1 week", "2 weeks", "1 month", "3 months", "6 months", "Ongoing"];
+
+const commonSkills = ["Solidity", "React", "Node.js", "Python", "Rust", "Smart Contracts", "DeFi", "NFT", "Web3"];
+
+const FilterSidebar = ({ onFilterChange, activeTab, filters, className = "", isMobile = false }) => {
+  const [isOpen, setIsOpen] = React.useState(!isMobile);
+  const currentFilters = { ...defaultFilters, ...filters };
+  const [currentBudget, setCurrentBudget] = React.useState(currentFilters.budget);
+  const [currentRating, setCurrentRating] = React.useState(currentFilters.rating);
 
   const updateFilter = (key, value) => {
     onFilterChange({
       type: activeTab,
-      filters: { ...filters, [key]: value }
+      filters: { ...currentFilters, [key]: value }
     });
   };
 
   const resetFilters = () => {
+    setCurrentBudget([0, 50000]);
+    setCurrentRating(0);
     onFilterChange({
       type: activeTab,
-      filters: activeTab === 'jobs' ? {
-        searchTerm: '',
-        categoryFilter: 'all',
-        jobType: [],
-        experienceLevel: [],
-        clientRating: 0,
-        budgetRange: [0, 35000],
-        duration: 'any',
-        sortBy: 'relevance',
-        selectedTags: []
-      } : {
-        searchTerm: '',
-        skills: [],
-        experienceLevel: [],
-        hourlyRate: [0, 150],
-        rating: 0,
-      }
+      filters: defaultFilters
     });
   };
 
-  const categories = ['All', 'Web', 'Mobile', 'UI/UX', 'Data', 'Writing', 'Marketing'];
-  const jobTypes = ['Hourly', 'Fixed', 'Long-term', 'Short-term'];
-  const experienceLevels = ['Entry', 'Intermediate', 'Expert'];
-
   return (
-    <motion.div
-      initial={{ width: "300px" }}
-      animate={{ width: isOpen ? "300px" : "60px" }}
-      transition={{ duration: 0.1 }}
-      className="bg-background/80 backdrop-blur-md overflow-hidden rounded-2xl h-full border border-divider   min-w-[300px] shadow-lg"
-    >
-      <div className="flex flex-col h-full">
-        <motion.div 
-          className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4"
-          animate={{ opacity: isOpen ? 1 : 0 }}
-        >
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold flex items-center">
-              <Filter className="mr-2 text-primary" size={24} />
-              Filters
-            </h2>
-            <Tooltip content="Reset Filters">
-              <Button 
-                isIconOnly 
-                color="primary" 
-                variant="light" 
-                onPress={resetFilters}
-                aria-label="Reset filters"
-                className="relative right-6 overflow-hidden group"
-              >
-                <RefreshCw size={18} className="group-hover:scale-125 transition-transform duration-300" />
-                <span className="absolute inset-0 bg-primary/10 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full" />
-              </Button>
-            </Tooltip>
-          </div>
-        </motion.div>
-
-        {isOpen && (
-          <div className="flex-grow overflow-y-auto custom-scrollbar p-4">
-            {activeTab === 'jobs' ? (
-              <JobFilters filters={filters} updateFilter={updateFilter} categories={categories} jobTypes={jobTypes} experienceLevels={experienceLevels} />
-            ) : (
-              <FreelancerFilters filters={filters} updateFilter={updateFilter} experienceLevels={experienceLevels} />
+    <AnimatePresence>
+      <motion.div 
+        className={`${className} ${
+          isMobile 
+            ? "fixed inset-0 z-50 bg-background/80 backdrop-blur-md"
+            : "relative"
+        }`}
+        initial={isMobile ? { opacity: 0, x: -100 } : false}
+        animate={isMobile ? { opacity: 1, x: 0 } : {}}
+        exit={isMobile ? { opacity: 0, x: -100 } : {}}
+      >
+        <Card className="h-full bg-background/60 backdrop-blur-xl border-medium border-default-200">
+          <CardBody className="p-4 overflow-y-auto">
+            {isMobile && (
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">Filters</h2>
+                <Button
+                  isIconOnly
+                  variant="light"
+                  onPress={() => setIsOpen(false)}
+                >
+                  <X size={20} />
+                </Button>
+              </div>
             )}
-          </div>
-        )}
 
-        <Tooltip content={isOpen ? "Collapse sidebar" : "Expand sidebar"} placement="right">
-          <Button
-            isIconOnly
-            color="primary"
-            variant="flat"
-            onPress={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-            className="absolute top-4 -right-3 rounded-l-full shadow-lg hover:scale-110 transition-transform"
-          >
-            {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
-          </Button>
-        </Tooltip>
-      </div>
-    </motion.div>
+            <div className="space-y-4">
+              {/* Search Input */}
+              <Input
+                label="Search Skills"
+                placeholder="e.g. Solidity, React..."
+                startContent={<Search size={18} />}
+                value={currentFilters.searchTerm}
+                onChange={(e) => updateFilter('searchTerm', e.target.value)}
+                classNames={{
+                  base: "bg-default-100/50",
+                  inputWrapper: "hover:bg-default-200/50"
+                }}
+              />
+
+              {/* Active Filters */}
+              {Object.keys(currentFilters).some(key => 
+                Array.isArray(currentFilters[key]) ? 
+                currentFilters[key].length > 0 : 
+                currentFilters[key]
+              ) && (
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    variant="flat"
+                    color="danger"
+                    onPress={resetFilters}
+                    startContent={<RefreshCw size={14} />}
+                  >
+                    Reset All
+                  </Button>
+                  {currentFilters.projectType.map(type => (
+                    <Chip
+                      key={type}
+                      onClose={() => {
+                        const newTypes = currentFilters.projectType.filter(t => t !== type);
+                        updateFilter('projectType', newTypes);
+                      }}
+                      variant="flat"
+                      className="bg-orange-500/20 text-orange-500"
+                    >
+                      {type}
+                    </Chip>
+                  ))}
+                </div>
+              )}
+
+              {/* Accordion Filters */}
+              <Accordion 
+                className="px-0 shadow-none"
+                variant="bordered"
+                defaultExpandedKeys={["type", "budget"]}
+              >
+                <AccordionItem
+                  key="type"
+                  aria-label="Project Type"
+                  title={
+                    <div className="flex items-center gap-2">
+                      <Briefcase size={16} className="text-orange-500" />
+                      <span>Project Type</span>
+                    </div>
+                  }
+                >
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {projectTypes.map((type) => (
+                      <Chip
+                        key={type}
+                        variant="flat"
+                        classNames={{
+                          base: currentFilters.projectType.includes(type) 
+                            ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
+                            : "bg-default-100 hover:bg-default-200",
+                        }}
+                        onClick={() => {
+                          const newTypes = currentFilters.projectType.includes(type)
+                            ? currentFilters.projectType.filter(t => t !== type)
+                            : [...currentFilters.projectType, type];
+                          updateFilter('projectType', newTypes);
+                        }}
+                      >
+                        {type}
+                      </Chip>
+                    ))}
+                  </div>
+                </AccordionItem>
+
+                <AccordionItem
+                  key="budget"
+                  aria-label="Budget Range"
+                  title={
+                    <div className="flex items-center gap-2">
+                      <DollarSign size={16} className="text-orange-500" />
+                      <span>Budget Range</span>
+                    </div>
+                  }
+                >
+                  <div className="px-1 pt-2">
+                    <Slider
+                      size="sm"
+                      step={100}
+                      minValue={0}
+                      maxValue={50000}
+                      value={currentBudget}
+                      onChange={(value) => {
+                        setCurrentBudget(value);
+                        updateFilter('budget', value);
+                      }}
+                      classNames={{
+                        track: "bg-default-500/30",
+                        filledTrack: "bg-gradient-to-r from-orange-500 to-pink-500",
+                        thumb: "bg-background border-2 border-orange-500",
+                      }}
+                    />
+                    <div className="flex justify-between mt-2">
+                      <span className="text-sm text-default-500">${currentBudget[0]}</span>
+                      <span className="text-sm text-default-500">${currentBudget[1]}</span>
+                    </div>
+                  </div>
+                </AccordionItem>
+
+                <AccordionItem
+                  key="rating"
+                  aria-label="Client Rating"
+                  title={
+                    <div className="flex items-center gap-2">
+                      <Star size={16} className="text-orange-500" />
+                      <span>Client Rating</span>
+                    </div>
+                  }
+                >
+                  <div className="flex items-center gap-4 pt-2">
+                    <Slider
+                      size="sm"
+                      step={0.5}
+                      minValue={0}
+                      maxValue={5}
+                      value={currentRating}
+                      onChange={(value) => {
+                        setCurrentRating(value);
+                        updateFilter('rating', value);
+                      }}
+                      classNames={{
+                        track: "bg-default-500/30",
+                        filledTrack: "bg-gradient-to-r from-orange-500 to-pink-500",
+                        thumb: "bg-background border-2 border-orange-500",
+                      }}
+                    />
+                    <div className="flex items-center gap-1 text-orange-500">
+                      <Star size={16} fill="currentColor" />
+                      <span className="text-sm font-medium">{currentRating}</span>
+                    </div>
+                  </div>
+                </AccordionItem>
+
+                {/* Add more accordion items for other filters */}
+              </Accordion>
+            </div>
+          </CardBody>
+        </Card>
+      </motion.div>
+    </AnimatePresence>
   );
 };
-
-const JobFilters = ({ filters, updateFilter, categories, jobTypes, experienceLevels }) => (
-  <div className="space-y-6 mt-4">
-
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Categories</h3>
-      <div className="flex flex-wrap gap-2">
-        {categories.map(category => (
-          <motion.div key={category} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Chip
-              variant={filters.categoryFilter === category.toLowerCase() ? "solid" : "flat"}
-              onClick={() => updateFilter('categoryFilter', category.toLowerCase())}
-              color="primary"
-              className="transition-all duration-300 hover:shadow-md"
-            >
-              {category}
-            </Chip>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Job Type</h3>
-      <div className="flex flex-wrap gap-2">
-        {jobTypes.map(type => (
-          <motion.div key={type} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Chip
-              variant={filters.jobType.includes(type) ? "solid" : "flat"}
-              onClick={() => {
-                updateFilter('jobType', filters.jobType.includes(type)
-                  ? filters.jobType.filter(t => t !== type)
-                  : [...filters.jobType, type]
-                );
-              }}
-              color="primary"
-              className="transition-all duration-300 hover:shadow-md"
-            >
-              {type}
-            </Chip>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Experience Level</h3>
-      <div className="flex flex-wrap gap-4">
-        {experienceLevels.map(level => (
-          <Switch
-            key={level}
-            size="sm"
-            color="primary"
-            isSelected={filters.experienceLevel.includes(level)}
-            onValueChange={(isSelected) => {
-              updateFilter('experienceLevel', isSelected 
-                ? [...filters.experienceLevel, level] 
-                : filters.experienceLevel.filter(l => l !== level)
-              );
-            }}
-          >
-            {level}
-          </Switch>
-        ))}
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Budget Range</h3>
-      <Slider
-        size="sm"
-        step={100}
-        minValue={0}
-        maxValue={35000}
-        value={filters.budgetRange}
-        onChange={(value) => updateFilter('budgetRange', value)}
-        className="max-w-full"
-        startContent={<DollarSign size={18} />}
-        endContent={<DollarSign size={18} />}
-      />
-      <div className="flex justify-between mt-2">
-        <span className="text-sm">${filters.budgetRange[0]}</span>
-        <span className="text-sm">${filters.budgetRange[1]}</span>
-      </div>
-    </div>
-  </div>
-);
-
-const FreelancerFilters = ({ filters, updateFilter, experienceLevels }) => (
-  <div className="space-y-6 mt-4">
-
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Experience Level</h3>
-      <div className="flex flex-wrap gap-4">
-        {experienceLevels.map(level => (
-          <Switch
-            key={level}
-            size="sm"
-            color="primary"
-            isSelected={filters.experienceLevel.includes(level)}
-            onValueChange={(isSelected) => {
-              updateFilter('experienceLevel', isSelected 
-                ? [...filters.experienceLevel, level] 
-                : filters.experienceLevel.filter(l => l !== level)
-              );
-            }}
-          >
-            {level}
-          </Switch>
-        ))}
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Hourly Rate</h3>
-      <Slider
-        size="sm"
-        step={5}
-        minValue={0}
-        maxValue={150}
-        value={filters.hourlyRate}
-        onChange={(value) => updateFilter('hourlyRate', value)}
-        className="max-w-full"
-        startContent={<DollarSign size={18} />}
-        endContent={<DollarSign size={18} />}
-      />
-      <div className="flex justify-between mt-2">
-        <span className="text-sm">${filters.hourlyRate[0]}/hr</span>
-        <span className="text-sm">${filters.hourlyRate[1]}/hr</span>
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-sm font-semibold mb-2">Rating</h3>
-      <div className="flex items-center space-x-2">
-        <Slider
-          size="sm"
-          step={0.5}
-          maxValue={5}
-          minValue={0}
-          value={filters.rating}
-          onChange={(value) => updateFilter('rating', value)}
-          className="max-w-full"
-        />
-        <div className="flex items-center">
-          <Star size={18} />
-          <span className="text-sm font-semibold ml-1">{filters.rating.toFixed(1)}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 export default FilterSidebar;

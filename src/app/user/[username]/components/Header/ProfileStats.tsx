@@ -1,13 +1,32 @@
-
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import ProfileBadges from "./ProfileBadges";
-import { MingcuteExchangeDollarLine } from "@/components/icons/icons";
-
+import { MageMessageDotsRound, MingcuteExchangeDollarLine } from "@/components/icons/icons";
+import { MessageSquare, UserPlus, UserPlus2Icon } from "lucide-react";
 
 export const ProfileStats = ({ user }) => (
-    <div className="flex flex-col  items-center gap-1 sm:gap-2 md:gap-4 w-full lg:w-auto">
-      <ProfileBadges />
-  
+  <div className="flex flex-col  items-center gap-1 sm:gap-2 md:gap-4 w-full lg:w-auto">
+    <ProfileBadges />
+
+    <div className="flex gap-2 sm:w-full py-2 flex-wrap justify-center sm:justify-end">
+      <Button
+      
+        className="flex-1 sm:flex-none bg-secondary text-white
+                    shadow-lg hover:shadow-orange-500/25 transition-all duration-300 rounded-2xl"
+        startContent={<MageMessageDotsRound width={22} height={22} />}
+      >
+        Message
+      </Button>
+      <Button
+        className="flex-1 sm:flex-none bg-gradient-to-r from-orange-500 to-pink-500 text-white
+                    shadow-lg hover:shadow-orange-500/25 transition-all duration-300 rounded-2xl"
+        variant="flat"
+        startContent={<UserPlus2Icon size={20} />}
+      >
+        Connect
+      </Button>
+    </div>
+
+    <div className="flex gap-2">
       <Card className="flex flex-row mb-6 w-fit px-4 bg-gradient-to-tl from-pink-500 to-orange-500 text-white shadow backdrop-blur-0 rounded-[2.5rem] items-center content-center justify-center align-middle">
         <CardBody>
           <div className="flex gap-1 md:gap2 lg:gap-4 items-center  py-2 ">
@@ -32,13 +51,14 @@ export const ProfileStats = ({ user }) => (
         </CardBody>
       </Card>
     </div>
-  );
-  
- const Stat = ({ value, label }) => (
-    <div className="flex items-center">
-      <div>
-        <div className="font-semibold">{value}</div>
-        <div className="text-xs">{label}</div>
-      </div>
+  </div>
+);
+
+const Stat = ({ value, label }) => (
+  <div className="flex items-center">
+    <div>
+      <div className="font-semibold">{value}</div>
+      <div className="text-xs">{label}</div>
     </div>
-  );
+  </div>
+);

@@ -5,8 +5,8 @@ import {  BadgeCheck, MapPinIcon } from "lucide-react";
 
 
 export const ProfileHeader = ({ user }) => (
-    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 w-full lg:w-auto">
-      <div className="relative flex flex-col items-center sm:items-start">
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 w-full lg:w-auto">
+      <div className="relative flex flex-col items-center sm:items-center">
         <Badge
           content="online"
           color="success"
