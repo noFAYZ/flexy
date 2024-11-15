@@ -19,10 +19,9 @@ const freelancerData = {
 };
 
 export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
-  <Card className="mb-6 border-none shadow-none px-2 sm:px-4 bg-transparent">
-    <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
-    <Popover placement="bottom-start" className="">
-              <PopoverTrigger className="px-2 sm:px-4 py-2  rounded-3xl border-medium border-default bg-muted/70 w-full">
+  <Card className="mb-6 border-none shadow-none   bg-default/40">
+   
+    <div className="px-2 sm:px-4 py-2  rounded-3xl border-medium border-default bg-muted/70 w-full">
                 <div className="flex flex-col w-full gap-2">
                   <div className="flex justify-between w-full items-center">
                     <User
@@ -60,39 +59,16 @@ export const FreelancerDashboard = ({ freelancer = freelancerData }) => (
                       <span>Success Rate</span>
                       <span>{freelancer.successRate}%</span>
                     </div>
-                    <Progress value={freelancer.successRate} className="h-2 text-red-500   shadow-md"  />
+                    <Progress
+                value={freelancer.successRate}
+                classNames={{
+                  indicator: "bg-gradient-to-r from-pink-500 to-orange-600",
+                }}
+              />
+                    
                   </div>
                 </div>
-              </PopoverTrigger>
-              <PopoverContent className="p-4 py-2">
-                <div className="flex flex-col gap-2">
-                  <User
-                    name={freelancer.name}
-                    description={freelancer.description}
-                    avatarProps={{
-                      src: freelancer.avatar,
-                      fallback: freelancer.name.charAt(0),
-                      size: "lg",
-                    }}
-                  />
-                  <div className="flex items-center gap-2 mt-2">
-                    <MapPin size={14} className="text-muted-foreground" />
-                    <span className="text-sm">{freelancer.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Star size={14} className="text-yellow-500" />
-                    <span className="text-sm font-semibold">{freelancer.rating} / 5</span>
-                    <span className="text-xs text-muted-foreground">(Based on 50+ reviews)</span>
-                  </div>
-                  <Chip variant="solid" className="self-start mt-2">
-                    Verified Client
-                  </Chip>
-                </div>
-              </PopoverContent>
-            </Popover>
-    </CardHeader>
-    <CardContent>
-      {/* Add any additional content here */}
-    </CardContent>
+              </div>
+   
   </Card>
 );

@@ -74,8 +74,8 @@ const RecentBids = ({ bids }) => {
   };
 
   return (
-    <div className="px-2 sm:px-4 md:px-6 lg:px-8">
-      <Card className="border-medium border-default rounded-3xl bg-gradient-to-br from-background to-muted/50 overflow-hidden">
+    <div className="">
+      <Card className="border-medium border-default rounded-[2.5rem] bg-gradient-to-br from-background to-muted/50 overflow-hidden">
         <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4">
           <CardTitle className="text-lg sm:text-xl font-semibold flex items-center">
             <motion.div

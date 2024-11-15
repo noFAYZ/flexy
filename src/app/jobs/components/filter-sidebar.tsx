@@ -2,7 +2,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Input, Slider, Button, Chip, 
-  Card, CardBody, Accordion, AccordionItem
+  Card, CardBody, Accordion, AccordionItem,
+  Divider
 } from "@nextui-org/react";
 import { 
   Search, DollarSign, Star, RefreshCw, 
@@ -30,215 +31,194 @@ const durationOptions = ["1 week", "2 weeks", "1 month", "3 months", "6 months",
 
 const commonSkills = ["Solidity", "React", "Node.js", "Python", "Rust", "Smart Contracts", "DeFi", "NFT", "Web3"];
 
-const FilterSidebar = ({ onFilterChange, activeTab, filters, className = "", isMobile = false }) => {
-  const [isOpen, setIsOpen] = React.useState(!isMobile);
-  const currentFilters = { ...defaultFilters, ...filters };
+const FilterContent = ({ currentFilters, onFilterChange }) => {
   const [currentBudget, setCurrentBudget] = React.useState(currentFilters.budget);
-  const [currentRating, setCurrentRating] = React.useState(currentFilters.rating);
-
-  const updateFilter = (key, value) => {
-    onFilterChange({
-      type: activeTab,
-      filters: { ...currentFilters, [key]: value }
-    });
-  };
-
-  const resetFilters = () => {
-    setCurrentBudget([0, 50000]);
-    setCurrentRating(0);
-    onFilterChange({
-      type: activeTab,
-      filters: defaultFilters
-    });
-  };
 
   return (
-    <AnimatePresence>
-      <motion.div 
-        className={`${className} ${
-          isMobile 
-            ? "fixed inset-0 z-50 bg-background/80 backdrop-blur-md"
-            : "relative"
-        }`}
-        initial={isMobile ? { opacity: 0, x: -100 } : false}
-        animate={isMobile ? { opacity: 1, x: 0 } : {}}
-        exit={isMobile ? { opacity: 0, x: -100 } : {}}
-      >
-        <Card className="h-full bg-background/60 backdrop-blur-xl border-medium border-default-200">
-          <CardBody className="p-4 overflow-y-auto">
-            {isMobile && (
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold">Filters</h2>
-                <Button
-                  isIconOnly
-                  variant="light"
-                  onPress={() => setIsOpen(false)}
-                >
-                  <X size={20} />
-                </Button>
-              </div>
-            )}
-
-            <div className="space-y-4">
-              {/* Search Input */}
-              <Input
-                label="Search Skills"
-                placeholder="e.g. Solidity, React..."
-                startContent={<Search size={18} />}
-                value={currentFilters.searchTerm}
-                onChange={(e) => updateFilter('searchTerm', e.target.value)}
-                classNames={{
-                  base: "bg-default-100/50",
-                  inputWrapper: "hover:bg-default-200/50"
+    <div className="space-y-6">
+      <Input
+        placeholder="Search filters..."
+        startContent={<Search size={18} />}
+        value={currentFilters.searchTerm || ''}
+        onChange={(e) => onFilterChange({ type: 'searchTerm', value: e.target.value })}
+      />
+      
+      <Accordion>
+        <AccordionItem key="project-type" title="Project Type">
+          <div className="flex flex-wrap gap-2">
+            {projectTypes.map((type) => (
+              <Chip
+                key={type}
+                variant={currentFilters.projectType?.includes(type) ? "solid" : "bordered"}
+                onClick={() => {
+                  const newTypes = currentFilters.projectType?.includes(type)
+                    ? currentFilters.projectType.filter(t => t !== type)
+                    : [...(currentFilters.projectType || []), type];
+                  onFilterChange({ type: 'projectType', value: newTypes });
                 }}
-              />
-
-              {/* Active Filters */}
-              {Object.keys(currentFilters).some(key => 
-                Array.isArray(currentFilters[key]) ? 
-                currentFilters[key].length > 0 : 
-                currentFilters[key]
-              ) && (
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    color="danger"
-                    onPress={resetFilters}
-                    startContent={<RefreshCw size={14} />}
-                  >
-                    Reset All
-                  </Button>
-                  {currentFilters.projectType.map(type => (
-                    <Chip
-                      key={type}
-                      onClose={() => {
-                        const newTypes = currentFilters.projectType.filter(t => t !== type);
-                        updateFilter('projectType', newTypes);
-                      }}
-                      variant="flat"
-                      className="bg-orange-500/20 text-orange-500"
-                    >
-                      {type}
-                    </Chip>
-                  ))}
-                </div>
-              )}
-
-              {/* Accordion Filters */}
-              <Accordion 
-                className="px-0 shadow-none"
-                variant="bordered"
-                defaultExpandedKeys={["type", "budget"]}
               >
-                <AccordionItem
-                  key="type"
-                  aria-label="Project Type"
-                  title={
-                    <div className="flex items-center gap-2">
-                      <Briefcase size={16} className="text-orange-500" />
-                      <span>Project Type</span>
-                    </div>
-                  }
-                >
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {projectTypes.map((type) => (
-                      <Chip
-                        key={type}
-                        variant="flat"
-                        classNames={{
-                          base: currentFilters.projectType.includes(type) 
-                            ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                            : "bg-default-100 hover:bg-default-200",
-                        }}
-                        onClick={() => {
-                          const newTypes = currentFilters.projectType.includes(type)
-                            ? currentFilters.projectType.filter(t => t !== type)
-                            : [...currentFilters.projectType, type];
-                          updateFilter('projectType', newTypes);
-                        }}
-                      >
-                        {type}
-                      </Chip>
-                    ))}
-                  </div>
-                </AccordionItem>
+                {type}
+              </Chip>
+            ))}
+          </div>
+        </AccordionItem>
 
-                <AccordionItem
-                  key="budget"
-                  aria-label="Budget Range"
-                  title={
-                    <div className="flex items-center gap-2">
-                      <DollarSign size={16} className="text-orange-500" />
-                      <span>Budget Range</span>
-                    </div>
-                  }
-                >
-                  <div className="px-1 pt-2">
-                    <Slider
-                      size="sm"
-                      step={100}
-                      minValue={0}
-                      maxValue={50000}
-                      value={currentBudget}
-                      onChange={(value) => {
-                        setCurrentBudget(value);
-                        updateFilter('budget', value);
-                      }}
-                      classNames={{
-                        track: "bg-default-500/30",
-                        filledTrack: "bg-gradient-to-r from-orange-500 to-pink-500",
-                        thumb: "bg-background border-2 border-orange-500",
-                      }}
-                    />
-                    <div className="flex justify-between mt-2">
-                      <span className="text-sm text-default-500">${currentBudget[0]}</span>
-                      <span className="text-sm text-default-500">${currentBudget[1]}</span>
-                    </div>
-                  </div>
-                </AccordionItem>
+        <AccordionItem key="budget" title="Budget Range">
+          <Slider
+            label="Budget ($)"
+            step={1000}
+            minValue={0}
+            maxValue={50000}
+            value={currentBudget}
+            onChange={setCurrentBudget}
+            onChangeEnd={(value) => onFilterChange({ type: 'budget', value })}
+            formatOptions={{ style: 'currency', currency: 'USD' }}
+            className="max-w-md"
+          />
+        </AccordionItem>
 
-                <AccordionItem
-                  key="rating"
-                  aria-label="Client Rating"
-                  title={
-                    <div className="flex items-center gap-2">
-                      <Star size={16} className="text-orange-500" />
-                      <span>Client Rating</span>
-                    </div>
-                  }
-                >
-                  <div className="flex items-center gap-4 pt-2">
-                    <Slider
-                      size="sm"
-                      step={0.5}
-                      minValue={0}
-                      maxValue={5}
-                      value={currentRating}
-                      onChange={(value) => {
-                        setCurrentRating(value);
-                        updateFilter('rating', value);
-                      }}
-                      classNames={{
-                        track: "bg-default-500/30",
-                        filledTrack: "bg-gradient-to-r from-orange-500 to-pink-500",
-                        thumb: "bg-background border-2 border-orange-500",
-                      }}
-                    />
-                    <div className="flex items-center gap-1 text-orange-500">
-                      <Star size={16} fill="currentColor" />
-                      <span className="text-sm font-medium">{currentRating}</span>
-                    </div>
-                  </div>
-                </AccordionItem>
+        <AccordionItem key="complexity" title="Complexity Level">
+          <div className="flex flex-wrap gap-2">
+            {complexityLevels.map((level) => (
+              <Chip
+                key={level}
+                variant={currentFilters.complexity?.includes(level) ? "solid" : "bordered"}
+                onClick={() => {
+                  const newLevels = currentFilters.complexity?.includes(level)
+                    ? currentFilters.complexity.filter(l => l !== level)
+                    : [...(currentFilters.complexity || []), level];
+                  onFilterChange({ type: 'complexity', value: newLevels });
+                }}
+              >
+                Level {level}
+              </Chip>
+            ))}
+          </div>
+        </AccordionItem>
 
-                {/* Add more accordion items for other filters */}
-              </Accordion>
+        <AccordionItem key="duration" title="Duration">
+          <div className="flex flex-wrap gap-2">
+            {durationOptions.map((duration) => (
+              <Chip
+                key={duration}
+                variant={currentFilters.duration?.includes(duration) ? "solid" : "bordered"}
+                onClick={() => {
+                  const newDurations = currentFilters.duration?.includes(duration)
+                    ? currentFilters.duration.filter(d => d !== duration)
+                    : [...(currentFilters.duration || []), duration];
+                  onFilterChange({ type: 'duration', value: newDurations });
+                }}
+              >
+                {duration}
+              </Chip>
+            ))}
+          </div>
+        </AccordionItem>
+
+        <AccordionItem key="skills" title="Skills">
+          <div className="flex flex-wrap gap-2">
+            {commonSkills.map((skill) => (
+              <Chip
+                key={skill}
+                variant={currentFilters.skills?.includes(skill) ? "solid" : "bordered"}
+                onClick={() => {
+                  const newSkills = currentFilters.skills?.includes(skill)
+                    ? currentFilters.skills.filter(s => s !== skill)
+                    : [...(currentFilters.skills || []), skill];
+                  onFilterChange({ type: 'skills', value: newSkills });
+                }}
+              >
+                {skill}
+              </Chip>
+            ))}
+          </div>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+};
+
+const FilterSidebar = ({ onFilterChange, activeTab, filters, className = "", isMobile = false, isOpen, onClose }) => {
+  const currentFilters = React.useMemo(() => ({ ...defaultFilters, ...filters }), [filters]);
+
+  const handleReset = () => {
+    onFilterChange({ type: 'reset', value: defaultFilters });
+  };
+
+  const filterContent = (
+    <FilterContent
+      currentFilters={currentFilters}
+      onFilterChange={onFilterChange}
+    />
+  );
+
+  if (isMobile) {
+    return (
+      <div className="lg:hidden">
+        <div
+          className="fixed inset-0 z-[60] bg-black/20 backdrop-blur-sm"
+          onClick={onClose}
+        />
+        <div
+          className="fixed inset-x-0 bottom-0 z-[70] max-h-[85vh] bg-background rounded-t-3xl shadow-xl"
+        >
+          <div className="p-4 border-b">
+            <div className="w-12 h-1.5 bg-default-300 rounded-full mx-auto mb-4" />
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Filters</h2>
+              <Button 
+                isIconOnly 
+                variant="light" 
+                onPress={onClose}
+              >
+                <X size={20} />
+              </Button>
             </div>
-          </CardBody>
-        </Card>
-      </motion.div>
-    </AnimatePresence>
+          </div>
+          <div className="p-4 overflow-y-auto max-h-[60vh]">
+            {filterContent}
+          </div>
+          <div className="p-4 border-t bg-background">
+            <div className="flex gap-2">
+              <Button 
+                className="flex-1" 
+                color="danger" 
+                variant="flat" 
+                onPress={handleReset}
+              >
+                Reset
+              </Button>
+              <Button 
+                className="flex-1" 
+                color="primary" 
+                onPress={onClose}
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Card className={`sticky top-6 ${className} rounded-[2.5rem]`}>
+      <CardBody className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Filters</h2>
+          <Button
+            size="sm"
+            variant="light"
+            startContent={<RefreshCw size={16} />}
+            onPress={handleReset}
+          >
+            Reset
+          </Button>
+        </div>
+        {filterContent}
+      </CardBody>
+    </Card>
   );
 };
 

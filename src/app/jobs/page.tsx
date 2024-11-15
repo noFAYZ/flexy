@@ -2,12 +2,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from 'framer-motion';
 
-import { Button } from "@/components/ui/button";
+
 
 
 import { Briefcase, Search, DollarSign, Star, Clock, Zap, BarChart, Activity, ChevronUp, ChevronDown, CheckCircleIcon, MapPin, Calendar, PinIcon, ThumbsUpIcon, Save, Coins, Users, Filter, Share2, CheckCircle, ArrowUpRight, Target, Globe } from 'lucide-react';
 
-import {Card,  CardFooter, CardHeader,  CardBody, Chip, Divider, Input, Popover, PopoverContent, PopoverTrigger, Progress, Tooltip, User, Badge  } from '@nextui-org/react';
+import {Card,  CardFooter, CardHeader,  CardBody, Chip, Divider, Input, Popover, PopoverContent, PopoverTrigger, Progress, Tooltip, User, Badge, Button  } from '@nextui-org/react';
 
 import { useToast } from '@/components/hooks/use-toast';
 import JobDetailsDrawer from './components/application-drawr';
@@ -476,6 +476,7 @@ const JobsPage = () => {
       rating: 0
     }
   });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handleJobClick = (job) => {
     setSelectedJob(job);
@@ -588,7 +589,7 @@ const JobsPage = () => {
                 Job Alerts
               </Button>
               <Button
-                className="bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium
+                className="bg-gradient-to-r rounded-3xl from-orange-500 to-pink-500 text-white font-medium
                   shadow-lg hover:shadow-pink-500/25 transition-all duration-300 flex-1 sm:flex-none"
                 endContent={<ArrowUpRight size={16} />}
               >
@@ -663,11 +664,14 @@ const JobsPage = () => {
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-12 gap-6">
-          {/* Left Sidebar */}
+          {/* Left Sidebar - Desktop Only */}
           <div className="hidden lg:block lg:col-span-3">
-            <FilterSidebar onFilterChange={handleFilterChange}
-                activeTab={activeTab}
-                filters={activeFilters[activeTab]} />
+            <FilterSidebar 
+              onFilterChange={handleFilterChange}
+              activeTab={activeTab}
+              filters={activeFilters[activeTab]}
+              isMobile={false}
+            />
           </div>
 
           {/* Job Listings */}
@@ -692,6 +696,29 @@ const JobsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Filter Button */}
+      <Button
+        className="fixed bottom-6 right-6 z-50 md:hidden shadow-lg"
+        size="lg"
+        color="primary"
+        startContent={<Filter size={20} />}
+        onClick={() => setIsFilterOpen(true)}
+      >
+        Filters
+      </Button>
+
+      {/* Mobile Filters */}
+      {isFilterOpen && (
+        <FilterSidebar
+          onFilterChange={handleFilterChange}
+          activeTab={activeTab}
+          filters={activeFilters[activeTab]}
+          isMobile={true}
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+        />
+      )}
 
       {/* Job Details Drawer */}
       <JobDetailsDrawer 

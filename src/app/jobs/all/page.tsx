@@ -235,17 +235,17 @@ export default function AllJobsPage() {
   const [viewMode, setViewMode] = useState('list');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState("jobs");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     jobs: {
       searchTerm: '',
-      categoryFilter: 'all',
-      jobType: [],
-      experienceLevel: [],
-      clientRating: 0,
-      budgetRange: [0, 35000],
-      duration: 'any',
-      sortBy: 'relevance',
-      selectedTags: []
+      projectType: [],
+      complexity: [],
+      duration: [],
+      budget: [0, 50000],
+      skills: [],
+      rating: 0,
+      verificationLevel: []
     },
     freelancers: {
       searchTerm: '',
@@ -334,60 +334,32 @@ export default function AllJobsPage() {
     mouseY.set(clientY - top);
   };
 
-  const handleFilterChange = useCallback(({ type, filters }) => {
-    setActiveFilters(prevFilters => ({
-      ...prevFilters,
-      [type]: filters
+  const handleFilterChange = useCallback(({ type, value }) => {
+    if (type === 'reset') {
+      setActiveFilters(prev => ({
+        ...prev,
+        [activeTab]: value
+      }));
+      return;
+    }
+
+    setActiveFilters(prev => ({
+      ...prev,
+      [activeTab]: {
+        ...prev[activeTab],
+        [type]: value
+      }
     }));
-
-    // Filter jobs based on the new filters
-    const filteredResults = jobsData.filter(job => {
-      // Search term filter
-      const searchMatch = filters.searchTerm ? 
-        job.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        job.description.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        job.tags.some(tag => tag.toLowerCase().includes(filters.searchTerm.toLowerCase()))
-        : true;
-
-      // Budget range filter
-      const budgetMatch = job.budget >= filters.budget[0] && job.budget <= filters.budget[1];
-
-      // Rating filter
-      const ratingMatch = job.client.rating >= filters.rating;
-
-      // Project type filter
-      const typeMatch = filters.projectType.length === 0 || 
-        filters.projectType.includes(job.category);
-
-      // Complexity filter
-      const complexityMatch = filters.complexity.length === 0 || 
-        filters.complexity.includes(job.difficulty.toString());
-
-      // Duration filter
-      const durationMatch = filters.duration.length === 0 || 
-        filters.duration.includes(job.duration);
-
-      // Skills filter
-      const skillsMatch = filters.skills.length === 0 || 
-        job.tags.some(tag => filters.skills.includes(tag));
-
-      return searchMatch && budgetMatch && ratingMatch && typeMatch && 
-             complexityMatch && durationMatch && skillsMatch;
-    });
-
-    setFilteredJobs(filteredResults);
-  }, []);
-
-  const [showMobileFilters, setShowMobileFilters] = React.useState(false);
+  }, [activeTab]);
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto min-h-screen">
+    <div className="w-full max-w-[1600px] mx-auto">
       {/* Background Pattern - Using style from Dashboard */}
       <div className="fixed inset-0 bg-gradient-to-br from-orange-500/5 via-pink-500/5 to-purple-500/5 -z-10">
         <div className="absolute inset-0 bg-grid-white/[0.02]" />
       </div>
       
-      <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 ">
         {/* Header Section - Enhanced with Dashboard styling */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -413,7 +385,7 @@ export default function AllJobsPage() {
                 whileHover={{ scale: 1.05 }}
               >
                 <Button
-                  className="bg-default-100 font-medium flex-1 sm:flex-none"
+                  className="bg-default-200 font-medium rounded-2xl flex-1 sm:flex-none"
                   startContent={<Target size={18} />}
                 >
                   Job Alerts
@@ -426,7 +398,7 @@ export default function AllJobsPage() {
                 whileHover={{ scale: 1.05 }}
               >
                 <Button
-                  className="bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium
+                  className="bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium rounded-2xl
                     shadow-lg hover:shadow-pink-500/25 transition-all duration-300 flex-1 sm:flex-none"
                   startContent={<Plus size={18} />}
                 >
@@ -436,29 +408,7 @@ export default function AllJobsPage() {
             </div>
           </div>
 
-          {/* Search Bar - Enhanced with glass effect */}
-          <Card 
-            className="relative overflow-hidden bg-background/60 backdrop-blur-md border-medium border-default-200 
-              hover:border-orange-500/50 transition-all duration-300"
-            onMouseMove={handleMouseMove}
-          >
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100"
-              style={{
-                background: useMotionTemplate`
-                  radial-gradient(
-                    400px circle at ${mouseX}px ${mouseY}px,
-                    rgba(255,100,50,0.1),
-                    transparent 80%
-                  )
-                `
-              }}
-            />
-            <CardBody className="p-3 sm:p-4">
-              {/* Search inputs and filters here - same as original */}
-            </CardBody>
-          </Card>
-
+     
           {/* Quick Stats - Using ProjectCard styling */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {/* Stats cards here - same as original but with enhanced styling */}
@@ -473,6 +423,8 @@ export default function AllJobsPage() {
               onFilterChange={handleFilterChange}
               activeTab={activeTab}
               filters={activeFilters[activeTab]}
+              isOpen={false}
+              onClose={() => {}}
             />
           </div>
 
@@ -494,6 +446,7 @@ export default function AllJobsPage() {
               activeTab={activeTab}
               filters={activeFilters[activeTab]}
               isMobile={true}
+              isOpen={showMobileFilters}
               onClose={() => setShowMobileFilters(false)}
             />
           )}
@@ -552,7 +505,7 @@ export default function AllJobsPage() {
 
           {/* Right Sidebar */}
           <div className="hidden lg:block lg:col-span-3">
-            <div className="sticky top-6 space-y-6">
+            <div className="sticky top-6 space-y-4">
               <FreelancerDashboard />
               <RecentBids />
             </div>

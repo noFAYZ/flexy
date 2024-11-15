@@ -10,7 +10,7 @@ export const siteConfig = {
 		},
     {
       label: "Find Work",
-      href: "/jobs",
+      href: "/jobs/all",
     },
 
 	],	
