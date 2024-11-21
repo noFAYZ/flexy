@@ -1,6 +1,9 @@
 import { Button, Card, CardBody } from "@nextui-org/react";
 import ProfileBadges from "./ProfileBadges";
-import { MageMessageDotsRound, MingcuteExchangeDollarLine } from "@/components/icons/icons";
+import {
+  MageMessageDotsRound,
+  MingcuteExchangeDollarLine,
+} from "@/components/icons/icons";
 import { MessageSquare, UserPlus, UserPlus2Icon } from "lucide-react";
 
 export const ProfileStats = ({ user }) => (
@@ -9,7 +12,6 @@ export const ProfileStats = ({ user }) => (
 
     <div className="flex gap-2 sm:w-full py-2 flex-wrap justify-center sm:justify-end">
       <Button
-      
         className="flex-1 sm:flex-none bg-secondary text-white
                     shadow-lg hover:shadow-orange-500/25 transition-all duration-300 rounded-2xl"
         startContent={<MageMessageDotsRound width={22} height={22} />}

@@ -2,13 +2,17 @@ import { Button } from "@nextui-org/button";
 import { Badge, Card, Chip } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import {  Zap, MessageSquare,  ChevronRight, Calendar, DollarSign, Users, ArrowUpRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useProjectBidsDrawer } from "../ProjectBidsDrawer";
+import { Bid, mockBids } from "@/app/projects/[id]/types";
 
 export const ProjectCard = ({ project }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [isViewingBids, setIsViewingBids] = useState(false);
+const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
-    console.log("Project Card",project);
+
   
     const getStatusColor = (status) =>
       ({
@@ -26,6 +30,17 @@ export const ProjectCard = ({ project }) => {
         review: "bg-gradient-to-r from-amber-500 to-orange-600",
       }[status] || "bg-gradient-to-r from-pink-500 to-orange-600");
   
+    const { openProjectBidsDrawer } = useProjectBidsDrawer();
+  
+    useEffect(() => {
+      openProjectBidsDrawer({
+        isOpen: isViewingBids,
+        onClose: () => setIsViewingBids(false),
+        projectId: selectedProjectId,
+        bids: mockBids as Bid[]
+      });
+    }, [isViewingBids, selectedProjectId]);
+  
     return (
       <motion.div
         initial={{ opacity: 0.9 }}
@@ -37,8 +52,9 @@ export const ProjectCard = ({ project }) => {
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
-        <Link href={`/projects/${project.id}`}>
+     
           <Card
+         
             className={`relative bg-default/40 rounded-[2.5rem] overflow-hidden border border-default-200 backdrop-blur-sm
               ${isHovered ? "shadow-lg shadow-pink-500/10" : "shadow-sm"} 
               transition-all duration-300`}
@@ -50,9 +66,10 @@ export const ProjectCard = ({ project }) => {
               {/* Header Section */}
               <div className="flex flex-col sm:flex-row gap-4 sm:items-start justify-between mb-4">
                 <div className="space-y-2 min-w-0">
-                  <h3 className="text-lg font-semibold tracking-tight pr-4">
+                  <Link href={`/projects/${project.id}`}>
+                  <h3 className="text-lg font-semibold tracking-tight pr-4" >
                     {project.title}
-                  </h3>
+                  </h3></Link>
     
                   {/* Status Chips */}
                   <div className="flex flex-wrap items-center gap-2">
@@ -106,6 +123,11 @@ export const ProjectCard = ({ project }) => {
                     size="sm"
                     className="bg-gradient-to-r from-pink-500 to-orange-600 text-white rounded-2xl"
                     endContent={<ChevronRight className="w-4 h-4" />}
+                    onClick={() => {
+                      setSelectedProjectId(project.id);
+                      setIsViewingBids(true);
+                    }}
+
                   >
                     View Details
                   </Button>
@@ -193,6 +215,10 @@ export const ProjectCard = ({ project }) => {
                     size="sm"
                     className="w-full flex-1 py-2 rounded-2xl bg-gradient-to-r from-pink-500 to-orange-600 text-white"
                     endContent={<ArrowUpRight className="w-4 h-4" />}
+                    onClick={() => {
+                      setSelectedProjectId(project.id);
+                      setIsViewingBids(true);
+                    }}
                   >
                     View Details
                   </Button>
@@ -200,7 +226,7 @@ export const ProjectCard = ({ project }) => {
               </div>
             </div>
           </Card>
-        </Link>
+        
       </motion.div>
     );
   };

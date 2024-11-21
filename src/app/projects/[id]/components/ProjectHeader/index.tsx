@@ -121,7 +121,7 @@ const ProjectHeader = () => {
     </div>
 
     {/* Action Card */}
-    <Card className="w-full md:w-[300px] lg:w-[400px] mb-6 bg-background shadow-none rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden">
+    <Card className="w-full lg:w-[300px] xl:w-[400px] mb-6 bg-background shadow-none rounded-[2.5rem] border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden">
       <div className="p-6 space-y-6">
         {/* Budget Section */}
         <div className="space-y-4">

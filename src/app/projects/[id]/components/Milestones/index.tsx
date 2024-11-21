@@ -19,7 +19,8 @@ const Milestones = () => {
           {[1, 2, 3].map((milestone) => (
             <Card
               key={milestone}
-              className="bg-background shadow-none p-4 rounded-3xl border-medium border-default bg-gradient-to-br from-background to-muted/50 overflow-hidden"
+              className="bg-background shadow-none p-4 rounded-3xl  bg-gradient-to-br from-background to-muted/50 overflow-hidden border-medium border-default-200 
+              hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
             >
               <div className="flex justify-between items-start gap-4">
                 <div className="space-y-2">

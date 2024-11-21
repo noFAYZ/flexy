@@ -1,14 +1,16 @@
 import { Button } from "@nextui-org/button";
 import { Card, Chip, Select, SelectItem } from "@nextui-org/react";
 import { motion } from "framer-motion";
-import { Filter, ArrowUpRight } from "lucide-react";
+import { Filter, ArrowUpRight, Users } from "lucide-react";
 import { useState } from "react";
 import { ProjectCard } from "../ProjectCard/ProjectCard";
+
 
 
 export const ProjectsTab = ({ projects, initialCount = 2 }) => {
     const [displayCount, setDisplayCount] = useState(initialCount);
     const [isLoading, setIsLoading] = useState(false);
+
 
     console.log("Project Tab",projects);
     
@@ -24,6 +26,27 @@ export const ProjectsTab = ({ projects, initialCount = 2 }) => {
         setIsLoading(false);
       }, 500);
     };
+  
+    const mockBids = [
+      {
+        id: "1",
+        freelancer: {
+          id: "f1",
+          name: "Sarah Chen",
+          avatar: "https://avatar.iran.liara.run/public",
+          rating: 4.9,
+          jobSuccess: 98,
+          expertise: "Senior Blockchain Developer",
+          location: "San Francisco, CA"
+        },
+        proposal: "I have extensive experience in developing smart contracts and DeFi protocols. I've worked on similar projects and can deliver high-quality results within your timeline.",
+        amount: 85,
+        duration: "2 months",
+        timestamp: "2 hours ago",
+        status: "pending" as const
+      },
+      // Add more mock bids...
+    ];
   
     return (
       <Card className="p-4 sm:p-6 rounded-[3.5rem]">
@@ -81,6 +104,7 @@ export const ProjectsTab = ({ projects, initialCount = 2 }) => {
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <ProjectCard project={project} />
+           
             </motion.div>
           ))}
         </div>
@@ -96,7 +120,7 @@ export const ProjectsTab = ({ projects, initialCount = 2 }) => {
             <Button
               isLoading={isLoading}
               onClick={handleLoadMore}
-              className="bg-default/40 hover:bg-default/60 transition-colors rounded-2xl group relative overflow-hidden"
+              className="bg-default/40 hover:bg-default/600 transition-colors rounded-2xl group relative overflow-hidden"
               endContent={
                 !isLoading && (
                   <motion.div
@@ -130,6 +154,8 @@ export const ProjectsTab = ({ projects, initialCount = 2 }) => {
             <p>All projects have been loaded</p>
           </motion.div>
         )}
+
+    
       </Card>
     );
   };

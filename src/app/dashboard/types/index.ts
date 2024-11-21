@@ -52,3 +52,13 @@ export interface FreelancerProfile {
   rating: number;
   completedProjects: number;
 } 
+interface Freelancer {
+  expertise: string;
+  name: string;
+  avatar: string;
+  rating: number;
+  location: string;
+  title: string;
+  jobSuccess: number;
+  // ... rest of the properties
+} 

@@ -1,14 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import {
-  Card,
   Button,
-  Tabs,
-  Tab,
-  Select,
-  SelectItem,
-  CardHeader,
-  CardBody,
   NavbarItem,
 } from "@nextui-org/react";
 import {
@@ -17,14 +10,10 @@ import {
   Wallet,
   BarChart2,
   FileCheck,
-  Bell,
-  Search,
   HandCoinsIcon,
   LayoutDashboardIcon,
   MessageCircleMoreIcon,
   SearchIcon,
-  Zap,
-  ArrowUpRight,
   Settings,
 } from "lucide-react";
 import { FluentBriefcase20Filled, FluentBriefcaseSearch20Regular } from "@/components/icons/icons";
@@ -45,9 +34,7 @@ import { motion } from "framer-motion";
 import { SettingsTab } from "./components/SettingsTab/SettingsTab";
 import OverviewTab from "./components/OverviewTab/OverviewTab";
 import { InboxTab } from "./components/InboxTab/InboxTab";
-
-
-
+import { NewProjectDrawer } from "./components/NewProjectDrawer";
 
 
 
@@ -479,8 +466,12 @@ const stats = [
 
 const ClientDashboard = () => {
   const [tab, setTab] = useState("overview");
-  const { ready, authenticated } = usePrivy();
-  const pathname = usePathname();
+  const [isNewProjectDrawerOpen, setIsNewProjectDrawerOpen] = useState(false);
+
+  const getPageTitle = () => {
+    const currentTab = menuItems.find(item => item.link === tab);
+    return currentTab ? currentTab.text : "Overview";
+  };
 
   const menuItems = [
     { icon: LayoutDashboardIcon, text: "Overview", link: "overview" },
@@ -519,6 +510,7 @@ const ClientDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background/60">
+      <title>{`Dashboard - ${getPageTitle()}`}</title>
       {/* Header Section */}
       <div className="max-w-[1600px] mx-auto">
         <div className="shadow-none rounded-[2.5rem] m-4 sm:m-6 lg:m-8">
@@ -558,8 +550,10 @@ const ClientDashboard = () => {
 
                 >
                     <Button 
+                
                   className="bg-gradient-to-r from-pink-500 to-orange-600 text-white shadow-lg rounded-2xl"
                   startContent={<Plus className="w-4 h-4" />}
+                  onClick={() => setIsNewProjectDrawerOpen(true)}
                 >
                   New Project
                 </Button>
@@ -607,70 +601,15 @@ const ClientDashboard = () => {
         
         </div>
       </div>
+      <NewProjectDrawer 
+        isOpen={isNewProjectDrawerOpen}
+        onClose={() => setIsNewProjectDrawerOpen(false)}
+      />
     </div>
   );
 };
 
-const DashboardHeader = () => (
-  <>
-    <div className="flex flex-wrap mt-10 px-6 gap-8 justify-between">
-      <WelcomeSection />
-      <StatSection title="Courses" value="1,176" subtext="total lessons" />
-      <StatSection title="Courses" value="1,176" subtext={undefined} />
-      <StatSection title="Net Income" value="$12,176" subtext={undefined} />
-    </div>
-    <DashboardMenu />
-  </>
-);
 
-const WelcomeSection = () => (
-  <div className="flex flex-col">
-    <span>Welcome,</span>
-    <h1 className="font-lufga text-4xl font-medium">Faizan Asad</h1>
-  </div>
-);
-
-const StatSection = ({ title, value, subtext }) => (
-  <div className="flex flex-col">
-    <span>{title}</span>
-    <span className="flex align-text-bottom">
-      <h1 className="font-lufga text-4xl font-medium">{value}</h1>
-      {subtext && <p className="align-bottom items-baseline">{subtext}</p>}
-    </span>
-  </div>
-);
-
-const DashboardMenu = () => {
-  const menuItems = [
-    { icon: LayoutDashboardIcon, text: "Dashboard", link: "/" },
-    { icon: HandCoinsIcon, text: "Payments", link: "/inbox" },
-    { icon: MessageCircleMoreIcon, text: "Messages", link: "/inbox", badge: "5200" },
-    { icon: SearchIcon, text: "Find Work", link: "/inbox" },
-  ];
-
-  return (
-    <div className="flex flex-wrap mt-10 px-6 gap-8 justify-between">
-      <div className="flex justify-center md:justify-start">
-        <div className="flex gap-4 align-middle items-center">
-          <NextUINavbar className="h-auto items-center" classNames={{ wrapper: "px-0" }}>
-            <div className="flex flex-wrap gap-3">
-              {menuItems.map((item, index) => (
-                <NavbarItem key={index}>
-                  <NextLink href={item.link} className="font-medium">
-                    <div className="flex gap-2 h-12 align-middle items-center rounded-full p-6 border-medium border-default hover:bg-muted/95 hover:text-foreground">
-                      <item.icon size={18} />
-                      {item.text}
-                    </div>
-                  </NextLink>
-                </NavbarItem>
-              ))}
-            </div>
-          </NextUINavbar>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 export default ClientDashboard;

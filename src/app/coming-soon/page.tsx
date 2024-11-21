@@ -17,10 +17,11 @@ import {
 import { FlipWords } from "@/components/ui/flip-words";
 import SpaceshipEmailCapture from "./components/EmailForm";
 import { GithubIcon, TwitterIcon } from "@/components/icons";
-import { IconBrandTelegram } from "@tabler/icons-react";
+import { IconBrandDiscord, IconBrandTelegram } from "@tabler/icons-react";
 import { Button, Card, Code } from "@nextui-org/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FileIconsTelegram,
   HugeiconsNewTwitterRectangle,
@@ -29,8 +30,12 @@ import {
 import LearnMoreSection from "./components/ComparisonSection";
 import InnovativeCardComparison from "./components/ComparisonSection";
 import AdditionalSections from "./components/ComparisonSection";
-import { Rocket, Shield, Users, Globe, Zap } from "lucide-react";
+import { Rocket, Shield, Users, Globe, Zap, Lock, Coins, Check,  Wallet, Share2, Award, TrendingUp, X, User, Brain, DollarSign, Sprout, Crown, LinkIcon } from 'lucide-react';
 import * as THREE from "three";
+
+
+import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/DeFlexy.svg";
+import  FlexyLogoIconDark  from "/public/images/logo/DeFlexy.png";
 
 function Planet() {
   const { scene } = useGLTF("/earth.glb");
@@ -55,7 +60,7 @@ const generateSpherePoints = (count, radius) => {
   return points;
 };
 
-const StarField = ({ count = 5000 }) => {
+const StarField = ({ count = 1000 }) => {
   const points = useRef<THREE.Points>(null);
   const spherePoints = useMemo(() => generateSpherePoints(count, 1.5), [count]);
 
@@ -89,7 +94,7 @@ const StarField = ({ count = 5000 }) => {
 const ImmersiveBackground = () => (
   <div className="fixed inset-0">
     <Canvas camera={{ position: [0, 0, 1] }}>
-      <ambientLight intensity={0.5} />
+     
       <StarField />
     </Canvas>
   </div>
@@ -361,7 +366,7 @@ const EnhancedEmailCapture = () => {
   );
 };
 
-const FloatingSocialIcons = () => (
+/* const FloatingSocialIcons = () => (
   <motion.div
     className="fixed bottom-4 right-4 md:bottom-8 md:right-8 flex flex-row md:flex-col space-x-2 md:space-x-0 md:space-y-4 z-40"
     initial={{ y: 100, opacity: 0 }}
@@ -398,7 +403,7 @@ const FloatingSocialIcons = () => (
       </motion.a>
     ))}
   </motion.div>
-);
+); */
 
 const FeatureCard = ({ title, description, step }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -455,6 +460,515 @@ const AnimatedPlanet = ({ scrollYProgress }) => {
   );
 };
 
+
+
+/* 
+const TechnologyStack = () => (
+  <section className="py-24 relative z-20">
+    <div className="container mx-auto px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent mb-4">
+          Powered by Advanced Technology
+        </h2>
+        <p className="text-gray-400 max-w-2xl mx-auto">
+          Built on cutting-edge blockchain and web3 infrastructure
+        </p>
+      </motion.div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        {[
+          "Account Abstraction",
+          "Smart Contracts",
+          "IPFS Storage",
+          "Ceramic Network",
+          "Multi-Chain Support",
+          "Zero Knowledge Proofs",
+          "Decentralized Identity",
+          "Layer 2 Scaling"
+        ].map((tech, idx) => (
+          <motion.div
+            key={tech}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+            className="bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 
+              border border-gray-700 hover:border-orange-500/50 
+              transition-all duration-300 text-center"
+          >
+            <span className="text-white font-medium">{tech}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+); */
+
+const CreativeCTAs = () => {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  return (
+    <section className="min-h-screen py-24 relative z-20">
+      <div className="container bg-gray-800 bg-opacity-70 skew-y-[-5deg] backdrop-blur-lg rounded-[4rem] md:rounded-[10rem] pt-20 pb-40 mx-auto px-4 antialiased">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16 "
+        >
+          <h2 className="text-7xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-white  mb-4 skew-y-[5deg]">
+            Choose Your Journey
+          </h2>
+          <p className="text-orange-500 max-w-2xl text-xl mx-auto skew-y-[5deg]">
+            Join the future of decentralized work
+          </p>
+        </motion.div>
+
+        <div className="skew-y-[7deg] grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {[
+            {
+              type: "freelancer",
+              title: "For Freelancers",
+              subtitle: "Unleash your potential",
+              icon: User,
+              gradient: "from-orange-500 to-pink-500 ",
+              benefits: [
+                { icon: Wallet, text: "Zero platform fees for early adopters" },
+                { icon: Shield, text: "Own your reputation with NFT credentials" },
+                { icon: Zap, text: "Get paid instantly in any crypto" },
+                { icon: Brain, text: "AI-powered project matching" }
+              ],
+              features: ["Global Opportunities", "Secure Payments", "Own Your Data"]
+            },
+            {
+              type: "client",
+              title: "For Clients",
+              subtitle: "Find exceptional talent",
+              icon: Users,
+              gradient: "from-pink-500 to-orange-500",
+              benefits: [
+                { icon: Globe, text: "Access global talent pool" },
+                { icon: Lock, text: "Secure escrow payments" },
+                { icon: DollarSign, text: "Transparent pricing" },
+                { icon: Award, text: "Quality guaranteed work" }
+              ],
+              features: ["Verified Talent", "Smart Contracts", "Easy Management"]
+            }
+          ].map((card) => (
+            <motion.div
+              key={card.type}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              onHoverStart={() => setHoveredCard(card.type)}
+              onHoverEnd={() => setHoveredCard(null)}
+              className={`
+                relative group overflow-hidden
+                bg-background border-medium border-transparent rounded-[3.5rem] p-8
+                hover:border-medium hover:border-orange-500/50
+                transition-all duration-100 antialiased 
+              `}
+            >
+   
+
+
+              {/* Content */}
+              <div className="relative z-10 skew-y-[-2deg] antialiased">
+                {/* Header */}
+                <div className="flex items-center space-x-4 mb-6">
+                  <div className={`
+                    w-16 h-16 rounded-2xl
+                    bg-gradient-to-br ${card.gradient}
+                    flex items-center justify-center
+                    group-hover:scale-110 transition-transform duration-200
+                  `}>
+                    <card.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white antialiased">{card.title}</h3>
+                    <p className="text-gray-300 antialiased">{card.subtitle}</p>
+                  </div>
+                </div>
+
+                {/* Benefits */}
+                <div className="space-y-4 mb-8 antialiased">
+                  {card.benefits.map((benefit, idx) => (
+                    <motion.div
+                      key={benefit.text}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex items-center space-x-3"
+                    >
+                      <div className={`
+                        w-8 h-8 rounded-lg
+                        bg-gradient-to-br ${card.gradient}
+                        flex items-center justify-center
+                      `}>
+                        <benefit.icon className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-gray-300 antialiased">{benefit.text}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Features Tags */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {card.features.map((feature) => (
+                    <span
+                      key={feature}
+                      className={`
+                        px-3 py-1 rounded-full text-sm
+                        bg-gradient-to-r ${card.gradient}
+                        text-white font-medium
+                      `}
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.01 }}
+                  className={`
+                    w-full py-4 rounded-3xl
+                    bg-gradient-to-r ${card.gradient}
+                    text-white font-bold text-lg
+                    hover:shadow-lg hover:shadow-orange-500/20
+                    transition-all duration-100
+                    relative overflow-hidden 
+                  `}
+                >
+                  <span className="relative z-10">
+                    {card.type === "freelancer" ? "Start Earning" : "Start Hiring"}
+                  </span>
+                  <motion.div
+                    className="absolute inset-0 bg-white"
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 0.1 }}
+                    transition={{ duration: 0.01 }}
+                  />
+                </motion.button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+
+
+
+const InteractiveShowcase = () => {
+  const [activeFeature, setActiveFeature] = useState(0);
+  
+  const features = [
+    {
+      id:0,
+      title: "Secure Payments",
+      description: "Experience peace of mind with our secure payment system that releases funds only when you're satisfied with the work.",
+      icon: Shield,
+      gradient: "from-orange-500 to-pink-500",
+      demo: "/showcase/astro.png",
+      width: 750,
+      height:750
+    },
+    {
+      id:1,
+      title: "Verified Profiles",
+      description: "Build trust with verified freelancer profiles showcasing skills and real feedback from past clients.",
+
+      icon: Award,
+      gradient: "from-pink-500 to-purple-500",
+      demo: "/showcase/waiting.png",
+      width: 750,
+      height:750
+    },
+    {
+      id:2,
+      title: "AI Matching",
+      description: "Find your perfect freelancer effortlessly with our intelligent project matching system tailored to your needs.",
+      icon: Brain,
+      gradient: "from-purple-500 to-orange-500",
+      demo: "/showcase/leg.png",
+      width: 700,
+      height:700
+    }
+  ];
+
+  return (
+    <section className="py-24 relative z-20 ">
+      <div className="container mx-auto py-10 shadow-lg bg-white opacity-95  rounded-[2rem] md:rounded-[9rem] skew-y-3">
+      <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-5 -skew-y-3"
+        >
+          <h2 className="text-7xl flex flex-col items-center  sm:flex-row gap-4 justify-center font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-black  mb-4 -skew-y-3">
+            Why <Image src={FlexyLogoIconDark} alt={'Logo'} width={250} height={45} />?
+           </h2>
+        {/*   <p className="text-orange-500 max-w-2xl text-xl mx-auto -skew-y-3">
+            Join the future of remote work
+          </p> */}
+        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center -skew-y-3">
+          {/* Feature List */}
+          <div className="space-y-6">
+            {features.map((feature, idx) => (
+              <motion.div
+                key={feature.title}
+                className={`
+                  relative p-6 rounded-[2.5rem] cursor-pointer 
+                  ${activeFeature === idx ? 'bg-background backdrop-blur-lg text-white' : 'hover:bg-gray-500/20'}
+                  transition-all duration-100
+                `}
+                onClick={() => setActiveFeature(idx)}
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="flex w-full  items-center gap-4">
+                  <div className="w-[20%]]">
+                  <div className={`
+                    w-16 h-16 rounded-3xl
+                    bg-gradient-to-br ${feature.gradient}
+                    flex items-center justify-center
+                  `}>
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div></div>
+                  <div>
+                    <h3 
+                      className={`
+                       text-xl font-bold  mb-1 ${activeFeature === idx ? ' text-white' : 'text-black'}`}
+                    
+                    >{feature.title}</h3>
+                    <p className="text-gray-400 text-sm sm:text-md">{feature.description}</p>
+                  </div>
+                </div>
+
+       
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Interactive Demo */}
+          <div className="relative aspect-square rounded-[9rem] overflow-hidden">
+    
+            <div className="relative h-full">
+              {features.map((feature, idx) => (
+                <motion.div
+                  key={feature.title}
+                  className="absolute inset-0 flex items-center  justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: activeFeature === idx ? 1 : 0 }}
+                  transition={{ duration: 0.1 }}>
+                     <Image 
+               className="anti-aliasing  "
+                  src={(idx == 0 ? '/showcase/bg-3.png' : (idx == 1 ? '/showcase/bg-1.png' : '/showcase/bg-2.png'))}
+                  alt={feature.title}
+                 layout="fill"
+                  objectFit="fit"
+                />
+
+               <Image 
+               className="anti-aliasing  "
+                  src={feature.demo}
+                  alt={feature.title}
+                 layout="fill"
+                  objectFit="fit"
+                />
+                  
+              
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const InteractiveShowcase2 = () => {
+  const [activeFeature, setActiveFeature] = useState(0);
+  
+  const features = [
+    {
+      id:0,
+      title: "Decentralized Infrastructure",
+      description: "Built on cutting-edge blockchain technologyies to remove centralization (Biased Decisions).",
+      icon: Shield,
+      gradient: "from-orange-500 to-pink-500",
+      demo: "/showcase/walk.png",
+      width: 750,
+      height:750
+    },
+    {
+      id:1,
+      title: "Seamless Collaborations",
+      description: "Build trust with verified freelancer profiles showcasing skills and real feedback from past clients.",
+
+      icon: Award,
+      gradient: "from-pink-500 to-purple-500",
+      demo: "/showcase/game.png",
+      width: 750,
+      height:750
+    },
+    {
+      id:2,
+      title: "Social Community",
+      description: "We believe in Community driven services. Connect and share your thoughts an find work",
+      icon: Brain,
+      gradient: "from-purple-500 to-orange-500",
+      demo: "/showcase/social.png",
+      width: 700,
+      height:700
+    }
+  ];
+
+  return (
+    <section className="pb-24 relative z-20 ">
+      <div className="container mx-auto py-10 shadow-lg bg-white backdrop-blur-md rounded-[2rem] md:rounded-[9rem] skew-y-3">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center -skew-y-3">
+
+           {/* Interactive Demo */}
+          <div className="relative aspect-square rounded md:rounded-[9rem] overflow-hidden">
+    
+            <div className="relative h-full">
+              {features.map((feature, idx) => (
+                <motion.div
+                  key={feature.title}
+                  className="absolute inset-0 flex items-center  justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: activeFeature === idx ? 1 : 0 }}
+                  transition={{ duration: 0.1 }}>
+                     <Image 
+               className="anti-aliasing  "
+                  src={(idx == 0 ? '/showcase/bg-4.png' : (idx == 1 ? '/showcase/bg-star.png' : '/showcase/bg-2.png'))}
+                  alt={feature.title}
+                 layout="fill"
+                  objectFit="fit"
+                />
+
+               <Image 
+               className="anti-aliasing  "
+                  src={feature.demo}
+                  alt={feature.title}
+                 layout="fill"
+                  objectFit="fit"
+                />
+                  
+              
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Feature List */}
+          <div className="space-y-6">
+            {features.map((feature, idx) => (
+              <motion.div
+                key={feature.title}
+                className={`
+                  relative p-6 rounded-[2.5rem] cursor-pointer
+                  ${activeFeature === idx ? 'bg-background backdrop-blur-lg text-white' : 'hover:bg-gray-500/20'}
+                  transition-all duration-100
+                `}
+                onClick={() => setActiveFeature(idx)}
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="flex w-full  items-center space-x-4">
+                  <div className="w-[20%]]">
+                  <div className={`
+                    w-16 h-16 rounded-3xl
+                    bg-gradient-to-br ${feature.gradient}
+                    flex items-center justify-center
+                  `}>
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div></div>
+                  <div>
+                    <h3 
+                      className={`
+                       text-xl font-bold  mb-1 ${activeFeature === idx ? ' text-white' : 'text-black'}`}
+                    
+                    >{feature.title}</h3>
+                    <p className="text-gray-400 text-sm sm:text-md">{feature.description}</p>
+                  </div>
+                </div>
+
+       
+              </motion.div>
+            ))}
+          </div>
+
+         
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg text-white py-12 relative overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-6 md:mb-0">
+          <FlexyLogoIcon width={160} height={75} />
+           
+            <p className="text-gray-400">
+              Join our community and stay updated with the latest news and features.
+            </p>
+          </div>
+
+          <div className="flex space-x-4 mb-6 md:mb-0">
+            <SocialIcon Icon={GithubIcon} href="#" color="bg-gray-800" bg={'bg-gray-800'} />
+            <SocialIcon Icon={TwitterIcon} href="https://x.com/_deFlexy" color="bg-black" bg={'bg-black'} />
+            <SocialIcon Icon={IconBrandDiscord} href="https://discord.gg/eG8ZddQz" color="bg-blue-500" bg={'bg-blue-600'} />
+          </div>
+
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg font-semibold mb-2">Subscribe for Updates</h3>
+            <form className="flex">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="px-4 py-2 rounded-l-full bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                required
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-r-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:to-pink-600 transition-all duration-300"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+
+   
+
+        <div className="mt-8 border-t border-gray-700 pt-4 text-center">
+          <p className="text-gray-400 text-sm">
+            &copy; {new Date().getFullYear()} DeFlexy. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
 const ComingSoonPage = () => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
@@ -463,10 +977,9 @@ const ComingSoonPage = () => {
 
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const secondSectionY = useTransform(scrollYProgress, [0, 1], ["100%", "0%"]);
 
   useEffect(() => {
-    const target = new Date("2024-11-30T23:59:59");
+    const target = new Date("2024-12-29T23:59:59");
 
     const interval = setInterval(() => {
       const now = new Date();
@@ -484,10 +997,10 @@ const ComingSoonPage = () => {
   }, []);
 
   const words = [
-    "coming soon!",
-    "revolutionizing freelancing!",
-    "empowering creators!",
-    "building the future!",
+    "Coming Soon!",
+    "Revolutionizing Freelancing!",
+    "Empowering Creators!",
+    "Building the Future!",
   ];
 
   return (
@@ -500,13 +1013,7 @@ const ComingSoonPage = () => {
         <div className="sticky top-0 h-screen overflow-hidden ">
           <Canvas camera={{ position: [0, 0, 15], fov: 75 }}>
             <AnimatedPlanet scrollYProgress={scrollYProgress} />
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
-            <OrbitControls
-              enableZoom={false}
-              enablePan={false}
-              enableRotate={true}
-            />
+       
           </Canvas>
         </div>
 
@@ -552,10 +1059,10 @@ const ComingSoonPage = () => {
               seconds={seconds}
             />
           </div>
-
+          <Suspense fallback={<div>Loading...</div>}>
           {/*<SpaceshipEmailCapture />     */}
-          <EnhancedEmailCapture />
-
+            <EnhancedEmailCapture />
+          </Suspense>
           {/* Initial Cards */}
           <div className="flex flex-wrap justify-center gap-6 mt-6 sm:mt-10 z-20 w-full">
             <div className="relative w-full  flex flex-col items-center justify-center p-4 overflow-hidden">
@@ -640,43 +1147,32 @@ const ComingSoonPage = () => {
             </motion.div>
           </div>
         </div>
+        
+        <motion.section className="min-h-screen py-16 px-4 sm:px-0 relative z-20">
+     
 
-        <motion.section className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 relative z-20">
+     
 
-          {/* Pricing and CTA Section*/}
-          <AdditionalSections />
+    
+        <InteractiveShowcase />
+        <InteractiveShowcase2 />
 
 
+          {/* Creative CTAs */}
+          <CreativeCTAs />
 
-          {/*Technologies */}
-          <motion.div
-            className="mt-6 sm:mt-8 text-center z-20 pb-6 sm:pb-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            <p className="text-orange-200 mb-2 text-sm sm:text-base">
-              Powered by Cutting-Edge Technologies
-            </p>
-            <div className="flex flex-wrap justify-center gap-2 mt-2">
-              {[
-                "Ceramic Network",
-                "Account Abstraction",
-                "Decentralized Identity",
-              ].map((tech) => (
-                <motion.span
-                  key={tech}
-                  className="text-xs sm:text-sm bg-orange-800 px-2 sm:px-3 py-1 rounded-full text-orange-100"
-                  whileHover={{ scale: 1.1, backgroundColor: "#f97316" }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
+       
+
+         
+
+          {/* Additional Sections 
+          <InteractiveTimeline />*/}
+           <AdditionalSections />
+           {/* Technology Stack
+          <TechnologyStack /> */}
         </motion.section>
       </div>
+      <Footer />
     </>
   );
 };

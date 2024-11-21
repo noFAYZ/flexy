@@ -8,7 +8,7 @@ const nextConfig = {
         permanent: false,
       },
     ]
-  }, 
+  },  
   eslint: {
     // Only run TSLint on the server
     // !! WARN !!

@@ -1,10 +1,10 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp} from 'lucide-react';
+import { Check} from 'lucide-react';
 
 import { ReactComponent as FlexyLogoIcon } from "/public/images/logo/DeFlexy.svg";
-import { CrownIcon, FiverrIcon, PepiconsPencilCrownCircleFilled, UpworkIcon } from '@/components/icons/icons';
+import {  FiverrIcon, PepiconsPencilCrownCircleFilled, UpworkIcon } from '@/components/icons/icons';
 import { Chip } from '@nextui-org/react';
 
 
@@ -65,7 +65,7 @@ const CosmicComparisonChart = () => {
   ];
 
   return (
-    <div className="min-h-screen text-white py-10 sm:py-20 px-4 overflow-hidden relative">
+    <div className="min-h-screen text-white py-10 sm:py-20  overflow-hidden relative">
       <div className="sm:container mx-auto flex flex-col lg:flex-row items-center justify-between">
         {/* Hero Section */}
         <motion.div 
@@ -145,12 +145,14 @@ const CosmicComparisonChart = () => {
               ))}
             </div>
             {platforms.map((platform, platformIndex) => (
-              <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column backdrop:blur-lg bg-opacity-65 uppercase" : "max-w-[12rem] sm:max-w-[15rem] md:max-w-[18rem]"}`}>
+              <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column backdrop:blur-lg bg-opacity-65 rounded-lg md:rounded-[4rem] uppercase scale-120" : "max-w-[12rem] sm:max-w-[15rem] md:max-w-[18rem]"} `}
+              
+              >
                 <motion.div 
-                  className={`platform-header rounded-tr-[1rem] sm:rounded-tr-[2rem] ${platform.name === "DeFlexy" ? "deflexy-header py-2 sm:py-3 md:py-4 uppercase rounded-t-[1rem] sm:rounded-t-[2rem] rounded-b-[0.5rem] sm:rounded-b-[2rem] border-2 border-orange-600 border-b-red-500 shadow-xl backdrop:blur-lg" : "uppercase"}`}
+                  className={`platform-header  ${platform.name === "DeFlexy" ? "deflexy-header py-1 sm:py-3 md:py-4 uppercase m-1 md:mx-1 md:mt-2 rounded-[1rem] md:rounded-t-[4rem] drop-shadow-lg shadow-xl backdrop:blur-lg" : "uppercase rounded-tr-[1rem] sm:rounded-tr-[2rem]"}`}
                   style={{ 
                     backgroundColor: platform.color,
-                    scale: platform.name === "DeFlexy" ? 1.02 : 1 
+                    scale: platform.name === "DeFlexy" ? 0.98 : 1 
                   }}
                   initial={{ opacity: 0, y: -50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -169,7 +171,7 @@ const CosmicComparisonChart = () => {
                   <motion.div 
                     key={`${platform.name}-${feature}`} 
                     className={`platform-feature text-center items-center 
-                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg font-mono font-bold py-[0.45rem] sm:py-4 md:py-6' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
+                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg  font-bold py-[0.45rem] sm:py-4 md:py-6 lg:py-5' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
                       ${platform.name === 'DeFlexy' && platform.features[feature] === '0%' ? 'highlight' : ''} 
                       ${hoveredFeature === feature ? 'hovered' : ''}`}
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -223,9 +225,9 @@ const CosmicComparisonChart = () => {
         .deflexy-column {
           position: relative;
           z-index: 2;
-          transform: translateY(-5px) scale(1.03);
+          transform: translateY(-5px) scale(1.05);
           box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
-          border-radius: 20px;
+          
           background: linear-gradient(145deg, #ff8800, #ff6600);
         }
 
@@ -233,7 +235,7 @@ const CosmicComparisonChart = () => {
           background-color: #ffffff !important;
           color: white;
           position: relative;
-          border-radius: 1.5rem;
+          border-radius: 6rem;
         }
 
         .best-choice-badge {
@@ -341,9 +343,81 @@ const CosmicComparisonChart = () => {
   );
 };
 
+ {/* Early Access Benefits 
+    <EarlyAccessPerks />
+const EarlyAccessPerks = () => (
+  <section className=" py-24 relative z-20">
+    <div className="container mx-auto px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent mb-4">
+          Early Access Benefits
+        </h2>
+        <p className="text-gray-400 max-w-2xl mx-auto">
+          Join our waitlist and unlock exclusive advantages
+        </p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        {[
+          "Zero platform fees for first 6 months",
+          "Exclusive NFT membership badge",
+          "Priority access to new features",
+          "Direct support from founding team",
+          "Early adopter rewards program",
+          "Community governance rights"
+        ].map((benefit, idx) => (
+          <motion.div
+            key={benefit}
+            initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+            className="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 
+              border border-gray-700 hover:border-orange-500/50 transition-all duration-300"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-pink-500 
+              flex items-center justify-center flex-shrink-0">
+              <Check className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-white text-lg">{benefit}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 
+const NewsletterSection = () => (
 
+    <div className=" container mx-auto px-4 relative z-10">
+      <div className="max-w-4xl mx-auto bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-[5rem] p-20 transform -skew-y-[5deg]">
+        <h2 className="text-4xl font-bold text-center text-white mb-6 transform skew-y-[5deg]">Stay Ahead of the Curve</h2>
+        <p className="text-gray-300 text-center mb-8 transform skew-y-[5deg]">Join our newsletter for exclusive insights, early access, and game-changing opportunities.</p>
+        <form className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 transform skew-y-[5deg]">
+          <input 
+            type="email" 
+            placeholder="Enter your email" 
+            className="flex-grow px-4 py-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <motion.button
+            className="px-8 py-3 bg-gradient-to-b from-orange-500 to-pink-500 text-white rounded-lg font-semibold"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Subscribe
+          </motion.button>
+        </form>
+      </div>
+    </div>
+
+);
+*/}
 
 const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
@@ -404,38 +478,17 @@ const HeroSection = () => {
   );
 };
 
-const NewsletterSection = () => (
 
-    <div className="container mx-auto px-4 py-20 relative z-10">
-      <div className="max-w-4xl mx-auto bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg p-8 transform -skew-y-3">
-        <h2 className="text-4xl font-bold text-center text-white mb-6 transform skew-y-3">Stay Ahead of the Curve</h2>
-        <p className="text-gray-300 text-center mb-8 transform skew-y-3">Join our newsletter for exclusive insights, early access, and game-changing opportunities.</p>
-        <form className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 transform skew-y-3">
-          <input 
-            type="email" 
-            placeholder="Enter your email" 
-            className="flex-grow px-4 py-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          <motion.button
-            className="px-8 py-3 bg-gradient-to-b from-orange-500 to-pink-500 text-white rounded-lg font-semibold"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Subscribe
-          </motion.button>
-        </form>
-      </div>
-    </div>
-
-);
 
 const SpaceThemedSections = () => (
   <>
-    <HeroSection />
+   
 
+   
     <CosmicComparisonChart />
-
-    <NewsletterSection />
+ {/* Early Access Benefits 
+    <EarlyAccessPerks />*/}
+    <HeroSection />
   </>
 );
 

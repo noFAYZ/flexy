@@ -39,6 +39,7 @@ export const DrawerProvider = ({ children }) => {
       md: 'sm:w-[95%] sm:max-w-xl',
       lg: 'sm:w-[95%] sm:max-w-2xl',
       xl: 'sm:w-[95%] sm:max-w-3xl',
+      '2xl': 'sm:w-[95%] sm:max-w-7xl',
       full: 'sm:w-[95%] sm:max-w-4xl'
     };
     return sizes[size] || sizes.md;
@@ -56,7 +57,7 @@ export const DrawerProvider = ({ children }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeDrawer}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 "
             />
 
             {/* Drawer */}

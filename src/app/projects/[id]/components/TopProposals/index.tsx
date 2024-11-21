@@ -42,10 +42,11 @@ const TopProposals = () => {
           {[1, 2, 3].map((profile) => (
             <Card
               key={profile}
-              className="group relative bg-background/50 backdrop-blur-xl p-1 rounded-[2rem] "
+              className="group relative bg-background/50 backdrop-blur-xl p-1 rounded-[2rem] border-medium border-default-200 
+              hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
             >
-              {/* Gradient Border Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-orange-500 rounded-[2rem] opacity-[0.15] group-hover:opacity-25 transition-all" />
+              {/* Gradient Border Effect 
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-orange-500 rounded-[2rem] opacity-[0.15] group-hover:opacity-25 transition-all" />*/}
 
               <div className="relative bg-background rounded-[1.8rem] p-6 h-full">
                 {/* Profile Header */}
