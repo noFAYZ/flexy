@@ -569,7 +569,7 @@ const CreativeCTAs = () => {
               onHoverEnd={() => setHoveredCard(null)}
               className={`
                 relative group overflow-hidden
-                bg-background border-medium border-transparent rounded-[3.5rem] p-8
+                bg-gray-800 border-medium border-transparent rounded-[3.5rem] p-8
                 hover:border-medium hover:border-orange-500/50
                 transition-all duration-100 antialiased 
               `}
@@ -731,7 +731,7 @@ const InteractiveShowcase = () => {
                 key={feature.title}
                 className={`
                   relative p-6 rounded-[2.5rem] cursor-pointer 
-                  ${activeFeature === idx ? 'bg-background backdrop-blur-lg text-white' : 'hover:bg-gray-500/20'}
+                  ${activeFeature === idx ? 'bg-gray-900 backdrop-blur-lg text-white' : 'hover:bg-gray-500/20'}
                   transition-all duration-100
                 `}
                 onClick={() => setActiveFeature(idx)}
@@ -921,7 +921,7 @@ const InteractiveShowcase2 = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg text-white py-12 relative overflow-hidden">
+    <footer className="bg-black bg-opacity-95 backdrop-filter backdrop-blur-lg text-white py-12 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
