@@ -521,10 +521,10 @@ const CreativeCTAs = () => {
           viewport={{ once: true }}
           className="text-center mb-16 "
         >
-          <h2 className="text-7xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-white  mb-4 skew-y-[5deg]">
+          <h2 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-white  mb-4 skew-y-[5deg]">
             Choose Your Journey
           </h2>
-          <p className="text-orange-500 max-w-2xl text-xl mx-auto skew-y-[5deg]">
+          <p className="text-orange-500 max-w-2xl text-md md:text-xl mx-auto skew-y-[5deg]">
             Join the future of decentralized work
           </p>
         </motion.div>
@@ -612,7 +612,7 @@ const CreativeCTAs = () => {
                       `}>
                         <benefit.icon className="w-4 h-4 text-white" />
                       </div>
-                      <span className="text-gray-300 antialiased">{benefit.text}</span>
+                      <span className="text-gray-300 antialiased text-sm md:text:lg">{benefit.text}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -716,8 +716,8 @@ const InteractiveShowcase = () => {
           viewport={{ once: true }}
           className="text-center mb-5 -skew-y-3"
         >
-          <h2 className="text-7xl flex flex-col items-center  sm:flex-row gap-4 justify-center font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-black  mb-4 -skew-y-3">
-            Why <Image src={FlexyLogoIconDark} alt={'Logo'} width={250} height={45} />?
+          <h2 className="text-3xl md:text-7xl flex  items-center  sm:flex-row gap-4 justify-center font-bold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-black  mb-4 -skew-y-3">
+            Why <Image src={FlexyLogoIconDark} alt={'Logo'}  width={200} height={45} />?
            </h2>
         {/*   <p className="text-orange-500 max-w-2xl text-xl mx-auto -skew-y-3">
             Join the future of remote work
@@ -749,10 +749,10 @@ const InteractiveShowcase = () => {
                   <div>
                     <h3 
                       className={`
-                       text-xl font-bold  mb-1 ${activeFeature === idx ? ' text-white' : 'text-black'}`}
+                       text-lg md:text-xl font-bold  mb-1 ${activeFeature === idx ? ' text-white' : 'text-black'}`}
                     
                     >{feature.title}</h3>
-                    <p className="text-gray-400 text-sm sm:text-md">{feature.description}</p>
+                    <p className="text-gray-400 text-xs sm:text-sm">{feature.description}</p>
                   </div>
                 </div>
 
@@ -882,7 +882,7 @@ const InteractiveShowcase2 = () => {
                 key={feature.title}
                 className={`
                   relative p-6 rounded-[2.5rem] cursor-pointer
-                  ${activeFeature === idx ? 'bg-background backdrop-blur-lg text-white' : 'hover:bg-gray-500/20'}
+                     ${activeFeature === idx ? 'bg-gray-900 backdrop-blur-lg text-white' : 'hover:bg-gray-500/20'}
                   transition-all duration-100
                 `}
                 onClick={() => setActiveFeature(idx)}
@@ -900,10 +900,10 @@ const InteractiveShowcase2 = () => {
                   <div>
                     <h3 
                       className={`
-                       text-xl font-bold  mb-1 ${activeFeature === idx ? ' text-white' : 'text-black'}`}
+                       text-lg font-bold  mb-1 ${activeFeature === idx ? ' text-white' : 'text-black'}`}
                     
                     >{feature.title}</h3>
-                    <p className="text-gray-400 text-sm sm:text-md">{feature.description}</p>
+                    <p className="text-gray-400 text-xs sm:text-md">{feature.description}</p>
                   </div>
                 </div>
 
