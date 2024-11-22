@@ -145,7 +145,7 @@ const CosmicComparisonChart = () => {
               ))}
             </div>
             {platforms.map((platform, platformIndex) => (
-              <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column backdrop:blur-lg bg-opacity-65 rounded-lg md:rounded-[4rem] uppercase scale-120" : "max-w-[12rem] sm:max-w-[15rem] md:max-w-[18rem]"} `}
+              <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column backdrop:blur-lg shadow-lg antialiased bg-opacity-65 rounded-lg md:rounded-[4rem] uppercase scale-y-150" : "max-w-[12rem] sm:max-w-[15rem] md:max-w-[20rem]"} `}
               
               >
                 <motion.div 
@@ -171,7 +171,7 @@ const CosmicComparisonChart = () => {
                   <motion.div 
                     key={`${platform.name}-${feature}`} 
                     className={`platform-feature text-center items-center 
-                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg  font-bold py-[0.45rem] sm:py-4 md:py-6 lg:py-5' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
+                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg text-white   font-semibold py-[0.45rem] sm:py-4 md:py-6 lg:py-5' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
                       ${platform.name === 'DeFlexy' && platform.features[feature] === '0%' ? 'highlight' : ''} 
                       ${hoveredFeature === feature ? 'hovered' : ''}`}
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -225,10 +225,10 @@ const CosmicComparisonChart = () => {
         .deflexy-column {
           position: relative;
           z-index: 2;
-          transform: translateY(-5px) scale(1.05);
+          transform: translateY(-5px) scale(1.1);
           box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
           
-          background: linear-gradient(145deg, #ff8800, #ff6600);
+          background: #E3413D
         }
 
         .deflexy-header {
@@ -284,7 +284,8 @@ const CosmicComparisonChart = () => {
         .deflexy-feature {
           background-color: rgba(255, 255, 255, 0.1);
           font-weight: bold;
-          color: white;
+          color: black;
+          color: #ff6600;
           position: relative;
         }
 
