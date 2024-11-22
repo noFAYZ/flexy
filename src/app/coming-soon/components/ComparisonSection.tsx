@@ -120,7 +120,7 @@ const CosmicComparisonChart = () => {
               transition={{ duration: 0.1 }}
             >
               <span className="relative z-10">Join Now</span>
-              <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-50 group-hover:scale-100 group-hover:bg-gradient-to-br group-hover:from-orange-600 group-hover:to-pink-800"></div>
+         
             </motion.button>
           </div>
         </motion.div>
@@ -458,7 +458,7 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
             <motion.button
-              className="w-full sm:w-auto px-8 py-3 bg-orange-500 text-white rounded-full font-semibold text-lg"
+              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-br from-orange-500 to-pink-500  text-white rounded-full font-semibold text-lg"
               whileHover={{ scale: 1.05, backgroundColor: "#f97316" }}
               whileTap={{ scale: 0.95 }}
             >
