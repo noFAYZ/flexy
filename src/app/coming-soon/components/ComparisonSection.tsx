@@ -103,7 +103,7 @@ const CosmicComparisonChart = () => {
               className="list-disc list-inside text-sm md:text-md text-gray-300 mb-8 space-y-2 -skew-y-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
+              transition={{  duration: 0.1 }}
             >
               <li>Zero platform fees</li>
               <li>Get paid instantly</li>
@@ -112,15 +112,15 @@ const CosmicComparisonChart = () => {
             </motion.ul>
 
             <motion.button
-              className="px-8 py-3 bg-orange-500 text-white rounded-full font-semibold text-lg shadow-lg relative z-10 overflow-hidden group"
+              className="px-8 py-3 bg-gradient-to-br from-orange-500 to-pink-500 text-white rounded-full font-semibold text-lg shadow-lg relative z-10 overflow-hidden group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
+              transition={{ duration: 0.1 }}
             >
               <span className="relative z-10">Join Now</span>
-              <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-100 group-hover:bg-orange-600"></div>
+              <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-50 group-hover:scale-100 group-hover:bg-gradient-to-br group-hover:from-orange-600 group-hover:to-pink-800"></div>
             </motion.button>
           </div>
         </motion.div>
@@ -128,7 +128,7 @@ const CosmicComparisonChart = () => {
       {/* Comparison Chart */}
       <div className="w-full lg:w-2/3 mx-auto relative z-10">
           <div className="cosmic-chart bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg">
-            <div className="feature-column  max-w-[8rem] sm:max-w-[8rem] md:max-w-[10rem]">
+            <div className="feature-column  max-w-[6rem] sm:max-w-[8rem] md:max-w-[10rem]">
               <div className="feature-header px-2 rounded-tl-[1rem] sm:rounded-tl-[2rem] text-[0.6rem] sm:text-sm md:text-base h-20">Features</div>
               {features.map((feature, index) => (
                 <motion.div 
@@ -145,7 +145,7 @@ const CosmicComparisonChart = () => {
               ))}
             </div>
             {platforms.map((platform, platformIndex) => (
-              <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column backdrop:blur-lg shadow-lg antialiased bg-opacity-65 rounded-lg md:rounded-[4rem] uppercase scale-y-150" : "max-w-[12rem] sm:max-w-[15rem] md:max-w-[20rem]"} `}
+              <div key={platform.name} className={`platform-column ${platform.name === "DeFlexy" ? "deflexy-column bg-gradient-to-br from-orange-600 to-pink-600 backdrop:blur-lg shadow-lg antialiased bg-opacity-65 rounded-lg md:rounded-[4rem] uppercase scale-y-150 " : "max-w-[14rem] sm:max-w-[16rem] md:max-w-[18rem]"} `}
               
               >
                 <motion.div 
@@ -171,7 +171,7 @@ const CosmicComparisonChart = () => {
                   <motion.div 
                     key={`${platform.name}-${feature}`} 
                     className={`platform-feature text-center items-center 
-                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg text-white   font-semibold py-[0.45rem] sm:py-4 md:py-6 lg:py-5' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
+                      ${platform.name === 'DeFlexy' ? 'deflexy-feature text-xs sm:text-sm md:text-lg text-gray-200   font-semibold py-[0.4rem] sm:py-4 md:py-4 lg:py-5' : 'text-[0.6rem] sm:text-sm md:text-base py-2 sm:py-6 md:py-6'} 
                       ${platform.name === 'DeFlexy' && platform.features[feature] === '0%' ? 'highlight' : ''} 
                       ${hoveredFeature === feature ? 'hovered' : ''}`}
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -227,8 +227,7 @@ const CosmicComparisonChart = () => {
           z-index: 2;
           transform: translateY(-5px) scale(1.1);
           box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
-          
-          background: #E3413D
+      
         }
 
         .deflexy-header {
