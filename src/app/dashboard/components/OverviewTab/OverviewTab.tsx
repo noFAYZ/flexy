@@ -162,7 +162,7 @@ export const OverviewTab = ({ stats, projects }) => {
   };
 
   return (
-    <div className="grid grid-cols-12 gap-4 w-full max-w-[1600px] mx-auto p-4">
+    <div className="grid grid-cols-12 gap-4 w-full  mx-auto">
       {/* Active Projects - 6 columns */}
       <div className="col-span-12 lg:col-span-6 xl:col-span-6">
         <StaticCard title="Active Projects">

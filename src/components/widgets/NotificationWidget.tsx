@@ -16,9 +16,10 @@ import {
   Briefcase,
   FileText,
   Calendar,
-  CheckCheck
+  CheckCheck,
+  LucideBellRing
 } from 'lucide-react';
-import { AntDesignMessageTwotone, MdiBellBadge } from '../icons/icons';
+import { motion } from 'framer-motion';
 
 const NotificationWidget = ({ authenticated = true }) => {
   const [selectedTab, setSelectedTab] = React.useState("notifications");
@@ -97,7 +98,7 @@ const NotificationWidget = ({ authenticated = true }) => {
       }}
     >
       <PopoverTrigger>
-        <NavbarItem>
+        <motion.li  className=' outline-none border-none list-none	'  whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <Badge 
             content={notifications.alerts + notifications.messages} 
             color="danger" 
@@ -107,10 +108,10 @@ const NotificationWidget = ({ authenticated = true }) => {
           >
             <div className="bg-gradient-to-r from-pink-500 to-orange-600 rounded-full opacity-100 hover:opacity-90 w-14 h-14 flex items-center justify-center relative overflow-hidden group cursor-pointer">
               <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity" />
-              <AntDesignMessageTwotone height={20} className="text-white relative z-10" />
+              <LucideBellRing height={24} className="text-white relative z-10" />
             </div>
           </Badge>
-        </NavbarItem>
+       </motion.li>
       </PopoverTrigger>
 
       <PopoverContent className="w-[340px] p-0">

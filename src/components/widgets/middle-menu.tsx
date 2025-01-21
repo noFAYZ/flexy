@@ -21,9 +21,33 @@ const MenuBar = ({ siteConfig, iconMap }) => {
 
   const centerIndex = Math.floor(siteConfig.length / 2);
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5
+      }
+    }
+  };
+  const isActiveRoute = (href: string) => {
+    if (href === '/') {
+      return pathname === href;
+    }
+    return pathname?.startsWith(href);
+  };
+
+
+
   return (
-    <div>
-            <NavbarContent className=" items-center bg-gradient-to-r from-pink-600 to-orange-600 gap-none border-0 rounded-full  gap-0 hidden md:flex  ">
+    <motion.div 
+    className=''
+    variants={containerVariants}
+    initial="hidden"
+    animate="visible"
+  >
+            <NavbarContent className=" items-center bg-gradient-to-r from-orange-700 via-orange-600 to-pink-600 gap-none border-0 rounded-full  gap-0 hidden md:flex ">
               {/* Left side - Menu icons */}
               {siteConfig.map((item, index) => {
                 const IconComponent = iconMap[item?.label] || Star; // Default to Home if icon not found
@@ -33,11 +57,12 @@ const MenuBar = ({ siteConfig, iconMap }) => {
                   <Button
                     as={Link}
                     href={item.href}
-                    className={`px-6 h-16 min-w-10 text-white/90 bg-transparent
+                    className={`px-6 h-[4.5rem] min-w-10 text-white/90 bg-transparent
                     data-[hover=true]:bg-transparent/30 
                     transition-colors
                     ${isFirst ? 'rounded-l-full' : ''}
                     ${isLast ? 'rounded-r-full' : ''}
+                    ${isActiveRoute(item.href) ? 'bg-transparent/30' : ''}
                     group`}
                   
                   
@@ -54,7 +79,7 @@ const MenuBar = ({ siteConfig, iconMap }) => {
                 );
               })}
             </NavbarContent>
-          </div>
+          </motion.div >
   );
 };
 

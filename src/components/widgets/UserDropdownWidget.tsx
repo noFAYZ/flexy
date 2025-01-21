@@ -80,13 +80,12 @@ const UserDropdownWidget = () => {
           onMouseLeave={() => setIsHovered(false)}
         >
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+           whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
           >
             <Avatar
               isBordered
               as="button"
-              className="transition-all duration-200"
+              className="transition-all duration-100"
               size="lg"
               src="/images/150.jfif"
               imgProps={{ className: "object-cover opacity-100" }}

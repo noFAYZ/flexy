@@ -1,13 +1,15 @@
 "use client";
 import React from 'react';
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, Switch } from "@nextui-org/react";
 import {
 
   Check,
+  MessageSquare,
 
 } from "lucide-react";
 
 import { useTheme } from 'next-themes';
+import { NavigationPreferenceChannel } from './NavigationChannel';
 
 
 
@@ -42,6 +44,16 @@ export const AppearanceSettings = () => {
               </div>
             </div>
           </div>
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h3 className="font-medium">Navbar/Sidebar</h3>
+              <NavigationPreferenceChannel />
+
+            
+            </div>
+          </div>
+
+          
         </CardBody>
       </Card>
     );

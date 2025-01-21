@@ -1,14 +1,14 @@
-"use client";
+"use client"
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/navbar";
 import { Providers } from "./providers";
-
 import {  fontLufga } from '@/config/fonts'
 import { NavbarNew } from "@/components/navbar-new";
-import { WavyBackground } from "@/components/ui/wavy-background";
 import { Analytics } from "@vercel/analytics/react"
+import { PageContainer } from "@/components/layout/page-container";
+import Sidebar from "@/components/layout/sidebar-new";
+import { usePathname } from "next/navigation";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,11 +26,51 @@ const FadedBackground = () => (
   </div>
 );
 
+const layoutConfigs = {
+    // Routes with both sidebar and navbar
+    dashboard: {
+      paths: ['/dashboard', '/jobs', '/contracts', '/wallet','/inbox', '/projects','/user'],
+      showSidebar: true,
+      showNavbar: true,
+    },
+    // Routes with only navbar
+    public: {
+      paths: ['/blog', '/pricing', '/about'],
+      showSidebar: false,
+      showNavbar: true,
+    },
+    // Routes with neither (landing pages, auth pages)
+    minimal: {
+      paths: ['/login', '/register', '/auth'],
+      showSidebar: false,
+      showNavbar: false,
+    },
+  } as const;
+  
+
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const pathname = usePathname();
+
+ // Determine the layout configuration based on the current path
+ const getLayoutConfig = (currentPath: string) => {
+  // Find the matching layout configuration
+  for (const [_, config] of Object.entries(layoutConfigs)) {
+    if (config.paths.some(path => currentPath?.startsWith(path))) {
+      return config;
+    }
+  }
+  // Default to minimal layout if no match is found
+  return layoutConfigs.minimal;
+};
+
+const currentLayout = getLayoutConfig(pathname);
+
   return (
     <html lang="en" suppressHydrationWarning>
      
@@ -46,10 +86,25 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "data-theme", defaultTheme: "dark" }}>
-          <>
+        <>
             <FadedBackground />
-            <NavbarNew />
-            {children}
+            <div className="flex min-h-screen">
+              {/* Left Sidebar - Show based on navigation preference and screen size */}
+             
+              {currentLayout.showSidebar && (
+                <div className="hidden md:block">
+                  <Sidebar />
+                </div>
+              )}
+              
+
+              {/* Main Content */}
+              <PageContainer>
+                {/* Show navbar based on navigation preference */}
+                <NavbarNew isSidebar={currentLayout.showSidebar} />
+                {children}
+              </PageContainer>
+            </div>
           </>
         </Providers>
         <Analytics />

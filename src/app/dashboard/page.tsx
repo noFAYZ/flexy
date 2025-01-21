@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  NavbarItem,
 } from "@nextui-org/react";
 import {
   Plus,
@@ -13,23 +12,17 @@ import {
   HandCoinsIcon,
   LayoutDashboardIcon,
   MessageCircleMoreIcon,
-  SearchIcon,
   Settings,
 } from "lucide-react";
-import { FluentBriefcase20Filled, FluentBriefcaseSearch20Regular } from "@/components/icons/icons";
-import Link from "next/link";
+import { FluentBriefcase20Filled, FluentBriefcaseSearch20Regular, MingcuteUser3Fill } from "@/components/icons/icons";
 import { ActivityLogIcon } from "@radix-ui/react-icons";
 import { AnalyticsTab } from "./components/AnalyticsTab/AnalyticsTab";
 
 import { PaymentsTab } from "./components/PaymentTab/PaymentTab";
 import { ProjectsTab } from "./components/ProjectsTab/ProjectsTab";
 import { TalentTab } from "./components/TalentTab/TalentTab";
-import { usePrivy } from "@privy-io/react-auth";
-import { usePathname } from 'next/navigation';
-import {
-  Navbar as NextUINavbar,
-} from "@nextui-org/react";
-import NextLink from "next/link";
+import { useLogin, usePrivy } from "@privy-io/react-auth";
+
 import { motion } from "framer-motion";
 import { SettingsTab } from "./components/SettingsTab/SettingsTab";
 import OverviewTab from "./components/OverviewTab/OverviewTab";
@@ -508,17 +501,31 @@ const ClientDashboard = () => {
     }
   };
 
+
+  
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const { ready, authenticated } = usePrivy();
+  const { login } = useLogin({
+    onComplete: () => setIsLoggingIn(false),
+    onError: (error) => {
+      console.error(error);
+      setIsLoggingIn(false);
+    },
+  });
+
+const disableLogin = !ready || (ready && authenticated);
+
   return (
-    <div className="min-h-screen bg-background/60">
+    <div className="min-h-screen px-16">
       <title>{`Dashboard - ${getPageTitle()}`}</title>
       {/* Header Section */}
-      <div className="max-w-[1600px] mx-auto">
-        <div className="shadow-none rounded-[2.5rem] m-4 sm:m-6 lg:m-8">
+      <div className=" mx-auto">
+        <div className="shadow-none rounded-[2.5rem] px-6 ">
           <div className="px-6 space-y-2">
            {/* Enhanced Header Section */}
     
 
-          <div className="relative pb-10">
+          <div className="relative pb-10 ">
             {/* Top Bar */}
             <div className="flex items-center justify-between ">
               {/* Welcome Section */}
@@ -540,9 +547,13 @@ const ClientDashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 justify-end">
 
-                <motion.button
+
+            
+      
+  
+               <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.12, delay: 0.1 }}

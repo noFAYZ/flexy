@@ -42,7 +42,7 @@ export const InboxTab = () => {
     <div className="flex gap-4  p-2 md:p-4  relative">
       {/* Left Sidebar - Mobile Drawer */}
       <div className={`
-        fixed inset-y-0 left-0 z-30 w-full sm:w-[320px] 
+        fixed inset-y-0 left-0  w-full sm:w-[320px] 
         transform transition-transform duration-300 ease-in-out
         ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         sm:relative sm:translate-x-0

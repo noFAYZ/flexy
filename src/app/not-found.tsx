@@ -14,38 +14,22 @@ export default function NotFound() {
     >
       <div className="text-center space-y-8 max-w-md">
         {/* 404 Text */}
-        <motion.h1 
-          className="text-8xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0]
-          }}
-          transition={{ 
-            duration: 3,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
+        <h1 
+          className="text-8xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent -skew-y-4"
         >
           404
-        </motion.h1>
+        </h1>
 
         {/* Icon */}
-        <motion.div
-          animate={{ 
-            y: [0, -10, 0],
-          }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+        <div
+
           className="inline-block p-4 rounded-full bg-default-100"
         >
           <SearchX size={50} className="text-default-500" />
-        </motion.div>
+        </div>
 
         {/* Message */}
-        <div className="space-y-4">
+        <div className="space-y-4 pb-4">
           <h2 className="text-2xl font-bold">Page Not Found</h2>
           <p className="text-default-500">
             Oops! The page you're looking for seems to have wandered off into the digital void.
@@ -53,7 +37,7 @@ export default function NotFound() {
         </div>
 
         {/* Action Button */}
-        <Link href="/">
+        <Link href="/" className="pt-4">
           <Button
             size="lg"
             variant="shadow"
