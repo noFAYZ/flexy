@@ -10,7 +10,7 @@ export const PageContainer = ({
 }) => {
   return (
     <div className={cn(
-      "flex-1 min-w-0 overflow-y-auto pt-12 ",
+      "flex-1 min-w-0 overflow-y-auto ",
       className
     )}>
       {children}
