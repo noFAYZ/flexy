@@ -58,7 +58,7 @@ const CreativeSearch = ({
 
         {/* Right side content */}
         <div className="flex items-center gap-2">
-          <kbd className="hidden md:inline-flex h-7 select-none items-center gap-1 rounded-lg border bg-background p-1.5 font-mono text-[10px] font-medium opacity-100 hover:opacity-100">
+          <kbd className="hidden md:inline-flex h-7 select-none items-center gap-1 rounded-md border bg-background p-1.5 font-mono text-[10px] font-medium opacity-100 hover:opacity-100">
             <span className="text-sm">⌘</span>K
           </kbd>
           <div className="h-7 w-[1px] bg-border/50 hidden md:block" />

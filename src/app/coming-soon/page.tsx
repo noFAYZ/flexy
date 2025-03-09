@@ -979,7 +979,7 @@ const ComingSoonPage = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   useEffect(() => {
-    const target = new Date("2024-12-29T23:59:59");
+    const target = new Date("2025-04-29T23:59:59");
 
     const interval = setInterval(() => {
       const now = new Date();

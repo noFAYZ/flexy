@@ -19,7 +19,8 @@ import {
   CheckCheck,
   LucideBellRing
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const NotificationWidget = ({ authenticated = true }) => {
   const [selectedTab, setSelectedTab] = React.useState("notifications");
@@ -114,169 +115,160 @@ const NotificationWidget = ({ authenticated = true }) => {
        </motion.li>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[340px] p-0">
-        {/* Minimal Tab Navigation */}
-        <div className="flex items-center gap-6 px-4 py-3 border-b">
-          <button
-            onClick={() => setSelectedTab("notifications")}
-            className="relative group"
-          >
-            <div className="flex items-center gap-2">
-              <span className={`text-sm transition-colors ${
-                selectedTab === "notifications" 
-                  ? "text-orange-500 font-medium" 
-                  : "text-default-500"
-              }`}>
-                Notifications
-              </span>
-              {notifications.alerts > 0 && (
-                <Badge
-                  size="sm"
-                  className={`${
-                    selectedTab === "notifications"
-                      ? "bg-violet-100 text-orange-500"
-                      : "bg-default-100 text-default-500"
-                  }`}
-                >
-                  {notifications.alerts}
-                </Badge>
+    {/* PopoverContent */}
+<PopoverContent className="w-[380px]   "
+>
+  {/* Header with Tabs */}
+  <div className="py-4 w-full border-b border-border/5">
+    <div className="flex justify-evenly items-center ">
+      {["Notifications", "Messages"].map((tab) => (
+        <button
+          key={tab}
+          onClick={() => setSelectedTab(tab.toLowerCase())}
+          className="relative group px-2"
+        >
+          <div className="flex items-center gap-2">
+            <span className={cn(
+              "text-sm font-medium transition-colors duration-200",
+              selectedTab === tab.toLowerCase() 
+                ? "text-orange-600" 
+                : "text-muted-foreground hover:text-foreground"
+            )}>
+              {tab}
+              {(tab === "Notifications" ? notifications.alerts : notifications.messages) > 0 && (
+                <span className={cn(
+                  "ml-1.5 px-1.5 py-0.5 text-[10px] rounded-full",
+                  selectedTab === tab.toLowerCase()
+                    ? "bg-orange-600 text-white"
+                    : "bg-orange-600 text-white"
+                )}>
+                  {tab === "Notifications" ? notifications.alerts : notifications.messages}
+                </span>
               )}
-            </div>
-            {selectedTab === "notifications" && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-500 to-orange-600 rounded-full -mb-3" />
-            )}
-          </button>
-
-          <button
-            onClick={() => setSelectedTab("messages")}
-            className="relative group"
-          >
-            <div className="flex items-center gap-2">
-              <span className={`text-sm transition-colors ${
-                selectedTab === "messages" 
-                  ? "text-orange-500 font-medium" 
-                  : "text-default-500"
-              }`}>
-                Messages
-              </span>
-              {notifications.messages > 0 && (
-                <Badge
-                  size="sm"
-                  className={`${
-                    selectedTab === "messages"
-                      ? "bg-fuchsia-100 text-orange-500"
-                      : "bg-default-100 text-default-500"
-                  }`}
-                >
-                  {notifications.messages}
-                </Badge>
-              )}
-            </div>
-            {selectedTab === "messages" && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-500 to-orange-600 rounded-full -mb-3" />
-            )}
-          </button>
-        </div>
-
-        <div className="p-3">
-          {/* Quick Actions Row */}
-          <div className="flex gap-2 mb-2">
-            <Button
-              size="sm"
-              variant="flat"
-              className="w-full h-8 text-xs"
-              startContent={<CheckCheck className="h-3.5 w-3.5" />}
-            >
-              Mark all read
-            </Button>
+            </span>
           </div>
+          
+          {/* Active Indicator */}
+          <div className={cn(
+            "absolute -bottom-4 left-0 right-0 h-0.5",
+            "transform scale-x-0 group-hover:scale-x-100",
+            "transition-transform duration-200",
+            selectedTab === tab.toLowerCase() && "scale-x-100",
+            "bg-gradient-to-r from-orange-500 to-pink-500"
+          )} />
+        </button>
+      ))}
+    </div>
+  </div>
 
-          {/* Dynamic Content */}
-          <div className="max-h-[380px] overflow-y-auto">
+  {/* Quick Actions */}
+  <div className="px-2 pt-2">
+    <Button
+      size="sm"
+      variant="ghost"
+      className={cn(
+        "w-full h-9 text-xs gap-2",
+        "text-muted-foreground hover:text-foreground",
+        "hover:bg-accent/50 rounded-2xl",
+        ""
+      )}
+    >
+      <CheckCheck className="h-3.5 w-3.5" />
+      Mark all as read
+    </Button>
+  </div>
+
+  {/* Notification List */}
+  <div className="max-h-[450px] overflow-y-auto w-full  py-2 space-y-1">
+    <AnimatePresence mode="popLayout">
+      {(selectedTab === "notifications" ? notificationItems : messageItems).map((item, index) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.2, delay: index * 0.05 }}
+          className={cn(
+            "p-3 ",
+            "group relative",
+            "transition-all duration-200",
+            "hover:bg-muted-foreground/20",
+            "cursor-pointer"
+          )}
+        >
+          <div className="flex gap-3">
             {selectedTab === "notifications" ? (
-              <div className="space-y-1">
-                {notificationItems.map((item) => (
-                  <div 
-                    key={item.id}
-                    className="p-3 rounded-2xl hover:bg-default-100 transition-colors cursor-pointer relative group"
-                  >
-                    <div className="flex gap-3">
-                      <div className={`h-9 w-9 rounded-lg bg-gradient-to-r from-pink-500 to-orange-600 flex items-center text-bold justify-center flex-shrink-0 ${
-                        item.isNew ? "text-white-500" : "text-gray-400"
-                      }`}>
-                        <item.icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium">{item.title}</p>
-                          {item.isNew && (
-                            <Chip size="sm" className="h-4 px-1 text-[10px] bg-orange-600 text-gray-200">
-                              New
-                            </Chip>
-                          )}
-                        </div>
-                        <p className="text-xs text-default-500 mt-0.5 line-clamp-1">
-                          {item.description}
-                        </p>
-                        <span className="text-[10px] text-default-400 mt-1 block">
-                          {item.time}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              // Notification Icon
+              <div className={cn(
+                "h-10 w-10 ",
+                "bg-gradient-to-r from-orange-500 to-pink-500",
+                "flex items-center justify-center",
+                "group-hover:from-orange-600 group-hover:to-pink-600",
+                "transition-colors duration-100 rounded-2xl"
+              )}>
+                <item.icon className="h-4 w-4 text-white" />
               </div>
             ) : (
-              <div className="space-y-1">
-                {messageItems.map((item) => (
-                  <div 
-                    key={item.id}
-                    className="p-3 rounded-2xl hover:rounded-2xl hover:bg-default-100 transition-colors cursor-pointer relative group"
-                  >
-                    <div className="flex gap-3">
-                      <div className="relative">
-                        <Avatar
-                          src={item.user.avatar}
-                          className="h-9 w-9"
-                        />
-                        {item.user.online && (
-                          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-success-500 rounded-full ring-2 ring-background" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium">{item.user.name}</p>
-                          {item.isNew && (
-                            <Chip size="sm" className="h-4 px-1 text-[10px] bg-orange-600 text-gray-200">
-                              New
-                            </Chip>
-                          )}
-                        </div>
-                        <p className="text-xs text-default-500 mt-0.5 line-clamp-1">
-                          {item.message}
-                        </p>
-                        <span className="text-[10px] text-default-400 mt-1 block">
-                          {item.time}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              // Message Avatar
+              <div className="relative">
+                <Avatar
+                  src={item.user.avatar}
+                  className="h-10 w-10 rounded-2xl"
+                />
+                {item.user.online && (
+                  <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-background" />
+                )}
               </div>
             )}
-          </div>
-        </div>
 
-        {/* Footer */}
-        <div className="p-2 border-t">
-          <Button
-            size="sm"
-            className="w-full rounded-2xl bg-gradient-to-r from-pink-500 to-orange-600 text-white"
-          >
-            View All
-          </Button>
-        </div>
-      </PopoverContent>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between">
+                <p className="text-sm font-medium text-foreground">
+                  {selectedTab === "notifications" ? item.title : item.user.name}
+                </p>
+                {item.isNew && (
+                  <span className={cn(
+                    "px-1.5  text-[10px] rounded-full",
+                    "bg-gradient-to-r from-orange-500 to-pink-500 text-white",
+                    "font-medium"
+                  )}>
+                    New
+                  </span>
+                )}
+              </div>
+              
+              <p className="text-xs text-muted-foreground mt-[1px] line-clamp-1">
+                {selectedTab === "notifications" ? item.description : item.message}
+              </p>
+              
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[10px] text-muted-foreground">
+                  {item.time}
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </AnimatePresence>
+  </div>
+
+  {/* Footer */}
+  <div className="p-2 border-t border-border/5">
+    <Button
+      size="sm"
+      className={cn(
+        "w-full h-9 rounded-2xl",
+        "bg-gradient-to-r from-orange-500 to-pink-500",
+        "text-white text-xs font-medium",
+        "hover:opacity-90",
+        "transition-opacity duration-200"
+      )}
+    >
+      View All
+    </Button>
+  </div>
+</PopoverContent>
     </Popover>
   );
 };

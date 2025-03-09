@@ -17,7 +17,6 @@ const config = {
     "./node_modules/@nextui-org/theme/dist/components/(button|snippet|code|input).js",
   ],
   prefix: "",
-  darkMode: "class",
   theme: {
     container: {
       center: true,
